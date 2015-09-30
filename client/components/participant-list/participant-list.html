@@ -1,19 +1,74 @@
 <div ng-controller="ParticipantListCtrl">
-    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="rightSidebar">
         <md-toolbar class="md-theme-light">
             <h1 class="md-toolbar-tools">Participant List</h1>
         </md-toolbar>
-        <md-content layout-padding>
-            <md-list>
-                <md-subheader class="md-no-sticky">Friend List:</md-subheader>
-                <md-list-item class="md-2-line">
-                    <md-checkbox ng-model="item.done"></md-checkbox>
-                    <div class="md-list-item-text">
-                        <h3>Ricardo</h3>
-                    </div>
-                </md-list-item>
-                <md-divider ></md-divider>
-            </md-list>
-        </md-content>
+        <md-divider></md-divider>
+        <md-subheader class="md-no-sticky">Current friends:</md-subheader>
+        <md-list-item>
+            <img alt="Avatar" ng-src="assets/images/user.jpg" class="md-avatar"/>
+
+            <p>Tito Puente </p>
+            <!--md-checkbox ng-model="item.done"></md-checkbox-->
+            <md-fab-speed-dial md-direction="left">
+                <md-fab-trigger>
+                    <md-button aria-label="menu" class="md-icon-button md-primary md-mini">
+                        <md-icon md-svg-src="assets/svg/menu.svg"></md-icon>
+                    </md-button>
+                </md-fab-trigger>
+                <md-fab-actions>
+                    <md-button aria-label="Chat window" class="md-fab md-raised md-mini">
+                        <md-icon md-svg-src="assets/svg/bubble.svg" style="color: dimgray;"
+                                 aria-label="Chat Window"></md-icon>
+                        <md-tooltip>
+                            Open chat
+                        </md-tooltip>
+                    </md-button>
+                    <md-button aria-label="Profile Information" class="md-fab md-raised md-mini">
+                        <md-icon md-svg-src="assets/svg/user.svg" style="color: dimgray;"
+                                 aria-label="Profile"></md-icon>
+                        <md-tooltip>
+                            Profile information
+                        </md-tooltip>
+                    </md-button>
+                    <md-button aria-label="Remove user from drawing" class="md-fab md-raised md-mini">
+                        <md-icon md-svg-src="assets/svg/remove.svg" style="color: darkred;"
+                                 aria-label="Remove"></md-icon>
+                        <md-tooltip>
+                            Remove user from drawing
+                        </md-tooltip>
+                    </md-button>
+                </md-fab-actions>
+            </md-fab-speed-dial>
+        </md-list-item>
+        <md-divider ></md-divider>
+        <md-list-item>
+            <img alt="Avatar" ng-src="assets/images/user.jpg" class="md-avatar"/>
+            <p>Dave Mustain</p>
+            <!--md-checkbox ng-model="item.done"></md-checkbox-->
+            <md-fab-speed-dial md-direction="left">
+                <md-fab-trigger>
+                    <md-button aria-label="menu" class="md-icon-button md-primary md-mini">
+                        <md-icon md-svg-src="assets/svg/menu.svg"></md-icon>
+                    </md-button>
+                </md-fab-trigger>
+                <md-fab-actions>
+                    <md-button aria-label="Chat window" class="md-fab md-raised md-mini">
+                        <md-icon md-svg-src="assets/svg/bubble.svg" style="color: dimgray;"
+                                 aria-label="Chat Window"></md-icon>
+                    </md-button>
+                    <md-button aria-label="Profile Information" class="md-fab md-raised md-mini">
+                        <md-icon md-svg-src="assets/svg/user.svg" style="color: dimgray;"
+                                 aria-label="Profile"></md-icon>
+                    </md-button>
+                    <md-button aria-label="Remove user from drawing" class="md-fab md-raised md-mini">
+                        <md-icon md-svg-src="assets/svg/remove.svg" style="color: darkred;"
+                                 aria-label="Remove"></md-icon>
+                    </md-button>
+                </md-fab-actions>
+            </md-fab-speed-dial>
+        </md-list-item>
+        <md-divider ></md-divider>
     </md-sidenav>
 </div>
+

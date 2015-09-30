@@ -15,3 +15,11 @@
     padding-left: 58px;
     position: relative;
 }
+
+.toolbar-controls .selected > md-icon svg {
+    border:solid 1px #000;
+}
+
+.toolbar-controls .md-menu {
+    padding:0;
+}

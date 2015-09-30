@@ -12,7 +12,7 @@
                     </button>
                     <md-menu-content>
                         <md-menu-item>
-                            <md-button >
+                            <md-button>
                                 Share...
                             </md-button>
                         </md-menu-item>
@@ -21,11 +21,26 @@
                             <md-menu>
                                 <md-button ng-click="$mdOpenMenu()">New</md-button>
                                 <md-menu-content>
-                                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Document', $event)">Document</md-button></md-menu-item>
-                                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet</md-button></md-menu-item>
-                                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Presentation', $event)">Presentation</md-button></md-menu-item>
-                                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Form', $event)">Form</md-button></md-menu-item>
-                                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Drawing', $event)">Drawing</md-button></md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.sampleAction('New Document', $event)">Document
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.sampleAction('New Presentation', $event)">
+                                            Presentation
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.sampleAction('New Form', $event)">Form</md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.sampleAction('New Drawing', $event)">Drawing
+                                        </md-button>
+                                    </md-menu-item>
                                 </md-menu-content>
                             </md-menu>
                         </md-menu-item>
@@ -52,9 +67,10 @@
             </md-menu-bar>
         </div>
 
-        <div  class="md-toolbar-tools">
+        <div class="md-toolbar-tools">
             <span flex></span>
-            <p class="body">Ricardo Ibarra</p>
+
+            <p class="body">Ricardo Ibarra(10)</p>
             <md-button class="md-fab md-red-alert md-mini" aria-label="Alerts" ng-click="acceptOffer();">
                 <md-icon md-svg-icon="/assets/svg/bell.svg"></md-icon>
             </md-button>
@@ -63,18 +79,66 @@
 </md-toolbar>
 <md-content ng-controller="toolbarCtrl">
     <section layout="row" class="toolbar-controls" layout-sm="column" layout-align="left" layout-wrap>
-        <md-button class="md-icon-button md-mini" aria-label="color picker">
+        <md-button class="md-icon-button md-mini selected" aria-label="color picker">
             <md-icon md-svg-icon="/assets/svg/color-picker.svg"></md-icon>
+            <md-tooltip>
+                Select color
+            </md-tooltip>
         </md-button>
         <md-button class="md-icon-button md-mini" aria-label="Settings">
-            <md-icon md-svg-icon="/assets/svg/pencil.svg"></md-icon>
+            <md-icon  md-svg-icon="/assets/svg/pencil.svg"></md-icon>
+            <md-tooltip>
+                Brush
+            </md-tooltip>
         </md-button>
         <md-button class="md-icon-button md-mini" aria-label="Erase layer">
             <md-icon md-svg-icon="/assets/svg/eraser.svg"></md-icon>
+            <md-tooltip>
+                Eraser block
+            </md-tooltip>
         </md-button>
+        <md-menu >
+            <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
+                <md-icon md-menu-origin md-svg-icon="/assets/svg/layers.svg"></md-icon>
+            </md-button>
+            <md-menu-content width="2">
+                <md-menu-item>
+                    <md-switch class="md-primary"  md-no-ink aria-label="Enable/Disable Layers">
+                        Enable/Layer (Ricardo Ibarra)
+                    </md-switch>
+                </md-menu-item>
+                <md-menu-divider></md-menu-divider>
+                <md-menu-item>
+                    <md-switch class="md-primary"  md-no-ink aria-label="Enable/Disable Layers">
+                        Enable/Layer (Ricardo Ibarra)
+                    </md-switch>
+                </md-menu-item>
+                <md-menu-divider></md-menu-divider>
+                <md-menu-item>
+                    <md-switch class="md-primary"  md-no-ink aria-label="Enable/Disable Layers">
+                        Enable/Layer (Ricardo Ibarra)
+                    </md-switch>
+                </md-menu-item>
+                <md-menu-divider></md-menu-divider>
+                <md-menu-item>
+                    <md-switch class="md-primary"  md-no-ink aria-label="Enable/Disable Layers">
+                        Enable/Layer (Ricardo Ibarra)
+                    </md-switch>
+                </md-menu-item>
+                <md-menu-divider></md-menu-divider>
+                <md-menu-item>
+                    <md-switch class="md-primary"  md-no-ink aria-label="Enable/Disable Layers">
+                        Enable/Layer (Ricardo Ibarra)
+                    </md-switch>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
         <span flex></span>
         <md-button class="md-icon-button md-mini" aria-label="Friend List" ng-click="sideBar()">
             <md-icon md-svg-icon="/assets/svg/plus.svg"></md-icon>
+            <md-tooltip>
+                Manage participants
+            </md-tooltip>
         </md-button>
     </section>
 
