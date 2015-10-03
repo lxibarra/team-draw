@@ -7,7 +7,8 @@ angular.module('teamDrawApp', [
   'ngSanitize',
   'ngRoute',
   'btford.socket-io',
-  'ngMaterial'
+  'ngMaterial',
+  'slatePainting'
 ])
   .config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider
