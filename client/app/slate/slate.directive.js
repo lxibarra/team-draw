@@ -25,25 +25,20 @@ angular.module('slatePainting')
         previewCanvas.attr('draggable', 'false');
         previewCanvas.attr('height', attrs.height);
         previewCanvas.css({ 'position':'absolute'  });
-        previewCanvas.attr('id', layer.id);
+        previewCanvas.attr('id', 'previewLayer');
+        element.append(previewCanvas);
 
         element.append('<div style="clear:both;"/>');
 
         QuadraticCurve.setUp(canvasCollection[2][0], 'blue', 5, previewCanvas);
 
-        var ctx = canvasCollection[2][0].getContext("2d");
-        ctx.fillStyle = "rgb(200,0,0)";
-        ctx.fillRect (10, 10, 55, 50);
 
-        ctx.fillStyle = "rgba(0, 0, 200, 1)";
-        ctx.fillRect (30, 30, 55, 50);
-
-       // var draw = false;
 
         element.on('mousemove', function(evt) {
           if(evt.buttons == 1) {
             //dra for pencil
             QuadraticCurve.setCurve(evt.offsetX, evt.offsetY);
+          //  Pencil.draw(evt.offsetX, evt.offsetY);
           }
         });
 
@@ -52,6 +47,7 @@ angular.module('slatePainting')
         });
 
         element.on('mousedown', function(evt) {
+         // Pencil.startDraw(evt.offsetX, evt.offsetY);
           QuadraticCurve.startDraw(evt.offsetX, evt.offsetY);
         });
 

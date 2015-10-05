@@ -69,7 +69,7 @@ angular.module('slatePainting', [])
         /*=====All of this is bad=====*/
         if(_previewCanvas) {
           //must implement something nice
-
+          
         }
         /*=============================*/
       },
