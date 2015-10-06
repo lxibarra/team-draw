@@ -66,6 +66,11 @@ angular.module('slatePainting').service('Eraser', function() {
       if(_blockSize > 0) {
         _blockSize = Math.ceil(_blockSize / 2);
       }
+      /**
+       * Provides a standard API
+       * @type {Eraser.clear|Function}
+       */
+      this.startDraw = this.clear;
     },
     previewEraser:function(x,y) {
       beforeDraw();

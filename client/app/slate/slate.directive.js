@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('slatePainting')
+angular.module('slatePainting').value('$_slateAction', { })
   .directive('slate', function (Pencil, Circle, Eraser) {
     return {
       restrict: 'EA',

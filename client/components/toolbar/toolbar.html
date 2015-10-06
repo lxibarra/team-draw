@@ -66,7 +66,6 @@
         </md-menu>
       </md-menu-bar>
     </div>
-
     <div class="md-toolbar-tools">
       <span flex></span>
 
@@ -79,26 +78,73 @@
 </md-toolbar>
 <md-content ng-controller="toolbarCtrl">
   <section layout="row" class="toolbar-controls" layout-sm="column" layout-align="left" layout-wrap>
-    <md-button class="md-icon-button md-mini selected" aria-label="color picker">
-      <div class="colorPicker" tinycolorpicker color-selected="colorSelected">
+    <md-button class="md-icon-button md-mini selected" aria-label="foreground Color picker">
+      <div class="colorPicker" tinycolorpicker color-selected="foreground">
         <md-icon md-svg-icon="/assets/svg/color-picker.svg"></md-icon>
       </div>
       <md-tooltip>
-        Brush
+        Foreground color
       </md-tooltip>
     </md-button>
-    <md-button class="md-icon-button md-mini" aria-label="Settings">
-      <md-icon md-svg-icon="/assets/svg/pencil.svg"></md-icon>
+    <md-button class="md-icon-button md-mini selected" aria-label="Background Color">
+      <div class="colorPicker" tinycolorpicker color-selected="background">
+        <md-icon md-svg-icon="/assets/svg/bgcolor.svg"></md-icon>
+      </div>
       <md-tooltip>
-        Brush
+        Background Color
       </md-tooltip>
     </md-button>
-    <md-button class="md-icon-button md-mini" aria-label="Erase layer">
-      <md-icon md-svg-icon="/assets/svg/eraser.svg"></md-icon>
-      <md-tooltip>
-        Eraser block
-      </md-tooltip>
-    </md-button>
+    <md-menu>
+      <md-button aria-label="Open Pencil tools"  class="md-icon-button"
+                 ng-click="openMenu($mdOpenMenu, $event, 'Pencil')">
+        <md-icon md-menu-origin md-svg-icon="/assets/svg/pencil.svg"></md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <div class="layout" style="overflow: hidden;">
+            <div flex="10" layout layout-align="center center">
+              <span class="md-body-10" ng-bind-html="pencil.size">0</span>
+            </div>
+            <md-slider flex min="0" max="255" ng-model="pencil.size" ng-change="changeBrushStroke(pencil.size)" aria-label="blue"  class="md-primary">
+            </md-slider>
+          </div>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+    <md-menu>
+      <md-button aria-label="Open phone interactions menu" class="md-icon-button"
+                 ng-click="openMenu($mdOpenMenu, $event, 'Circle')">
+        <md-icon md-menu-origin md-svg-icon="/assets/svg/circle.svg"></md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <div class="layout" style="overflow: hidden;">
+            <div flex="10" layout layout-align="center center">
+              <span class="md-body-10" ng-bind-html="circle.size">0</span>
+            </div>
+            <md-slider flex min="0" max="255" ng-model="circle.size" ng-change="changeBrushStroke(circle.size)" aria-label="blue"  class="md-primary">
+            </md-slider>
+          </div>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+    <md-menu>
+      <md-button aria-label="Open phone interactions menu" class="md-icon-button"
+                 ng-click="openMenu($mdOpenMenu, $event, 'Eraser')">
+        <md-icon md-menu-origin md-svg-icon="/assets/svg/eraser.svg"></md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <div class="layout" style="overflow: hidden;">
+            <div flex="10" layout layout-align="center center">
+              <span class="md-body-10" ng-bind-html="eraser.size">0</span>
+            </div>
+            <md-slider flex min="0" max="255" ng-model="eraser.size" aria-label="blue"  class="md-primary">
+            </md-slider>
+          </div>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
     <md-menu>
       <md-button aria-label="Open phone interactions menu" class="md-icon-button"
                  ng-click="openMenu($mdOpenMenu, $event)">
