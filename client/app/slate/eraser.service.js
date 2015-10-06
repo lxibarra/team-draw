@@ -13,7 +13,7 @@
  * over the canvas. But, if the left button is down the user wants to delete.
  *
  * element.on('mousemove', function(evt) {
-    Eraser.previewEraser(evt.offsetX, evt.offsetY);
+    Eraser.preview(evt.offsetX, evt.offsetY);
       if(evt.buttons == 1) {
         Eraser.clear(evt.offsetX, evt.offsetY);
       }
@@ -70,9 +70,9 @@ angular.module('slatePainting').service('Eraser', function() {
        * Provides a standard API
        * @type {Eraser.clear|Function}
        */
-      this.startDraw = this.clear;
+      this.draw = this.clear;
     },
-    previewEraser:function(x,y) {
+    preview:function(x,y) {
       beforeDraw();
       clearCanvas(_previewCanvas);
       _previewCanvas.beginPath();

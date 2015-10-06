@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('slatePainting').value('$_slateAction', { })
-  .directive('slate', function (Pencil, Circle, Eraser) {
+  .directive('slate', function (slateCmd, Pencil, Circle, Eraser) {
     return {
       restrict: 'EA',
       scope:{
-        layers:'=layers'
+        layers:'=layers',
+        interactor:'=interactor'
       },
       link: function (scope, element, attrs) {
         var canvasCollection = [];
@@ -41,36 +42,36 @@ angular.module('slatePainting').value('$_slateAction', { })
 
         element.append('<div style="clear:both;"/>');
 
-        Eraser.setUp(canvasCollection[2][0], previewCanvas[0], 50);
-        //circle.setUp(canvasCollection[2][0], previewCanvas[0]);
+        //the controller will be responsible for creating the proper array depending on the shape it wants to create
+        //setup for pencil
+        //var tmp = 'Pencil';
+        //slateCmd.exec(tmp, [] , [ canvasCollection[2][0], previewCanvas[0], 'blue', 2 ]);
 
-        /*
-        circle.setBorderWidth(5);
-        circle.setFillable(false);
-        circle.setBorderColor('pink');
-        circle.setFillColor('red');*/
+        //setup for eraser
+        //var tmp = 'Eraser';
+        //slateCmd.exec(tmp, [] , [ canvasCollection[2][0], previewCanvas[0], 30 ]);
+
+        //setup for Circle
+        var tmp = 'Circle';
+        slateCmd.exec(tmp, [], [ canvasCollection[2][0], previewCanvas[0]]);
 
         element.on('mousemove', function(evt) {
-          Eraser.previewEraser(evt.offsetX, evt.offsetY);
+          slateCmd.exec(tmp, ['mousemove'], [ evt.offsetX, evt.offsetY ]);
           if(evt.buttons == 1) {
-            Eraser.clear(evt.offsetX, evt.offsetY);
-            //draw figures
-            //circle.setRadius(evt.offsetX, evt.offsetY);
-          //  Pencil.draw(evt.offsetX, evt.offsetY);
+            slateCmd.exec(tmp, ['mousemove', 'mousedown'], [ evt.offsetX, evt.offsetY ]);
           }
         });
 
         element.on('click', function(evt) {
-          Eraser.clear(evt.offsetX, evt.offsetY);
+          slateCmd.exec(tmp, ['click'], [ evt.offsetX, evt.offsetY ]);
         });
 
         element.on('mouseup', function(evt) {
-          //circle.draw();
+          slateCmd.exec(tmp, ['mouseup'], [ evt.offsetX, evt.offsetY ]);
         });
 
         element.on('mousedown', function(evt) {
-         // Pencil.startDraw(evt.offsetX, evt.offsetY);
-          //circle.startDraw(evt.offsetX, evt.offsetY);
+          slateCmd.exec(tmp, ['mousedown'], [ evt.offsetX, evt.offsetY ]);
         });
 
 

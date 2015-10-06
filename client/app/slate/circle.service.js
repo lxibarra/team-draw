@@ -25,7 +25,7 @@
  *
  * element.on('mousemove', function(evt) {
       if(evt.buttons == 1) {
-            circle.setRadius(evt.offsetX, evt.offsetY);
+            circle.preview(evt.offsetX, evt.offsetY);
       }
    });
  *
@@ -43,7 +43,7 @@ angular.module('slatePainting', [])
       _canvas = undefined,
       _previewCanvas = undefined,
       _color = '#000000',
-      _strokeWidth = 1,
+      _strokeWidth = 2,
       _fill = false,
       _fillColor = 'orange',
       sizeX,
@@ -76,6 +76,17 @@ angular.module('slatePainting', [])
       target.clearRect(0, 0, sizeX, sizeY);
     }
 
+    function setRadius (x1, y1) {
+      var dx = cp1x > x1 ? (cp1x - x1) : (x1 - cp1x);
+      var dy = cp1y > y1 ? (cp1y - y1) : (y1 - cp1y);
+      radius = Math.sqrt((dx * dx) + (dy * dy));
+      radius = Math.floor(radius / 2);
+      if (_previewCanvas) {
+        clearCanvas(_previewCanvas);
+        makeCircle(_previewCanvas);
+      }
+    }
+
     return {
       setUp: function (canvas, previewCanvas, color, strokeWidth, fill, fillColor) {
         try {
@@ -91,16 +102,10 @@ angular.module('slatePainting', [])
         _strokeWidth = strokeWidth || _strokeWidth;
         _fill = fill || _fill;
         _fillColor = fillColor || _fillColor;
+
       },
-      setRadius: function (x1, y1) {
-        var dx = cp1x > x1 ? (cp1x - x1) : (x1 - cp1x);
-        var dy = cp1y > y1 ? (cp1y - y1) : (y1 - cp1y);
-        radius = Math.sqrt((dx * dx) + (dy * dy));
-        radius = Math.floor(radius / 2);
-        if (_previewCanvas) {
-          clearCanvas(_previewCanvas);
-          makeCircle(_previewCanvas);
-        }
+      preview: function (x1, y1) {
+        setRadius(x1, y1);
       },
       draw: function () {
         clearCanvas(_previewCanvas);
