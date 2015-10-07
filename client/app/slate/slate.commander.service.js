@@ -58,17 +58,20 @@ angular.module('slatePainting').service('slateCmd',
       return methods;
     }
 
-    console.log(_service);
     return {
       setProperty:function() {
         //for settign and getting properties
         //get object reference and use call to pass in params
       },
       exec:function(service, events, args) {
-        var executionList = getMethod(service, events);
-        executionList.forEach(function(m) {
-          _service[service][m].apply(_service[service], args)
-        });
+        if(service) {
+          var executionList = getMethod(service, events);
+          executionList.forEach(function (m) {
+            _service[service][m].apply(_service[service], args)
+          });
+        } else {
+          console.info('No service has been provided');
+        }
       }
     }
 });

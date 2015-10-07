@@ -98,6 +98,9 @@
       <md-button aria-label="Open Pencil tools"  class="md-icon-button"
                  ng-click="openMenu($mdOpenMenu, $event, 'Pencil')">
         <md-icon md-menu-origin md-svg-icon="/assets/svg/pencil.svg"></md-icon>
+        <md-tooltip>
+          Pencil tool
+        </md-tooltip>
       </md-button>
       <md-menu-content width="4">
         <md-menu-item>
@@ -112,9 +115,12 @@
       </md-menu-content>
     </md-menu>
     <md-menu>
-      <md-button aria-label="Open phone interactions menu" class="md-icon-button"
+      <md-button aria-label="Open Circle tools" class="md-icon-button"
                  ng-click="openMenu($mdOpenMenu, $event, 'Circle')">
         <md-icon md-menu-origin md-svg-icon="/assets/svg/circle.svg"></md-icon>
+        <md-tooltip>
+          Circle tool
+        </md-tooltip>
       </md-button>
       <md-menu-content width="4">
         <md-menu-item>
@@ -126,12 +132,20 @@
             </md-slider>
           </div>
         </md-menu-item>
+        <md-menu-item>
+          <md-switch class="md-primary" ng-change="onFillChange(circle.fill)" ng-model="circle.fill" md-no-ink aria-label="Enable/Disable Layers">
+            Fill Circle
+          </md-switch>
+        </md-menu-item>
       </md-menu-content>
     </md-menu>
     <md-menu>
-      <md-button aria-label="Open phone interactions menu" class="md-icon-button"
+      <md-button aria-label="Open Erase actions" class="md-icon-button"
                  ng-click="openMenu($mdOpenMenu, $event, 'Eraser')">
         <md-icon md-menu-origin md-svg-icon="/assets/svg/eraser.svg"></md-icon>
+        <md-tooltip>
+          Eraser tool
+        </md-tooltip>
       </md-button>
       <md-menu-content width="4">
         <md-menu-item>
@@ -139,7 +153,7 @@
             <div flex="10" layout layout-align="center center">
               <span class="md-body-10" ng-bind-html="eraser.size">0</span>
             </div>
-            <md-slider flex min="0" max="255" ng-model="eraser.size" aria-label="blue"  class="md-primary">
+            <md-slider flex min="0" max="255" ng-model="eraser.size" ng-change="changeBrushStroke(eraser.size)" aria-label="blue"  class="md-primary">
             </md-slider>
           </div>
         </md-menu-item>
@@ -149,6 +163,9 @@
       <md-button aria-label="Open phone interactions menu" class="md-icon-button"
                  ng-click="openMenu($mdOpenMenu, $event)">
         <md-icon md-menu-origin md-svg-icon="/assets/svg/layers.svg"></md-icon>
+        <md-tooltip>
+          Layers
+        </md-tooltip>
       </md-button>
       <md-menu-content width="2">
         <md-menu-item>

@@ -52,7 +52,7 @@ angular.module('slatePainting')
     }
 
     return {
-      setUp: function (canvas, previewCanvas, color, strokeWidth) {
+      setUp: function (canvas, previewCanvas, strokeWidth, color) {
         try {
           _canvas = canvas.getContext("2d");
           _previewCanvas = previewCanvas.getContext("2d");

@@ -63,10 +63,10 @@ angular.module('slatePainting', [])
       target.beginPath();
       target.lineWidth = _strokeWidth;
       target.strokeStyle = _color;
-      target.fillStyle = _fillColor;
+     // target.fillStyle = _fillColor;
       target.arc(cp1x, cp1y, radius, 0, 2 * Math.PI, true);
       target.stroke();
-      if (!_fill) {
+      if (_fill) {
         target.fillStyle = _fillColor;
         target.fill();
       }
@@ -88,7 +88,7 @@ angular.module('slatePainting', [])
     }
 
     return {
-      setUp: function (canvas, previewCanvas, color, strokeWidth, fill, fillColor) {
+      setUp: function (canvas, previewCanvas, strokeWidth, color, fillColor, fill) {
         try {
           _canvas = canvas.getContext("2d");
           _previewCanvas = previewCanvas.getContext("2d");
@@ -100,7 +100,7 @@ angular.module('slatePainting', [])
         }
         _color = color || _color;
         _strokeWidth = strokeWidth || _strokeWidth;
-        _fill = fill || _fill;
+        _fill = fill;
         _fillColor = fillColor || _fillColor;
 
       },

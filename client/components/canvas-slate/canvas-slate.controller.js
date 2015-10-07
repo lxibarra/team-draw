@@ -19,9 +19,16 @@ angular.module('teamDrawApp').controller('CanvasSlateCtrl', function($scope) {
       }
     ];
 
+
     $scope.clicked = function() {
         console.log('Yeap i was clicked');
     };
+  //have to receive toolbar changes
+  //$scope.setUpTool
+
+    $scope.$on('toolBar/setUpTool', function(event, setUpTool) {
+      $scope.setUpTool = setUpTool;
+    });
 
     angular.element('#drawing').on('click', function() {
       console.log('Concentrate');

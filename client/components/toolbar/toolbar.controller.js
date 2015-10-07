@@ -1,5 +1,9 @@
-angular.module('teamDrawApp').controller('toolbarCtrl', function ($scope, $mdSidenav, $_slateAction) {
-  var originatorEv;
+angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $scope, $mdSidenav) {
+  var originatorEv,
+    setUpTool = { //We create a default object to provide blueprint and avoid undefined errors when setting different props
+      Tool: 'Pencil',
+      args: [0, '#000000', '#ffffff']
+    };
 
   /**
    * Sets the initial stroke default color
@@ -23,15 +27,15 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($scope, $mdSid
    */
 
   $scope.pencil = {
-    size:0
+    size: 0
   };
 
   $scope.circle = {
-    size:0
+    size: 0
   };
 
   $scope.eraser = {
-    size:0
+    size: 0
   };
 
   /**
@@ -73,20 +77,32 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($scope, $mdSid
    * Sets a watch for a 2 way databinding variables that keeps track of the current foreground selected color.
    * The true flag indicates a deep watch on the object(object sub properties in this case color)
    *
-   * On color change the value for $_slateAction is changed
+   *
    */
   $scope.$watch('foreground', function (newValue) {
-    $_slateAction.foregroundColor = newValue || $scope.foreground.color;
+    //$_slateAction.foregroundColor = newValue || $scope.foreground.color;
+    //This watches posibly can be removed because $scope.foreground already has a value on color change
+    //Update the object sent over to
+
+    setUpTool.args[1] = newValue.color || '#000000';
+    /*var tmp = setUpTool.args;
+    delete setUpTool.args;
+    setUpTool.args = tmp.slice();*/
+    $rootScope.$broadcast('toolBar/setUpTool', setUpTool);
   }, true);
 
   /**
    * Sets a watch for 2 way databinding variables that keeps track of the current background selected color.
    * The true flag indicates a deep watch on the object(object sub properties in this case color)
    *
-   * On color change the value for $_slateAction is changed
+   *
    */
   $scope.$watch('background', function (newValue) {
-    $_slateAction.backgroundColor = newValue || $scope.background.color;
+    setUpTool.args[2] = newValue.color || '#ffffff';
+    /*var tmp = setUpTool.args;
+    delete setUpTool.args;
+    setUpTool.args = tmp.slice();*/
+    $rootScope.$broadcast('toolBar/setUpTool', setUpTool);
   }, true);
 
 
@@ -103,16 +119,45 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($scope, $mdSid
    * Set the Tool of use.
    * @param tool
    */
-  $scope.selectTool = function(tool) {
-    $_slateAction.Tool = tool;
-    //Object model names is the same as a the service :) to avoid aditional code.
-    $_slateAction.stroke = $scope[tool.toLowerCase()].size|| 0;
-    console.log($_slateAction);
+  $scope.selectTool = function (tool) {
+
+    setUpTool.Tool = tool;
+    setUpTool.args = [];
+    switch (tool) {
+      case 'Pencil' :
+        setUpTool.args.push($scope.pencil.size || 0);
+        setUpTool.args.push($scope.foreground.color || '#000000');
+
+        break;
+      case 'Circle' :
+        setUpTool.args.push($scope.circle.size || 0);
+        setUpTool.args.push($scope.foreground.color || '#000000');
+        setUpTool.args.push($scope.background.color || '#FFFFFF');
+        setUpTool.args.push($scope.circle.fill||false);
+        break;
+      case 'Eraser' :
+        setUpTool.args.push($scope.eraser.size || 0);
+            break;
+    }
+
+    $rootScope.$broadcast('toolBar/setUpTool', setUpTool);
+
+
   };
 
-  $scope.changeBrushStroke = function(value) {
-    $_slateAction.stroke = value ||0;
+  $scope.changeBrushStroke = function (value) {
+    setUpTool.args[0] = value || 0;
+    $rootScope.$broadcast('toolBar/setUpTool', setUpTool);
   };
+
+  $scope.onFillChange = function(value) {
+    if(setUpTool.args.length < 4) {
+      setUpTool.args.push(value);
+    } else {
+      setUpTool.args[3] = value;
+    }
+    $rootScope.$broadcast('toolBar/setUpTool', setUpTool);
+  }
 
 
 });
