@@ -1,23 +1,12 @@
-.btn-facebook {
-  color: #fff;
-  background-color: #3B5998;
-  border-color: #133783;
-}
+.md-group-button  {
+  background: #f7f7f7;
+  border-radius: 3px;
+  text-align: center;
+  margin: 1em;
+  position: relative !important;
+  padding-bottom: 10px; }
 
-.btn-twitter {
-  color: #fff;
-  background-color: #2daddc;
-  border-color: #0271bf;
-}
-
-.btn-google-plus {
-  color: #fff;
-  background-color: #dd4b39;
-  border-color: #c53727;
-}
-
-.btn-github {
-  color: #fff;
-  background-color: #fafafa;
-  border-color: #ccc;
+.md-info {
+  background-color: #2daddc !important;
+  color:#ffffff !important;
 }
