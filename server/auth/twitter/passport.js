@@ -11,6 +11,7 @@ exports.setup = function (User, config) {
     User.findOne({
       'twitter.id_str': profile.id
     }, function(err, user) {
+      console.log(profile);
       if (err) {
         return done(err);
       }

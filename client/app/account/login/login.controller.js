@@ -7,7 +7,7 @@ angular.module('teamDrawApp')
 
     $scope.login = function(form) {
       $scope.submitted = true;
-
+      console.log('submitted');
       if(form.$valid) {
         Auth.login({
           email: $scope.user.email,

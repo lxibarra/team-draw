@@ -9,52 +9,81 @@
   </div>
 </md-toolbar>
 
-<div layout-align="center center" layout="row">
-  <md-content class="md-padding"   flex-gt-lg="80" flex-lg="80"  flex-md="100" flex-gt-sm="80" flex-lt-md="80" flex-sm="100">
+<div layout-align="center start" layout="row" flex="100">
+
+  <md-content class="md-padding">
     <md-card>
       <md-card-content>
         <h2 class="md-title">Log in</h2>
-        <md-divider ></md-divider>
+        <md-divider></md-divider>
         <div layout="col" layout-sm="row">
-          <div flex="60">
-            <p class="md-subhead">Account information</p>
-            <md-input-container class="md-icon-float">
-              <!-- Use floating label instead of placeholder -->
-              <label>Email</label>
-              <md-icon md-svg-src="assets/svg/email.svg" class="md-primary"></md-icon>
-              <input ng-model="user.name" type="text">
-            </md-input-container>
-            <md-input-container class="md-icon-float">
-              <label>Password</label>
-              <md-icon md-svg-src="assets/svg/key.svg" class="md-primary"></md-icon>
-              <input ng-model="user.phone" type="password">
-            </md-input-container>
-            <section layout="row"  layout-sm="column" layout-align="end center" layout-wrap>
-              <md-button class="md-primary">Forgot password?</md-button>
-              <md-button class="md-raised md-primary">Login</md-button>
-            </section>
+          <div flex-sm="100">
+            <form name="loginForm" ng-submit="login(loginForm)" novalidate>
+              <p class="md-subhead">Account information</p>
+              <md-input-container class="md-icon-float">
+                <label>Email</label>
+                <md-icon md-svg-src="assets/svg/email.svg" class="md-primary"></md-icon>
+                <input required type="email" name="email" ng-model="user.email"
+                       maxlength="100" ng-pattern="/^.+@.+\..+$/"/>
+
+                <div ng-messages="loginForm.email.$error" ng-show="submitted" role="alert">
+                  <div ng-message="required" ng-show="loginForm.email.$error.required">
+                    Email is required.
+                  </div>
+                  <div ng-message="pattern" ng-show="loginForm.email.$error.email">
+                    Invalid Email
+                  </div>
+                </div>
+              </md-input-container>
+              <md-input-container class="md-icon-float">
+                <label>Password</label>
+                <md-icon md-svg-src="assets/svg/key.svg" class="md-primary"></md-icon>
+                <input ng-model="user.password" name="password" type="password" required>
+
+                <div ng-messages="loginForm.password.$error" ng-show="submitted" role="alert">
+                  <div ng-message="required" ng-show="loginForm.password.$error.required">
+                    The password is required.
+                  </div>
+                </div>
+              </md-input-container>
+              <md-input-container class="md-icon-float" layout="row" layout-align="end end">
+                <div ng-message="required" ng-show="errors.other" role="alert">
+                  <div>Login information is incorrect</div>
+                </div>
+              </md-input-container>
+              <section layout="row" layout-sm="column" layout-align="end end" layout-wrap>
+                <md-button type="button" class="md-primary">Forgot password?</md-button>
+                <md-button class="md-raised md-primary">Login</md-button>
+              </section>
+            </form>
           </div>
-          <div flex="40" flex-sm="100" layout-align="center center">
-            <p class="">Social login</p>
-            <section layout="row" layout-align="center center" layout-wrap hide-sm hide-md>
-              <md-button class="md-fab md-primary"><md-icon md-svg-src="/assets/svg/facebook.svg"></md-icon></md-button>
-              <md-button class="md-fab md-warn"><md-icon md-svg-src="/assets/svg/googleplus.svg"></md-icon></md-button>
-              <md-button class="md-fab md-info"><md-icon md-svg-src="/assets/svg/twitter.svg"></md-icon></md-button>
-            </section>
-            <section layout="row" layout-align="center center" layout-wrap hide-gt-lg hide-lg show-sm>
-              <md-button class="md-raised md-primary" style="width:100%"><md-icon md-svg-src="/assets/svg/facebook.svg"></md-icon></md-button>
-              <md-button class="md-raised md-warn" style="width:100%"><md-icon md-svg-src="/assets/svg/googleplus.svg"></md-icon></md-button>
-              <md-button class="md-raised md-info" style="width:100%"><md-icon md-svg-src="/assets/svg/twitter.svg"></md-icon></md-button>
+          <div layout="col" flex-sm="100" layout-align="center center">
+            <strong class="md-display-1" hide-sm>&nbsp; Or &nbsp;</strong>
+          </div>
+          <div flex-sm="100" layout-align="center center">
+            <p class="">Login with:</p>
+            <section layout="row" layout-align="center center" layout-wrap>
+              <md-button class="md-raised md-primary" aria-label="Facebook social login"
+                         ng-click="loginOauth('facebook')" style="width:100%">
+                <md-icon md-svg-src="/assets/svg/facebook.svg"></md-icon>
+              </md-button>
+              <md-button class="md-raised md-warn" aria-label="Google plus social login" ng-click="loginOauth('google')"
+                         style="width:100%">
+                <md-icon md-svg-src="/assets/svg/googleplus.svg"></md-icon>
+              </md-button>
+              <md-button class="md-raised md-info" aria-label="Twitter social login" style="width:100%"
+                         ng-click="loginOauth('twitter')">
+                <md-icon md-svg-src="/assets/svg/twitter.svg"></md-icon>
+              </md-button>
             </section>
           </div>
         </div>
       </md-card-content>
-      <md-divider ></md-divider>
+      <md-divider></md-divider>
       <section layout="row" layout-align="center center" layout-wrap>
         <md-button class="md-primary hide-sm">New to this site? Create an account now!</md-button>
         <md-button class="md-primary show-sm hide-md hide-md-lg hide-lg hide-gt-lg">Create Account</md-button>
       </section>
     </md-card>
-
   </md-content>
 </div>

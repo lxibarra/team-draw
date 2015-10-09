@@ -5,6 +5,8 @@ angular.module('teamDrawApp')
     $scope.user = {};
     $scope.errors = {};
 
+    $scope.something = "Ricardo";
+
     $scope.register = function(form) {
       $scope.submitted = true;
 

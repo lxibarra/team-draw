@@ -5,7 +5,11 @@ exports.setup = function (User, config) {
   passport.use(new FacebookStrategy({
       clientID: config.facebook.clientID,
       clientSecret: config.facebook.clientSecret,
-      callbackURL: config.facebook.callbackURL
+      callbackURL: config.facebook.callbackURL,
+      profileFields: [
+        'displayName',
+        'emails'
+      ]
     },
     function(accessToken, refreshToken, profile, done) {
       User.findOne({
@@ -16,9 +20,19 @@ exports.setup = function (User, config) {
           return done(err);
         }
         if (!user) {
+
+          var primaryEmail;
+          if(typeof profile.emails !== 'undefined' && profile.emails.constructor === Array) {
+              primaryEmail = profile.emails[0].value;
+          }
+
+          if(!primaryEmail) {
+            return done({ error:'No email provided by API' }, {});
+          }
+
           user = new User({
             name: profile.displayName,
-            email: profile.emails[0].value,
+            email: primaryEmail,
             role: 'user',
             username: profile.username,
             provider: 'facebook',

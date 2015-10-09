@@ -12,6 +12,7 @@ exports.setup = function (User, config) {
         'google.id': profile.id
       }, function(err, user) {
         if (!user) {
+          console.log(profile);
           user = new User({
             name: profile.displayName,
             email: profile.emails[0].value,
