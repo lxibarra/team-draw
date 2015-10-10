@@ -56,4 +56,10 @@ angular.module('teamDrawApp', [
         }
       });
     });
+  })
+
+  .factory('drawingResource', function($resource) {
+    var _resource = $resource('/api/drawingss/:drawingId', { drawingId:'@id' });
+    //addtional configuration may go here
+    return _resource;
   });

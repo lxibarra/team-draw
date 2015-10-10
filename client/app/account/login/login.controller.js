@@ -7,7 +7,6 @@ angular.module('teamDrawApp')
 
     $scope.login = function(form) {
       $scope.submitted = true;
-      console.log('submitted');
       if(form.$valid) {
         Auth.login({
           email: $scope.user.email,
@@ -15,7 +14,7 @@ angular.module('teamDrawApp')
         })
         .then( function() {
           // Logged in, redirect to home
-          $location.path('/');
+          $location.path('/hub');
         })
         .catch( function(err) {
           $scope.errors.other = err.message;

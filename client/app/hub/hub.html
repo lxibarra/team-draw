@@ -1,0 +1,46 @@
+<md-toolbar class="md-primary">
+  <div class="md-toolbar-tools">
+    <md-button class="md-icon-button" aria-label="Settings">
+      <md-icon md-svg-icon="/assets/svg/menu.svg"></md-icon>
+    </md-button>
+    <h1 class="md-flex">Team Draw</h1>
+    <span flex></span>
+    <md-button class="">Sign out</md-button>
+  </div>
+</md-toolbar>
+
+<section layout="row" flex>
+  <section layout="row" flex>
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+      <md-content layout-padding>
+        <div layout="row">
+          <md-button flex class="md-raised md-warn" aria-label="New Drawing" ng-click="createDrawing()">
+            New
+          </md-button>
+        </div>
+        <div layout="column">
+          <md-button flex="100" class="md-raised md-primary">Owned by me</md-button>
+          <md-button flex="100" class="md-raised md-primary">Shared with me</md-button>
+        </div>
+      </md-content>
+    </md-sidenav>
+
+    <md-content flex="100%" >
+      <section layout="row" class="toolbar-controls no-padding" layout-sm="column" layout-align="left" layout-wrap>
+        <md-button class="md-raised md-warn">Delete</md-button>
+        <span flex></span>
+        <md-button class="md-primary">Prev</md-button>
+        <md-button class="md-primary">Next</md-button>
+      </section>
+        <div layout="column" layout-fill layout-align="top center" >
+          <md-list-item ng-repeat="item in documentList">
+            <p flex> {{ item.name }} </p>
+            <md-checkbox class="md-secondary" ng-model="item.selected"></md-checkbox>
+            <md-divider></md-divider>
+          </md-list-item>
+        </div>
+      </md-content>
+
+  </section>
+
+</section>
