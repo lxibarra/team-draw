@@ -7,7 +7,8 @@ var DrawingsSchema = new Schema({
   name: String,
   info: String,
   owner:Schema.Types.ObjectId,
-  active: Boolean
+  active: Boolean,
+  isPrivate:Boolean
 });
 
 module.exports = mongoose.model('Drawings', DrawingsSchema);

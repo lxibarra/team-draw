@@ -1,4 +1,30 @@
 angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $scope, $mdSidenav) {
+
+  //database methods
+  $scope.doc = $scope.$parent.doc;
+
+  console.log($scope.doc);
+
+  $scope.saveTitle = function (evt) {
+    SaveTypingblur(evt);
+  };
+
+  $scope.writtingTitle = function (evt) {
+    if (evt.keyCode == 13) {
+      SaveTypingblur(evt);
+    }
+  };
+
+  function SaveTypingblur(evt) {
+    if (evt.target.innerText != $scope.doc.document.name) {
+      $scope.doc.document.name = evt.target.innerText;
+      console.log($scope.doc);
+      $scope.doc.$put({drawingId:$scope.doc._id });
+    }
+  }
+
+  //<-----------------Ends database methods
+
   var originatorEv,
     setUpTool = { //We create a default object to provide blueprint and avoid undefined errors when setting different props
       Tool: 'Pencil',
@@ -86,8 +112,8 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
 
     setUpTool.args[1] = newValue.color || '#000000';
     /*var tmp = setUpTool.args;
-    delete setUpTool.args;
-    setUpTool.args = tmp.slice();*/
+     delete setUpTool.args;
+     setUpTool.args = tmp.slice();*/
     $rootScope.$broadcast('toolBar/setUpTool', setUpTool);
   }, true);
 
@@ -100,8 +126,8 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
   $scope.$watch('background', function (newValue) {
     setUpTool.args[2] = newValue.color || '#ffffff';
     /*var tmp = setUpTool.args;
-    delete setUpTool.args;
-    setUpTool.args = tmp.slice();*/
+     delete setUpTool.args;
+     setUpTool.args = tmp.slice();*/
     $rootScope.$broadcast('toolBar/setUpTool', setUpTool);
   }, true);
 
@@ -133,11 +159,11 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
         setUpTool.args.push($scope.circle.size || 0);
         setUpTool.args.push($scope.foreground.color || '#000000');
         setUpTool.args.push($scope.background.color || '#FFFFFF');
-        setUpTool.args.push($scope.circle.fill||false);
+        setUpTool.args.push($scope.circle.fill || false);
         break;
       case 'Eraser' :
         setUpTool.args.push($scope.eraser.size || 0);
-            break;
+        break;
     }
 
     $rootScope.$broadcast('toolBar/setUpTool', setUpTool);
@@ -150,8 +176,8 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
     $rootScope.$broadcast('toolBar/setUpTool', setUpTool);
   };
 
-  $scope.onFillChange = function(value) {
-    if(setUpTool.args.length < 4) {
+  $scope.onFillChange = function (value) {
+    if (setUpTool.args.length < 4) {
       setUpTool.args.push(value);
     } else {
       setUpTool.args[3] = value;

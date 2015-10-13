@@ -8,5 +8,5 @@ module.exports = {
     uri: 'mongodb://localhost/teamdraw-dev'
   },
 
-  seedDB: true
+  seedDB: false
 };
