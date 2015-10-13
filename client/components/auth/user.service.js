@@ -17,6 +17,13 @@ angular.module('teamDrawApp')
         params: {
           id:'me'
         }
+      },
+      query: {
+        method: 'GET',
+        isArray:true,
+        params:{
+            id:'search'
+        }
       }
 	  });
   });

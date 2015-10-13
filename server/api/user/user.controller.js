@@ -4,6 +4,7 @@ var User = require('./user.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
+var emailLike = /.+@.+/ig;
 
 var validationError = function(res, err) {
   return res.status(422).json(err);
@@ -45,6 +46,29 @@ exports.show = function (req, res, next) {
     if (!user) return res.status(401).send('Unauthorized');
     res.json(user.profile);
   });
+};
+
+exports.searchByName = function(req, res, next) {
+    //if the message looks like an email search by email field
+    //otherwise by name
+    var term = req.params.term;
+    if(term) {
+      if(emailLike.test(term)) { //looks like an email? Search by email field
+        User.find({email:term.trim()},  '-salt -hashedPassword', function(err, user) {
+          if(err) { return next(err); }
+          return res.status(200).json(user);
+        });
+      } else { //Looks like a line
+        var query = new RegExp(term, "i");
+        User.find({ name:query}).select({_id:1, name:1, provider:1}).exec(function(err, users) {
+          if(err) { return next(err); }
+          return res.status(200).json(users);
+        })
+      }
+    }
+    else {
+      return res.status(200).json([]);
+    }
 };
 
 /**

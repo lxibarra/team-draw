@@ -79,21 +79,19 @@ exports.update = function (req, res) {
     if(req.body.document._id) { delete req.body.document._id; }
     var updated = _.merge(req.document, req.body.document);
 
-    //We have to make sure that only the owner can change the
-    //document ownership
+    //We have to make extra sure that only the owner can change the
+    //document ownership if necessary
     if(req.policy.isOwner) {
       updated.owner = req.body.document.owner;
     } else {
       updated.owner = req.policy.owner;
     }
 
-    
-    console.log(updated);
-    //check permissions here before changing properties such as owner
     updated.save(function (err) {
       if (err) {
         return handleError(res, err)
       }
+
       var response = {
         _id: req.document._id,
         policy: req.policy,
@@ -105,17 +103,8 @@ exports.update = function (req, res) {
   } else {
     return res.status(403).send('Forbidden');
   }
-  //req.body.document contains the updated information
-  /*
-  var response = {
-    _id: req.document._id,
-    policy: req.policy,
-    document: req.document
-  };
 
-  console.log(response);
-  return res.status(201).json(response);
-*/
+  //Original methods
   /*
    if(req.body._id) { delete req.body._id; }
    Drawings.findById(req.params.id, function (err, drawings) {

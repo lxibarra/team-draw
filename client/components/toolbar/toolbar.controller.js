@@ -3,8 +3,6 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
   //database methods
   $scope.doc = $scope.$parent.doc;
 
-  console.log($scope.doc);
-
   $scope.saveTitle = function (evt) {
     SaveTypingblur(evt);
   };

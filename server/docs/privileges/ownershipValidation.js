@@ -16,7 +16,7 @@ function getPolicy (user, document, callback) {
     policy.canWrite = true;
     callback(policy);
   } else {
-    user_documents.findOne({drawing: document._id}).where('participant').equals(user.id).exec(function(err, shared) {
+     user_documents.findOne({drawing: document._id}).where('participant').equals(user.id).exec(function(err, shared) {
       if(err) {
         return { isValid:false };
       }
