@@ -16,7 +16,6 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
   function SaveTypingblur(evt) {
     if (evt.target.innerText != $scope.doc.document.name) {
       $scope.doc.document.name = evt.target.innerText;
-      console.log($scope.doc);
       $scope.doc.$put({drawingId:$scope.doc._id });
     }
   }

@@ -2,7 +2,9 @@
 
 var _ = require('lodash');
 var Drawings = require('./drawings.model');
-var DrawingParticipants = require('./drawing.participants.model');
+var Invites = require('../invite/invite.model');
+//remove this after successful refactorization
+//var DrawingParticipants = require('./drawing.participants.model');
 
 // Get list of drawingss
 exports.index = function (req, res) {
@@ -53,6 +55,25 @@ exports.create = function (req, res) {
     if (err) {
       return handleError(res, err);
     }
+
+    var DummySelfInvite = {
+      participant: doc.owner,
+      drawing: drawings._id,
+      active: true,
+      isOwner: true,
+      LastSeen: new Date(),
+      isPrivate: drawings.isPrivate
+    };
+
+    Invites.create(DummySelfInvite, function (err, shared) {
+      if (err) {
+        return handleError(res, err);
+      }
+      return res.status(201).json(drawings);
+    });
+
+    //Old Working code
+    /*
     var participantList = {
       participant: doc.owner,
       drawing: drawings._id,
@@ -68,6 +89,7 @@ exports.create = function (req, res) {
       }
       return res.status(201).json(drawings);
     });
+    */
   });
 
 };

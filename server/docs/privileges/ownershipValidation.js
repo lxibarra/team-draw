@@ -43,7 +43,8 @@ function getDocPrivileges() {
   return compose()
     //attach document to request
     .use(function(req, res, next) {
-            Drawings.findById(req.params.id, function(err, document) {
+            var documentId = req.params.id||req.body.documentId;
+            Drawings.findById(documentId, function(err, document) {
             if(err) return next(err);
             if(!document) return res.status(404).send('Unable to find document');
             req.document = document;
@@ -59,7 +60,19 @@ function getDocPrivileges() {
            next();
          });
     });
-
 }
+
+function isOwner() {
+    return compose()
+      .use(getDocPrivileges)
+      .use(function(req, res, next) {
+          if(!req.policy.isOwner) {
+            return res.status(401).send('Unauthorized');
+          }
+          next();
+      });
+}
+
+exports.isOwner = isOwner;
 
 exports.ownershipValidation = getDocPrivileges;
