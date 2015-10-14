@@ -1,5 +1,5 @@
 var Drawings = require('../../api/drawings/drawings.model');
-var user_documents = require('../../api/drawings/drawing.participants.model');
+var user_documents = require('../../api/invite/invite.model');
 var compose = require('composable-middleware');
 
 function getPolicy (user, document, callback) {
@@ -43,7 +43,7 @@ function getDocPrivileges() {
   return compose()
     //attach document to request
     .use(function(req, res, next) {
-            var documentId = req.params.id||req.body.documentId;
+            var documentId = req.params.id||req.body.documentId||req.body.drawing;
             Drawings.findById(documentId, function(err, document) {
             if(err) return next(err);
             if(!document) return res.status(404).send('Unable to find document');
@@ -62,17 +62,5 @@ function getDocPrivileges() {
     });
 }
 
-function isOwner() {
-    return compose()
-      .use(getDocPrivileges)
-      .use(function(req, res, next) {
-          if(!req.policy.isOwner) {
-            return res.status(401).send('Unauthorized');
-          }
-          next();
-      });
-}
-
-exports.isOwner = isOwner;
 
 exports.ownershipValidation = getDocPrivileges;

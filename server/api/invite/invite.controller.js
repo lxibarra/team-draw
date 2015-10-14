@@ -27,13 +27,14 @@ exports.create = function(req, res) {
   if(req.body.isOwner) { delete req.body.isOwner; }
   if(req.body.LastSeen) { delete req.body.LastSeen; }
 
-  console.log(req.body, req.params);
-
-  /*
   Invite.create(req.body, function(err, invite) {
     if(err) { return handleError(res, err); }
-    return res.status(201).json(invite);
-  });*/
+    invite.populate('userInformation', function(err, inviteComplete) {
+      if(err) { return handleError(res, err); }
+      return res.status(201).json(inviteComplete);
+    });
+  });
+
 };
 
 // Updates an existing invite in the DB.

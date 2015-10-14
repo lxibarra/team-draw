@@ -65,4 +65,11 @@ angular.module('teamDrawApp', [
     );
     //addtional configuration may go here
     return _resource;
+  }).factory('inviteResource', function ($resource) {
+    var _resource = $resource('/api/invites/:id',
+      { id: '@id'},
+      { invite: { method:'POST' } }
+    );
+
+    return _resource;
   });

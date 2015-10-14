@@ -8,7 +8,9 @@ var InviteSchema = new Schema({
   drawing:Schema.Types.ObjectId,
   active: { type:Boolean, default:false },
   isOwner: { type: Boolean, default:false },
-  LastSeen: { type:Date, default:null }
+  lastSeen: { type:Date, default:null },
+  rejected: { type:Boolean, default:false },
+  userInformation: [ { type:Schema.Types.ObjectId, ref:'user' }]
 });
 
 module.exports = mongoose.model('Invite', InviteSchema);
