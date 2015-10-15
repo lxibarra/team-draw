@@ -1,6 +1,6 @@
 angular.module('teamDrawApp').value('searchSecondsWait', 1000)
   .controller('ParticipantListCtrl',
-  function ($scope, User, searchSecondsWait, $routeParams, inviteResource) {
+  function ($scope, User, searchSecondsWait, $routeParams, inviteResource, $mdToast, $mdDialog) {
 
     var searchTm;
 
@@ -9,12 +9,17 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
 
     $scope.group = [];
 
-    console.log(inviteResource);
-
     inviteResource.group({ additional:$routeParams.id }).$promise.then(function(data) {
-      console.log(data);
+      if(data.length > 0) {
+        $scope.group = data.slice(0, data.length);
+      }
     }).catch(function(err) {
-      console.log(err);
+      $mdToast.show(
+        $mdToast.simple()
+          .content('Unable to get user list')
+          .position('left')
+          .hideDelay(3000)
+      );
     });
 
 
@@ -27,30 +32,46 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
     };
 
     $scope.selectedItemChange = function (item) {
-      //Have to test the service
-      //this is where i left of
       if (item) {
-        console.log(item);
         var request = {
           participant: item._id,
           drawing: $routeParams.id
         };
 
         inviteResource.save(request).$promise.then(function(data){
-          console.log('Post done: ', data);
+          $scope.group.push(data);
           $scope.searchText = '';
         }).catch(function(response) {
-            console.log(response);
-            if(response.status === 304) {
 
+            if(response.status === 304) {
+              $mdToast.show(
+                $mdToast.simple()
+                  .content('User is already on the list')
+                  .position('right')
+                  .hideDelay(3000)
+              );
             }
         });
-        /*Invite.save(request).$promise(function (data) {
-          console.log(data);
-          $scope.searchText = '';
-        });*/
-
       }
+    };
+
+    $scope.kickUser = function(item) {
+      var confirm = $mdDialog.confirm()
+        .title('Remove ' + item.participantName + '?')
+        .content('User layer will be removed also. Are you sure you want to continue?')
+        .ariaLabel('User removal')
+        .ok('Remove')
+        .cancel('Forget it');
+      $mdDialog.show(confirm).then(function() {
+        item.$remove({id:item._id}).then(function() {
+          var index = $scope.group.indexOf(item);
+          if(index !== -1) {
+            $scope.group.splice(index, 1);
+          }
+        });
+      }, function() {
+          //cancel removal
+      });
     };
 
     $scope.querySearch = function (term) {

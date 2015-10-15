@@ -23,23 +23,34 @@ exports.show = function(req, res) {
 
 exports.invitations = function(req, res) {
    //check this method is not retunrnign anything
+    var userList = [];
     Invite.find({ drawing:req.params.id })
       .where('participant')
       .ne(req.user.id)
       .exec(function(err, invites) {
+
         if(err) { return handleError(res, err); }
         if(invites) {
-          var userList = [];
+
+          var pCollection = [];
           invites.forEach(function(invite) {
-            User.findById(invite.participant, function (err, user) {
-              if (err) {
-                return handleError(res, err);
-              }
-              userList.push(_.assign({participantName: user.name || 'Unavailable'}, invite._doc));
+
+            var p1 = new Promise(function(resolve, reject) {
+              User.findById(invite.participant, function (err, user) {
+                if (err) {
+                  reject(err);
+                }
+                resolve(_.assign({participantName: user.name || 'Unavailable'}, invite._doc));
+              });
             });
+
+            pCollection.push(p1);
           });
 
-          res.status(200).json(userList);
+          Promise.all(pCollection).then(function(values) {
+            return res.status(200).json(values);
+          });
+
 
         } else {
           return res.status(200).json([]);
@@ -91,14 +102,24 @@ exports.update = function(req, res) {
 
 // Deletes a invite from the DB.
 exports.destroy = function(req, res) {
-  Invite.findById(req.params.id, function (err, invite) {
-    if(err) { return handleError(res, err); }
-    if(!invite) { return res.status(404).send('Not Found'); }
-    invite.remove(function(err) {
-      if(err) { return handleError(res, err); }
-      return res.status(204).send('No Content');
+  if(req.policy.isOwner) {
+    Invite.findById(req.params.id, function (err, invite) {
+      if (err) {
+        return handleError(res, err);
+      }
+      if (!invite) {
+        return res.status(404).send('Not Found');
+      }
+      invite.remove(function (err) {
+        if (err) {
+          return handleError(res, err);
+        }
+        return res.status(204).send('No Content');
+      });
     });
-  });
+  } else {
+    return res.status(403).send('Forbidden Only document owners can kick users');
+  }
 };
 
 function handleError(res, err) {

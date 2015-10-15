@@ -1,91 +1,66 @@
 <div ng-controller="ParticipantListCtrl">
-    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="rightSidebar">
-        <md-toolbar class="md-theme-light">
-            <h1 class="md-toolbar-tools">Participant List</h1>
-        </md-toolbar>
-      <md-subheader class="md-no-sticky">Add friends</md-subheader>
-      <md-autocomplete
-        md-selected-item="selectedItem"
-        md-search-text-change="searchTextChange(searchText)"
-        md-search-text="searchText"
-        md-selected-item-change="selectedItemChange(item)"
-        md-items="item in querySearch(searchText)"
-        md-item-text="item.name"
-        md-min-length="3"
-        placeholder="Search friend by email(preferably) or name">
-        <md-item-template>
-          <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.name}}</span>
-        </md-item-template>
-        <md-not-found>
-          No friends found matching "{{searchText}}".
-        </md-not-found>
-      </md-autocomplete>
-        <md-divider></md-divider>
-        <md-subheader class="md-no-sticky">Current friends:</md-subheader>
-        <md-list-item>
-            <img alt="Avatar" ng-src="assets/images/user.jpg" class="md-avatar"/>
+  <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="rightSidebar">
+    <md-toolbar class="md-theme-light">
+      <h1 class="md-toolbar-tools">Participant List</h1>
+    </md-toolbar>
+    <md-subheader class="md-no-sticky">Add friends</md-subheader>
+    <md-autocomplete
+      md-selected-item="selectedItem"
+      md-search-text-change="searchTextChange(searchText)"
+      md-search-text="searchText"
+      md-selected-item-change="selectedItemChange(item)"
+      md-items="item in querySearch(searchText)"
+      md-item-text="item.name"
+      md-min-length="3"
+      placeholder="Search friend by email(preferably) or name">
+      <md-item-template>
+        <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.name}}</span>
+      </md-item-template>
+      <md-not-found>
+        No friends found matching "{{searchText}}".
+      </md-not-found>
+    </md-autocomplete>
+    <md-divider></md-divider>
+    <md-subheader class="md-no-sticky">Current friends:</md-subheader>
+    <div ng-repeat="friend in group">
+      <md-list-item>
+        <img alt="Avatar" ng-src="assets/images/user.jpg" class="md-avatar"/>
 
-            <p>Tito Puente </p>
-            <!--md-checkbox ng-model="item.done"></md-checkbox-->
-            <md-fab-speed-dial md-direction="left">
-                <md-fab-trigger>
-                    <md-button aria-label="menu" class="md-icon-button md-primary md-mini">
-                        <md-icon md-svg-src="assets/svg/menu.svg"></md-icon>
-                    </md-button>
-                </md-fab-trigger>
-                <md-fab-actions>
-                    <md-button aria-label="Chat window" class="md-fab md-raised md-mini">
-                        <md-icon md-svg-src="assets/svg/bubble.svg" style="color: dimgray;"
-                                 aria-label="Chat Window"></md-icon>
-                        <md-tooltip>
-                            Open chat
-                        </md-tooltip>
-                    </md-button>
-                    <md-button aria-label="Profile Information" class="md-fab md-raised md-mini">
-                        <md-icon md-svg-src="assets/svg/user.svg" style="color: dimgray;"
-                                 aria-label="Profile"></md-icon>
-                        <md-tooltip>
-                            Profile information
-                        </md-tooltip>
-                    </md-button>
-                    <md-button aria-label="Remove user from drawing" class="md-fab md-raised md-mini">
-                        <md-icon md-svg-src="assets/svg/remove.svg" style="color: darkred;"
-                                 aria-label="Remove"></md-icon>
-                        <md-tooltip>
-                            Remove user from drawing
-                        </md-tooltip>
-                    </md-button>
-                </md-fab-actions>
-            </md-fab-speed-dial>
-        </md-list-item>
-        <md-divider ></md-divider>
-        <md-list-item>
-            <img alt="Avatar" ng-src="assets/images/user.jpg" class="md-avatar"/>
-            <p>Dave Mustain</p>
-            <!--md-checkbox ng-model="item.done"></md-checkbox-->
-            <md-fab-speed-dial md-direction="left">
-                <md-fab-trigger>
-                    <md-button aria-label="menu" class="md-icon-button md-primary md-mini">
-                        <md-icon md-svg-src="assets/svg/menu.svg"></md-icon>
-                    </md-button>
-                </md-fab-trigger>
-                <md-fab-actions>
-                    <md-button aria-label="Chat window" class="md-fab md-raised md-mini">
-                        <md-icon md-svg-src="assets/svg/bubble.svg" style="color: dimgray;"
-                                 aria-label="Chat Window"></md-icon>
-                    </md-button>
-                    <md-button aria-label="Profile Information" class="md-fab md-raised md-mini">
-                        <md-icon md-svg-src="assets/svg/user.svg" style="color: dimgray;"
-                                 aria-label="Profile"></md-icon>
-                    </md-button>
-                    <md-button aria-label="Remove user from drawing" class="md-fab md-raised md-mini">
-                        <md-icon md-svg-src="assets/svg/remove.svg" style="color: darkred;"
-                                 aria-label="Remove"></md-icon>
-                    </md-button>
-                </md-fab-actions>
-            </md-fab-speed-dial>
-        </md-list-item>
-        <md-divider ></md-divider>
-    </md-sidenav>
+        <p>{{ friend.participantName }}</p>
+        <!--md-checkbox ng-model="item.done"></md-checkbox-->
+        <md-fab-speed-dial md-direction="left">
+          <md-fab-trigger>
+            <md-button aria-label="menu" class="md-icon-button md-primary md-mini">
+              <md-icon md-svg-src="assets/svg/menu.svg"></md-icon>
+            </md-button>
+          </md-fab-trigger>
+          <md-fab-actions>
+            <md-button aria-label="Chat window" class="md-fab md-raised md-mini">
+              <md-icon md-svg-src="assets/svg/bubble.svg" style="color: dimgray;"
+                       aria-label="Chat Window"></md-icon>
+              <md-tooltip>
+                Open chat
+              </md-tooltip>
+            </md-button>
+            <md-button aria-label="Profile Information" class="md-fab md-raised md-mini">
+              <md-icon md-svg-src="assets/svg/user.svg" style="color: dimgray;"
+                       aria-label="Profile"></md-icon>
+              <md-tooltip>
+                Profile information
+              </md-tooltip>
+            </md-button>
+            <md-button aria-label="Remove user from drawing" class="md-fab md-raised md-mini" ng-click="kickUser(friend)">
+              <md-icon md-svg-src="assets/svg/remove.svg" style="color: darkred;"
+                       aria-label="Remove"></md-icon>
+              <md-tooltip>
+                Remove user from drawing
+              </md-tooltip>
+            </md-button>
+          </md-fab-actions>
+        </md-fab-speed-dial>
+      </md-list-item>
+      <md-divider></md-divider>
+    </div>
+  </md-sidenav>
 </div>
 
