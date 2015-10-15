@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Invite = require('./invite.model');
+var User = require('../user/user.model');
 
 // Get list of invites
 exports.index = function(req, res) {
@@ -20,6 +21,32 @@ exports.show = function(req, res) {
   });
 };
 
+exports.invitations = function(req, res) {
+   //check this method is not retunrnign anything
+    Invite.find({ drawing:req.params.id })
+      .where('participant')
+      .ne(req.user.id)
+      .exec(function(err, invites) {
+        if(err) { return handleError(res, err); }
+        if(invites) {
+          var userList = [];
+          invites.forEach(function(invite) {
+            User.findById(invite.participant, function (err, user) {
+              if (err) {
+                return handleError(res, err);
+              }
+              userList.push(_.assign({participantName: user.name || 'Unavailable'}, invite._doc));
+            });
+          });
+
+          res.status(200).json(userList);
+
+        } else {
+          return res.status(200).json([]);
+        }
+    });
+};
+
 // Creates a new invite in the DB.
 //Requires authentication and policy middleware
 exports.create = function(req, res) {
@@ -27,12 +54,23 @@ exports.create = function(req, res) {
   if(req.body.isOwner) { delete req.body.isOwner; }
   if(req.body.LastSeen) { delete req.body.LastSeen; }
 
-  Invite.create(req.body, function(err, invite) {
+  Invite.findOne({ participant:req.body.participant, drawing:req.body.drawing }, function(err, exists) {
     if(err) { return handleError(res, err); }
-    invite.populate('userInformation', function(err, inviteComplete) {
-      if(err) { return handleError(res, err); }
-      return res.status(201).json(inviteComplete);
-    });
+    if(!exists) {
+      Invite.create(req.body, function (err, invite) {
+        if (err) {
+          return handleError(res, err);
+        }
+        User.findById(invite.participant, function (err, user) {
+          if (err) {
+            return handleError(res, err);
+          }
+          return res.status(201).json(_.assign({participantName: user.name || 'Unavailable'}, invite._doc));
+        });
+      });
+    } else {
+        return res.status(304).send('Invitation already sent');
+    }
   });
 
 };

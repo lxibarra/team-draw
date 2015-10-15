@@ -19,6 +19,7 @@ var UserSchema = new Schema({
   twitter: {},
   google: {},
   github: {}
+  //,documents: [ {type:Schema.Types.ObjectId, ref:'Invite participant' } ]
 });
 
 /**
