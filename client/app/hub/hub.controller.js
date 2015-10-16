@@ -8,7 +8,10 @@ angular.module('teamDrawApp')
       console.log('Emited event:', socket);
       //socket.socket.connect();
       socket.socket.emit('userLogin', { _id:'someguid' });
+      console.log(socket.socket);
     }
+
+    //socket.socket.on('')
 
     //demo data
     $scope.documentList = [

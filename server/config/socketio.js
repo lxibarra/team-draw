@@ -6,6 +6,7 @@
 
 var config = require('./environment');
 
+
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
 }
@@ -18,10 +19,26 @@ function onConnect(socket) {
   });
 
   socket.on('userLogin', function(data) {
-    console.log(socket.id);
-    console.log('im logged in');
+    console.log(socket);
+    console.log('im logged in: ', data);
+    //socket.emit
   });
 
+  /*
+  socket.join('_id_of_user');
+  //sends to client
+  socket.in('_id_of_user').emit('message created', { some:'object' });
+
+  socket.on('what!', function() {
+
+  });
+  */
+  /*
+  var nsp = socket.io.of('/someid');
+  nsp.on('userLogin', function() {
+      console.log('Hello from namespace');
+  });
+*/
   // Insert sockets below
   require('../api/invite/invite.socket').register(socket);
   require('../api/drawings/drawings.socket').register(socket);
