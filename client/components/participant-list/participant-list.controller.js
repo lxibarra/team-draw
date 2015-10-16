@@ -65,7 +65,7 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
             } else if(response.status === 302) {
               $mdToast.show(
                 $mdToast.simple()
-                  .content('User has been reached.')
+                  .content('User limit has been reached.')
                   .position('right')
                   .hideDelay(3000)
               );

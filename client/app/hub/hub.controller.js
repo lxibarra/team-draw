@@ -1,7 +1,14 @@
 'use strict';
 
 angular.module('teamDrawApp')
-  .controller('HubCtrl', function ($scope, drawingResource, $location) {
+  .controller('HubCtrl', function ($scope, drawingResource, $location, Auth, socket) {
+
+
+    if(Auth.isLoggedIn()) {
+      console.log('Emited event:', socket);
+      //socket.socket.connect();
+      socket.socket.emit('userLogin', { _id:'someguid' });
+    }
 
     //demo data
     $scope.documentList = [

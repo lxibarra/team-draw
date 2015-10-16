@@ -17,6 +17,11 @@ function onConnect(socket) {
     console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
   });
 
+  socket.on('userLogin', function(data) {
+    console.log(socket.id);
+    console.log('im logged in');
+  });
+
   // Insert sockets below
   require('../api/invite/invite.socket').register(socket);
   require('../api/drawings/drawings.socket').register(socket);
