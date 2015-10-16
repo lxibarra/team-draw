@@ -24,7 +24,9 @@
     <md-subheader class="md-no-sticky">Current friends:</md-subheader>
     <div ng-repeat="friend in group">
       <md-list-item>
-        <img alt="Avatar" ng-src="assets/images/user.jpg" class="md-avatar"/>
+
+        <!--img alt="Avatar" ng-src="imageDisplay(item)" class="md-avatar"/-->
+        <div class="{{ statusDisplay(friend) }}"></div>
 
         <p>{{ friend.participantName }}</p>
         <!--md-checkbox ng-model="item.done"></md-checkbox-->

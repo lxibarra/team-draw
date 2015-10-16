@@ -15,7 +15,8 @@ angular.module('teamDrawApp').factory('inviteResource', function ($resource) {
       delete: {
         method:'DELETE',
         params: {
-          id:'@id'
+          id:'@id',
+          additional:'@additional'
         }
       }
     }

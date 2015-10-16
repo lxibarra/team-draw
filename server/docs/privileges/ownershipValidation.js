@@ -43,7 +43,10 @@ function getDocPrivileges() {
   return compose()
     //attach document to request
     .use(function(req, res, next) {
-            var documentId = req.params.id||req.body.documentId||req.body.drawing;
+
+            //var documentId = req.params.id||req.body.documentId||req.body.drawing;
+            var documentId = req.body.documentId||req.body.drawing||req.params.id;
+
             Drawings.findById(documentId, function(err, document) {
             if(err) return next(err);
             if(!document) return res.status(404).send('Unable to find document');

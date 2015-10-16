@@ -22,6 +22,18 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
       );
     });
 
+    $scope.statusDisplay = function (item) {
+        if(item.rejected) {
+          return 'user-status user-invited';
+        }
+
+        if(item.active) { //must also check if its online
+          return 'user-status user-online';
+        } else {
+          return 'user-status user-offline';
+        }
+    };
+
 
     $scope.searchTextChange = function (term) {
       //i could have some logic here if needed;
@@ -50,6 +62,13 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
                   .position('right')
                   .hideDelay(3000)
               );
+            } else if(response.status === 302) {
+              $mdToast.show(
+                $mdToast.simple()
+                  .content('User has been reached.')
+                  .position('right')
+                  .hideDelay(3000)
+              );
             }
         });
       }
@@ -63,7 +82,8 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
         .ok('Remove')
         .cancel('Forget it');
       $mdDialog.show(confirm).then(function() {
-        item.$remove({id:item._id}).then(function() {
+
+        item.$remove({id:item._id, additional:$routeParams.id }).then(function() {
           var index = $scope.group.indexOf(item);
           if(index !== -1) {
             $scope.group.splice(index, 1);

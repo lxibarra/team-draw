@@ -10,9 +10,9 @@ var router = express.Router();
 router.get('/', controller.index);
 router.get('/:id', controller.show);
 router.get('/group/:id', auth.isAuthenticated(), docOnwership.ownershipValidation(), controller.invitations);
-router.post('/', auth.isAuthenticated(), docOnwership.ownershipValidation(), controller.create);
+router.post('/', auth.isAuthenticated(), controller.maxInvitations, docOnwership.ownershipValidation(), controller.create);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);
-router.delete('/:id', auth.isAuthenticated(), docOnwership.ownershipValidation(), controller.destroy); //Only should be able to kick users
+router.delete('/:id/:drawing', auth.isAuthenticated(), controller.setDocument, docOnwership.ownershipValidation(), controller.destroy); //Only should be able to kick users
 
 module.exports = router;
