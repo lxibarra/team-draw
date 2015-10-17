@@ -71,9 +71,25 @@
       <span flex></span>
 
       <p class="body">Ricardo Ibarra(10)</p>
-      <md-button class="md-fab md-red-alert md-mini" aria-label="Alerts" ng-click="acceptOffer();">
-        <md-icon md-svg-icon="/assets/svg/bell.svg"></md-icon>
-      </md-button>
+      <md-menu>
+        <md-button class="md-fab md-red-alert md-mini" aria-label="Alerts" ng-click="openNotifications($mdOpenMenu, ev)">
+          <md-icon md-svg-icon="/assets/svg/bell.svg"></md-icon>
+        </md-button>
+        <md-menu-content width="6">
+        <md-menu-item>
+          <md-button>
+            <p flex><b>Ricardo Ibarra </b></p>
+           <small> New Message</small>
+          </md-button>
+        </md-menu-item>
+        <md-divider></md-divider>
+        <md-menu-item>
+          <md-button>
+            <p flex><b>Lindsey Lohan </b></p>
+            <small> New Invitation</small>
+          </md-button>
+        </md-menu-item>
+      </md-menu>
     </div>
   </div>
 </md-toolbar>

@@ -5,6 +5,24 @@
     </md-button>
     <h1 class="md-flex">Team Draw</h1>
     <span flex></span>
+    <div class="md-toolbar-tools autoWidth">
+      <p class="body" ng-bind="User.name"></p>
+      <md-menu>
+        <md-button ng-class="{ 'md-fab md-red-alert md-mini' : newNotifications, 'md-fab md-primary md-mini' : !newNotifications }" aria-label="Alerts" ng-click="openNotifications($mdOpenMenu, ev)">
+          <md-icon md-svg-icon="/assets/svg/bell.svg"></md-icon>
+        </md-button>
+        <md-menu-content width="6">
+        <div ng-repeat="item in notifications">
+          <md-menu-item>
+            <md-button>
+              <p flex><b>{{ item.userName }} </b></p>
+            <small>{{ item.notificationType }}</small>
+            </md-button>
+          </md-menu-item>
+          <md-divider></md-divider>
+        </div>  
+      </md-menu>
+    </div>
     <md-button class="">Sign out</md-button>
   </div>
 </md-toolbar>
@@ -33,7 +51,7 @@
         <md-button class="md-primary">Next</md-button>
       </section>
         <div layout="column" layout-fill layout-align="top center" >
-          <md-list-item ng-repeat="item in documentList">
+          <md-list-item style="width:100%" ng-repeat="item in documentList">
             <p flex> {{ item.name }} </p>
             <md-checkbox class="md-secondary" ng-model="item.selected"></md-checkbox>
             <md-divider></md-divider>

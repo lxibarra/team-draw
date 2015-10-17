@@ -1,8 +1,9 @@
 angular.module('teamDrawApp').value('searchSecondsWait', 1000)
   .controller('ParticipantListCtrl',
-  function ($scope, User, searchSecondsWait, $routeParams, inviteResource, $mdToast, $mdDialog) {
+  function ($scope, User, searchSecondsWait, $routeParams, inviteResource, $mdToast, $mdDialog, socket, Auth) {
 
     var searchTm;
+    var user = Auth.getCurrentUser();
 
     $scope.selectedItem = '';
     $scope.searchText = '';
@@ -49,9 +50,17 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
           participant: item._id,
           drawing: $routeParams.id
         };
-
+         
         inviteResource.save(request).$promise.then(function(data){
           $scope.group.push(data);
+          socket.socket.emit('invite', {
+              user:data.participant,
+              document:data.drawing,
+              userName:user.name,
+              userId:user._id,
+              
+              notificationType:'New Invitation'  
+          });
           $scope.searchText = '';
         }).catch(function(response) {
 

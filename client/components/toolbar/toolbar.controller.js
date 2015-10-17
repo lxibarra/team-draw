@@ -19,6 +19,10 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
       $scope.doc.$put({drawingId:$scope.doc._id });
     }
   }
+  
+  $scope.openNotifications = function($mdOpenMenu, ev) {
+    $mdOpenMenu(ev);
+  }
 
   //<-----------------Ends database methods
 

@@ -1,20 +1,41 @@
 'use strict';
 
 angular.module('teamDrawApp')
-  .controller('HubCtrl', function ($scope, drawingResource, $location, Auth, socket) {
+  .controller('HubCtrl', function ($scope, drawingResource, $location, Auth, socket, $mdToast, $compile) {
 
-    //socket.socket.join(Auth.getCurrentUser()._id );
+    $scope.User = Auth.getCurrentUser();
+    $scope.newNotifications = false;
 
-    if(Auth.isLoggedIn()) {
-      //console.log('Emited event:', socket);
-      //socket.socket.connect();
-      socket.socket.emit('userLogin', { _id: Auth.getCurrentUser()._id });
-      console.log(socket.socket);
+    $scope.openNotifications = function($mdOpenMenu, ev) {
+      $scope.newNotifications = false;
+      if($scope.notifications.length > 0) { 
+        $mdOpenMenu(ev);
+      }
     }
-
-    socket.socket.on('message', function(message) {
-        console.log(message);
+    
+    $scope.notifications = [];
+    
+    /* This methods could be abstracted in a service for easy integration in different parts of the application */
+    socket.socket.on('message', function(data) {
+        console.log(data);
     });
+    
+    socket.socket.on('invite', function(invite) {
+         $mdToast.show(
+                $mdToast.simple()
+                  .content('New Invitation from ' + invite.userName)
+                  .position('left')
+                  .hideDelay(3000)
+         );
+         
+         addInvitationGuiNotfication(invite);
+    });
+    
+    function addInvitationGuiNotfication(data) {
+         $scope.newNotifications = true;
+        // if($scope.notifications.indexOf)
+         $scope.notifications.push(data); 
+    }
 
     //demo data
     $scope.documentList = [

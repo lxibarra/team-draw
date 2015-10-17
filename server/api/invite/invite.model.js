@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
 var InviteSchema = new Schema({
   participant: Schema.Types.ObjectId,
   drawing:Schema.Types.ObjectId,
+  created: { type:Date, default:Date.now() },
   active: { type:Boolean, default:false },
   isOwner: { type: Boolean, default:false },
   lastSeen: { type:Date, default:null },

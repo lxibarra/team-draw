@@ -14,11 +14,40 @@ function onDisconnect(socket) {
 
 // When the user connects.. perform this
 function onConnect(socket) {
-  // When the client emits 'info', this listens and executes
-  socket.on('info', function (data) {
-    console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
+  
+  /** 
+   * By Default
+   * Each user gets its own Room with the database _id so its easy to find (so we dont need an array)
+   * */
+  socket.join(socket.handshake.query.user);
+  
+  //send Message to specific user
+  socket.on('message', function(data) {
+    //We can check here if user is authorize to send message to user or group
+    socket.to(data.user).emit('message', data.message)    
   });
-
+  
+  socket.on('invite', function(data) {
+    socket.to(data.user).emit('invite', data);
+  });
+  
+  socket.on('join', function(data) {
+    socket.join(data.document);
+  });
+  
+  socket.on('leave', function(data) {
+    socket.leave(data.document);
+  });
+  
+  //Need a listener to check if user is online. Maybe there is a socket.isOn()action
+  
+  
+  
+  
+  
+  
+  
+  
   //Each user creates its own room channel as follows
   //socket.join(socket.handshake.query.user); where socket.handshake.query.user = the users id in the database
 
