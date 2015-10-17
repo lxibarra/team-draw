@@ -8,7 +8,8 @@ angular.module('teamDrawApp', [
   'ngRoute',
   'btford.socket-io',
   'ngMaterial',
-  'slatePainting'
+  'slatePainting',
+  'angularMoment'
 ])
   .config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider

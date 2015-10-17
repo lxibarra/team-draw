@@ -126,3 +126,8 @@ a.md-button.md-no-alert, .md-button.md-no-alert {
 .autoWidth {
   width:auto !important;
 }
+
+.relative-time {
+    font-weight: bold;
+    font-style: italic;
+}

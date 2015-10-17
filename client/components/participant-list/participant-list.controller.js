@@ -48,7 +48,8 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
       if (item) {
         var request = {
           participant: item._id,
-          drawing: $routeParams.id
+          drawing: $routeParams.id,
+          created:new Date()
         };
          
         inviteResource.save(request).$promise.then(function(data){
@@ -58,8 +59,11 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
               document:data.drawing,
               userName:user.name,
               userId:user._id,
-              
-              notificationType:'New Invitation'  
+              date:data.created,
+              notificationType:{ 
+                message:'New Invitation',
+                type:'invite'
+              }  
           });
           $scope.searchText = '';
         }).catch(function(response) {
