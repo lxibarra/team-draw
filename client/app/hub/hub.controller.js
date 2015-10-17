@@ -3,15 +3,18 @@
 angular.module('teamDrawApp')
   .controller('HubCtrl', function ($scope, drawingResource, $location, Auth, socket) {
 
+    //socket.socket.join(Auth.getCurrentUser()._id );
 
     if(Auth.isLoggedIn()) {
-      console.log('Emited event:', socket);
+      //console.log('Emited event:', socket);
       //socket.socket.connect();
-      socket.socket.emit('userLogin', { _id:'someguid' });
+      socket.socket.emit('userLogin', { _id: Auth.getCurrentUser()._id });
       console.log(socket.socket);
     }
 
-    //socket.socket.on('')
+    socket.socket.on('message', function(message) {
+        console.log(message);
+    });
 
     //demo data
     $scope.documentList = [

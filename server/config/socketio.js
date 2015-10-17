@@ -5,6 +5,7 @@
 'use strict';
 
 var config = require('./environment');
+var Users = require('../../server/api/user/user.model');
 
 
 // When the user disconnects.. perform this
@@ -18,27 +19,63 @@ function onConnect(socket) {
     console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
   });
 
+  //Each user creates its own room channel as follows
+  //socket.join(socket.handshake.query.user); where socket.handshake.query.user = the users id in the database
+
+  //Anytime communication to that user needs to happen, we send it ot its private room
+  //socket.to(user._id).emit('message', {ok:'This is just for you'});
+
+  //User may join as many rooms as needed e.g general notifications, personal channel, drawing, etc.
+
+  //on the client just pass a message and indicate where do you intend to send the message
+  //socket.emit('message', { user:id });
+
+  //socket.on('message', function(serverData') {
+  //   logic here
+  // });
+
+
+
+  socket.join(socket.handshake.query.user);
+  if(socket.handshake.query.user == '561d370f36328a08104fc8d8') {
+    socket.join('funroom');
+  }
+
   socket.on('userLogin', function(data) {
-    console.log(socket);
+   // console.log(socket.handshake.query.user);
+    //if(socket.handshake.query.user) {
+      /*User.findById(socket.handshake.query.user, function(err, user) {
+
+      });*/
+
+    //}
     console.log('im logged in: ', data);
     //socket.emit
   });
 
-  /*
-  socket.join('_id_of_user');
-  //sends to client
-  socket.in('_id_of_user').emit('message created', { some:'object' });
-
-  socket.on('what!', function() {
-
+  //socket.in('561d370f36328a08104fc8d8').emit('message', { ok:true });
+  //MEssage to default room
+  socket.emit('message', {
+      message:'From server message: ' + socket.handshake.query.user
   });
+
+  /*
+  setInterval(function() {
+    socket.emit('message', { ok:'This is for the entire world to see' });
+  }, 6000);
+
+  setInterval(function(){
+    //send message to twitter ricardo only
+   socket.to('561d370f36328a08104fc8d8').emit('message', {ok:'This is just for you'});
+  }, 3000);
+
+
+  setInterval(function() {
+    socket.to('funroom').emit('message', {ok:'This is from the fun room'});
+  }, 5000);
   */
-  /*
-  var nsp = socket.io.of('/someid');
-  nsp.on('userLogin', function() {
-      console.log('Hello from namespace');
-  });
-*/
+
+  //Register socket for the drawing
   // Insert sockets below
   require('../api/invite/invite.socket').register(socket);
   require('../api/drawings/drawings.socket').register(socket);
@@ -56,12 +93,42 @@ module.exports = function (socketio) {
   // 1. You will need to send the token in `client/components/socket/socket.service.js`
   //
   // 2. Require authentication here:
-  // socketio.use(require('socketio-jwt').authorize({
-  //   secret: config.secrets.session,
-  //   handshake: true
-  // }));
+
+  socketio.use(require('socketio-jwt').authorize({
+     secret: config.secrets.session,
+     handshake: true
+  }));
+
+
+  //just added
+  /************************************
+  socketio.on('connection', require('socketio-jwt').authorize({
+    secret: config.secrets.session,
+    timeout: 3000
+  })).on('authenticated', function(socket) {
+    console.log('I was authenticated');
+    socket.address = socket.handshake.address !== null ?
+    socket.handshake.address.address + ':' + socket.handshake.address.port :
+      process.env.DOMAIN;
+
+    socket.connectedAt = new Date();
+
+    // Call onDisconnect.
+    socket.on('disconnect', function () {
+      onDisconnect(socket);
+      console.info('[%s] DISCONNECTED', socket.address);
+    });
+
+    // Call onConnect.
+    onConnect(socket);
+    console.info('[%s] CONNECTED', socket.address);
+
+  });
+  *///////////////////////////////////////////////////////
+  //Original code
 
   socketio.on('connection', function (socket) {
+
     socket.address = socket.handshake.address !== null ?
             socket.handshake.address.address + ':' + socket.handshake.address.port :
             process.env.DOMAIN;
@@ -78,4 +145,5 @@ module.exports = function (socketio) {
     onConnect(socket);
     console.info('[%s] CONNECTED', socket.address);
   });
+
 };
