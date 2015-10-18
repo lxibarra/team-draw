@@ -6,6 +6,7 @@
 
 var config = require('./environment');
 var Users = require('../../server/api/user/user.model');
+var Notifications = require('../../server/api/notification/notification.model');
 
 
 // When the user disconnects.. perform this
@@ -28,7 +29,11 @@ function onConnect(socket) {
   });
   
   socket.on('invite', function(data) {
-    socket.to(data.user).emit('invite', data);
+    Notifications.create(data, function(err, notification) {
+      if(!err) {
+        socket.to(data.user).emit('invite', notification);  
+      }
+    });
   });
   
   socket.on('join', function(data) {
@@ -106,6 +111,7 @@ function onConnect(socket) {
 
   //Register socket for the drawing
   // Insert sockets below
+  require('../api/notification/notification.socket').register(socket);
   require('../api/invite/invite.socket').register(socket);
   require('../api/drawings/drawings.socket').register(socket);
   require('../api/thing/thing.socket').register(socket);

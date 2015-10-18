@@ -55,6 +55,19 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
         inviteResource.save(request).$promise.then(function(data){
           $scope.group.push(data);
           socket.socket.emit('invite', {
+            userFrom:user._id,
+            userTo:data.participant,
+            created:data.created,
+            document:data.drawing,
+            notificationType:{
+              message:'New Invitation',
+              code:'invite'
+            },
+            content:null,
+            active:true
+          });
+          /*
+          socket.socket.emit('invite', {
               user:data.participant,
               document:data.drawing,
               userName:user.name,
@@ -65,6 +78,7 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
                 type:'invite'
               }  
           });
+          */
           $scope.searchText = '';
         }).catch(function(response) {
 
