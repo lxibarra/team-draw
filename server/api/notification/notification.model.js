@@ -12,7 +12,7 @@ var NotificationSchema = new Schema({
       message: { type:String },
       code: { type:String }    
   },
-  content: { type:String },
+  content: { type:String, default:null },
   active: { type: Boolean, default:true }
 });
 

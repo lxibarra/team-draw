@@ -54,6 +54,8 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
          
         inviteResource.save(request).$promise.then(function(data){
           $scope.group.push(data);
+          //This object currently does not map object for 
+          //notifications
           socket.socket.emit('invite', {
             userFrom:user._id,
             userTo:data.participant,

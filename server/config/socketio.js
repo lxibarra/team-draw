@@ -31,7 +31,10 @@ function onConnect(socket) {
   socket.on('invite', function(data) {
     Notifications.create(data, function(err, notification) {
       if(!err) {
-        socket.to(data.user).emit('invite', notification);  
+        //must use populate here to get user name
+        socket.to(data.userTo).emit('invite', notification);  
+      } else {
+        console.log(err);
       }
     });
   });
