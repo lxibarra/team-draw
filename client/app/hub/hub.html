@@ -16,11 +16,11 @@
           <md-menu-item>
             <md-button ng-click="notificationClick(item)">
               <p flex><b>{{ item.userName }} </b></p>
-            <small>{{ item.notificationType.message }},  <span class="relative-time" am-time-ago="item.date"></span></small>
+            <small>{{ item.notificationType.message }},  <span class="relative-time" am-time-ago="item.created"></span></small>
             </md-button>
           </md-menu-item>
           <md-divider></md-divider>
-        </div>  
+        </div>
       </md-menu>
     </div>
     <md-button class="">Sign out</md-button>

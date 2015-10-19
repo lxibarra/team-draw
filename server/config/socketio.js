@@ -15,47 +15,56 @@ function onDisconnect(socket) {
 
 // When the user connects.. perform this
 function onConnect(socket) {
-  
-  /** 
+
+  /**
    * By Default
    * Each user gets its own Room with the database _id so its easy to find (so we dont need an array)
    * */
+
   socket.join(socket.handshake.query.user);
-  
+
   //send Message to specific user
   socket.on('message', function(data) {
     //We can check here if user is authorize to send message to user or group
-    socket.to(data.user).emit('message', data.message)    
+    socket.to(data.user).emit('message', data.message)
   });
-  
+
   socket.on('invite', function(data) {
     Notifications.create(data, function(err, notification) {
       if(!err) {
         //must use populate here to get user name
-        socket.to(data.userTo).emit('invite', notification);  
+       /* notification.populate('profileFrom', function(err, record) {
+          console.log(err, record);
+        });*/
+
+        Notifications.findById(notification._id).populate('profileFrom').exec(function(err, nnn) {
+            console.log(err, nnn);
+        });
+
+        socket.to(data.userTo).emit('invite', notification);
       } else {
         console.log(err);
       }
     });
   });
-  
+
   socket.on('join', function(data) {
     socket.join(data.document);
   });
-  
+
   socket.on('leave', function(data) {
     socket.leave(data.document);
   });
-  
+
   //Need a listener to check if user is online. Maybe there is a socket.isOn()action
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
   //Each user creates its own room channel as follows
   //socket.join(socket.handshake.query.user); where socket.handshake.query.user = the users id in the database
 
@@ -73,28 +82,7 @@ function onConnect(socket) {
 
 
 
-  socket.join(socket.handshake.query.user);
-  if(socket.handshake.query.user == '561d370f36328a08104fc8d8') {
-    socket.join('funroom');
-  }
 
-  socket.on('userLogin', function(data) {
-   // console.log(socket.handshake.query.user);
-    //if(socket.handshake.query.user) {
-      /*User.findById(socket.handshake.query.user, function(err, user) {
-
-      });*/
-
-    //}
-    console.log('im logged in: ', data);
-    //socket.emit
-  });
-
-  //socket.in('561d370f36328a08104fc8d8').emit('message', { ok:true });
-  //MEssage to default room
-  socket.emit('message', {
-      message:'From server message: ' + socket.handshake.query.user
-  });
 
   /*
   setInterval(function() {

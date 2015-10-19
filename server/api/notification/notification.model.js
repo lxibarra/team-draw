@@ -5,12 +5,14 @@ var mongoose = require('mongoose'),
 
 var NotificationSchema = new Schema({
   userFrom: Schema.Types.ObjectId,
+  profileFrom: { type:Schema.Types.ObjectId, ref:'User' } ,
+  profileTo:{ type:Schema.Types.ObjectId, ref:'User' },
   userTo: Schema.Types.ObjectId,
   created: { type:Date, default:Date.now() },
   document: { type:Schema.Types.ObjectId, default:null },
   notificationType:{
       message: { type:String },
-      code: { type:String }    
+      code: { type:String }
   },
   content: { type:String, default:null },
   active: { type: Boolean, default:true }
