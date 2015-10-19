@@ -3,11 +3,12 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
+
+
 var NotificationSchema = new Schema({
-  userFrom: Schema.Types.ObjectId,
-  profileFrom: { type:Schema.Types.ObjectId, ref:'User' } ,
-  profileTo:{ type:Schema.Types.ObjectId, ref:'User' },
-  userTo: Schema.Types.ObjectId,
+  userFrom: { type:Schema.Types.ObjectId, ref:'User' },
+  userTo: { type:Schema.Types.ObjectId, ref:'User' },
   created: { type:Date, default:Date.now() },
   document: { type:Schema.Types.ObjectId, default:null },
   notificationType:{
@@ -17,5 +18,7 @@ var NotificationSchema = new Schema({
   content: { type:String, default:null },
   active: { type: Boolean, default:true }
 });
+
+NotificationSchema.plugin(deepPopulate);
 
 module.exports = mongoose.model('Notification', NotificationSchema);

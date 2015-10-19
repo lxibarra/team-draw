@@ -7,6 +7,8 @@
 var config = require('./environment');
 var Users = require('../../server/api/user/user.model');
 var Notifications = require('../../server/api/notification/notification.model');
+var Notifications_wrapper = require('../../server/api/notification/notification.wrapper');
+
 
 
 // When the user disconnects.. perform this
@@ -30,22 +32,11 @@ function onConnect(socket) {
   });
 
   socket.on('invite', function(data) {
-    Notifications.create(data, function(err, notification) {
-      if(!err) {
-        //must use populate here to get user name
-       /* notification.populate('profileFrom', function(err, record) {
-          console.log(err, record);
-        });*/
+   Notifications_wrapper.create(data, function(notification) {
+      console.log(notification);
+      socket.to(data.userTo).emit('invite', notification);
+   });
 
-        Notifications.findById(notification._id).populate('profileFrom').exec(function(err, nnn) {
-            console.log(err, nnn);
-        });
-
-        socket.to(data.userTo).emit('invite', notification);
-      } else {
-        console.log(err);
-      }
-    });
   });
 
   socket.on('join', function(data) {

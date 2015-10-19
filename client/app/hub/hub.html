@@ -15,7 +15,7 @@
         <div ng-repeat="item in notifications">
           <md-menu-item>
             <md-button ng-click="notificationClick(item)">
-              <p flex><b>{{ item.userName }} </b></p>
+              <p flex><b>{{ item.userFrom.name }} </b></p>
             <small>{{ item.notificationType.message }},  <span class="relative-time" am-time-ago="item.created"></span></small>
             </md-button>
           </md-menu-item>
