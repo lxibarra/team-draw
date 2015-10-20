@@ -52,13 +52,15 @@
       </section>
         <div layout="column" layout-fill layout-align="top center" >
           <md-list-item style="width:100%" ng-repeat="item in documentList">
-            <p flex> {{ item.name }} </p>
             <md-checkbox class="md-secondary" ng-model="item.selected"></md-checkbox>
+            <p >  <md-button class="md-primary" ng-click="goToDocument(item)">{{ item.name }}</md-button> </p>
             <md-divider></md-divider>
           </md-list-item>
         </div>
       </md-content>
 
   </section>
-
+  <md-button class="md-fab md-primary md-fab-bottom-right" aria-label="Add" ng-click="showAdd($event)">
+    <md-icon md-svg-icon="/assets/svg/plus.svg"></md-icon>
+  </md-button>
 </section>

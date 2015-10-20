@@ -9,6 +9,7 @@ var docAccess = require('../../docs/privileges/ownershipValidation');
 var router = express.Router();
 
 router.get('/', controller.index);
+router.get('/collection/:page', auth.isAuthenticated(), controller.list);
 router.get('/:id', auth.isAuthenticated(), docAccess.ownershipValidation(), controller.fetch); //change controller method
 router.post('/', auth.isAuthenticated(), controller.create);
 router.put('/:id', auth.isAuthenticated(), docAccess.ownershipValidation(), controller.update);

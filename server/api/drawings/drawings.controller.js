@@ -41,6 +41,14 @@ exports.show = function (req, res) {
   });
 };
 
+exports.list = function(req, res) {
+  console.log('Fetched from collection controller');
+  Drawings.find({ owner:req.user.id }, function(err, docs) {
+      if(err) { return  handleError(req, res); }
+      return res.status(200).json(docs);
+  });
+};
+
 // Creates a new drawings in the DB.
 exports.create = function (req, res) {
   var doc = req.body || {};

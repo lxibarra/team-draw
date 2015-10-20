@@ -7,6 +7,8 @@ var docOnwership = require('../../docs/privileges/ownershipValidation');
 
 var router = express.Router();
 
+//Remove unneeded routes
+
 router.get('/', controller.index);
 router.get('/:id', controller.show);
 router.get('/group/:id', auth.isAuthenticated(), docOnwership.ownershipValidation(), controller.invitations);

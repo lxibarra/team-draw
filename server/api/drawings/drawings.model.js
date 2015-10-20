@@ -8,7 +8,8 @@ var DrawingsSchema = new Schema({
   info: String,
   owner:Schema.Types.ObjectId,
   active: Boolean,
-  isPrivate:Boolean
+  isPrivate:Boolean,
+  created:{ type:Date, default:Date.now }
 });
 
 module.exports = mongoose.model('Drawings', DrawingsSchema);

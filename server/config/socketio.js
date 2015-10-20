@@ -20,7 +20,8 @@ function onConnect(socket) {
 
   /**
    * By Default
-   * Each user gets its own Room with the database _id so its easy to find (so we dont need an array)
+   * Each user gets its own Room with the database _id so its easy to find
+   * (This way we dont need a reference to a socket)
    * */
 
   socket.join(socket.handshake.query.user);
@@ -33,7 +34,6 @@ function onConnect(socket) {
 
   socket.on('invite', function(data) {
    Notifications_wrapper.create(data, function(notification) {
-      console.log(notification);
       socket.to(data.userTo).emit('invite', notification);
    });
 
