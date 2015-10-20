@@ -6,7 +6,7 @@
     <h1 class="md-flex">Team Draw</h1>
     <span flex></span>
     <div class="md-toolbar-tools autoWidth">
-      <p class="body" ng-bind="User.name"></p>
+      <p class="body" hide-sm ng-bind="User.name"></p>
       <md-menu>
         <md-button ng-class="{ 'md-fab md-red-alert md-mini' : newNotifications, 'md-fab md-primary md-mini' : !newNotifications }" aria-label="Alerts" ng-click="openNotifications($mdOpenMenu, ev)">
           <md-icon md-svg-icon="/assets/svg/bell.svg"></md-icon>
@@ -21,9 +21,13 @@
           </md-menu-item>
           <md-divider></md-divider>
         </div>
+        </md-menu-content>
       </md-menu>
     </div>
-    <md-button class="">Sign out</md-button>
+    <md-button class="md-primary md-mini" ng-click="logout()"  hide-sm hide-md>Sign out</md-button>
+    <md-button class="md-fab md-mini md-primary" ng-click="logout()" hide-lg hide-gt-lg>
+      <md-icon md-svg-src="assets/svg/exit.svg" aria-label="Sign out"></md-icon>
+    </md-button>
   </div>
 </md-toolbar>
 
@@ -44,11 +48,13 @@
     </md-sidenav>
 
     <md-content flex="100%" >
-      <section layout="row" class="toolbar-controls no-padding" layout-sm="column" layout-align="left" layout-wrap>
+      <section layout="row" class="toolbar-controls no-padding" layout-sm="row" layout-align="left" layout-wrap>
         <md-button class="md-raised md-warn">Delete</md-button>
         <span flex></span>
-        <md-button class="md-primary">Prev</md-button>
-        <md-button class="md-primary">Next</md-button>
+        <md-button class="md-icon-button"> <md-icon md-svg-src="assets/svg/prev.svg" style="color: dimgray;"
+                                                        aria-label="Previous page"></md-icon></md-button>
+        <md-button class="md-icon-button"> <md-icon md-svg-src="assets/svg/next.svg" style="color: dimgray;"
+                                                        aria-label="Next page"></md-icon></md-button>
       </section>
         <div layout="column" layout-fill layout-align="top center" >
           <md-list-item style="width:100%" ng-repeat="item in documentList">
@@ -60,7 +66,34 @@
       </md-content>
 
   </section>
-  <md-button class="md-fab md-primary md-fab-bottom-right" aria-label="Add" ng-click="showAdd($event)">
-    <md-icon md-svg-icon="/assets/svg/plus.svg"></md-icon>
-  </md-button>
+  <md-fab-speed-dial md-direction="up" class="md-fab-bottom-right" hide-lg hide-gt-lg>
+    <md-fab-trigger>
+      <md-button aria-label="menu" class="md-fab md-primary">
+        <md-icon md-svg-src="assets/svg/plus.svg"></md-icon>
+      </md-button>
+    </md-fab-trigger>
+    <md-fab-actions>
+      <md-button aria-label="Chat window" class="md-fab md-raised md-mini">
+        <md-icon md-svg-src="assets/svg/group.svg" style="color: dimgray;"
+                 aria-label="Chat Window"></md-icon>
+        <md-tooltip>
+          Shared
+        </md-tooltip>
+      </md-button>
+      <md-button aria-label="Profile Information" class="md-fab md-raised md-mini">
+        <md-icon md-svg-src="assets/svg/user.svg" style="color: dimgray;"
+                 aria-label="Profile"></md-icon>
+        <md-tooltip>
+          Mine
+        </md-tooltip>
+      </md-button>
+      <md-button aria-label="Remove user from drawing" class="md-fab md-raised md-mini" ng-click="createDrawing()">
+        <md-icon md-svg-src="assets/svg/new.svg" style="color: rgba(255,64,129,0.87);"
+                 aria-label="Create new document"></md-icon>
+        <md-tooltip>
+          New
+        </md-tooltip>
+      </md-button>
+    </md-fab-actions>
+  </md-fab-speed-dial>
 </section>

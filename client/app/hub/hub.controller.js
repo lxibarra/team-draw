@@ -7,6 +7,10 @@ angular.module('teamDrawApp')
     $scope.newNotifications = false;
     $scope.notifications = [];
 
+    $scope.logout = function() {
+      Auth.logout();
+      $location.path('/login');
+    };
 
     $scope.openNotifications = function ($mdOpenMenu, ev) {
       $scope.newNotifications = false;
