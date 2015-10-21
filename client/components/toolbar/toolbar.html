@@ -1,229 +1,216 @@
 <div ng-controller="toolbarCtrl">
-<md-toolbar class="md-menu-toolbar">
-  <div layout="row">
-    <md-toolbar-filler layout layout-align="center center">
-      <md-icon md-svg-icon="/assets/svg/menu.svg"></md-icon>
-    </md-toolbar-filler>
-    <div>
-      <h2 class="md-toolbar-tools" ng-blur="saveTitle($event)" ng-keydown="writtingTitle($event)" contenteditable="{{ doc.policy.canWrite }}" ng-bind="doc.document.name"></h2>
-      <md-menu-bar>
+  <md-toolbar class="md-menu-toolbar">
+    <div layout="row">
+      <md-toolbar-filler layout layout-align="center center">
+        <md-icon md-svg-icon="/assets/svg/menu.svg"></md-icon>
+      </md-toolbar-filler>
+      <div>
+        <h2 md-flex class="md-toolbar-tools" ng-blur="saveTitle($event)" ng-keydown="writtingTitle($event)"
+            contenteditable="{{ doc.policy.canWrite }}" ng-bind="doc.document.name"></h2>
+        <span flex></span>
+        <md-menu-bar>
+          <md-menu>
+            <button ng-click="$mdOpenMenu()">
+              File
+            </button>
+            <md-menu-content>
+              <md-menu-item>
+                <md-button>
+                  Share...
+                </md-button>
+              </md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item>
+                <md-menu>
+                  <md-button ng-click="$mdOpenMenu()">New</md-button>
+                  <md-menu-content>
+                    <md-menu-item>
+                      <md-button ng-click="ctrl.sampleAction('New Document', $event)">Document
+                      </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                      <md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet
+                      </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                      <md-button ng-click="ctrl.sampleAction('New Presentation', $event)">
+                        Presentation
+                      </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                      <md-button ng-click="ctrl.sampleAction('New Form', $event)">Form</md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                      <md-button ng-click="ctrl.sampleAction('New Drawing', $event)">Drawing
+                      </md-button>
+                    </md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button>
+                  Open...
+                  <span class="md-alt-text"></span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button>
+                  Rename
+                </md-button>
+              </md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item>
+                <md-button>
+                  Print
+                  <span class="md-alt-text"></span>
+                </md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+        </md-menu-bar>
+      </div>
+      <div class="md-toolbar-tools">
+        <span flex></span>
+
+        <p class="body" ng-bind="User.name"></p>
         <md-menu>
-          <button ng-click="$mdOpenMenu()">
-            File
-          </button>
-          <md-menu-content>
+          <md-button class="md-fab md-red-alert md-mini" aria-label="Alerts"
+                     ng-click="openNotifications($mdOpenMenu, ev)">
+            <md-icon md-svg-icon="/assets/svg/bell.svg"></md-icon>
+          </md-button>
+          <md-menu-content width="6">
             <md-menu-item>
               <md-button>
-                Share...
+                <p flex><b>Ricardo Ibarra </b></p>
+                <small> New Message</small>
               </md-button>
             </md-menu-item>
-            <md-menu-divider></md-menu-divider>
-            <md-menu-item>
-              <md-menu>
-                <md-button ng-click="$mdOpenMenu()">New</md-button>
-                <md-menu-content>
-                  <md-menu-item>
-                    <md-button ng-click="ctrl.sampleAction('New Document', $event)">Document
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
-                    <md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
-                    <md-button ng-click="ctrl.sampleAction('New Presentation', $event)">
-                      Presentation
-                    </md-button>
-                  </md-menu-item>
-                  <md-menu-item>
-                    <md-button ng-click="ctrl.sampleAction('New Form', $event)">Form</md-button>
-                  </md-menu-item>
-                  <md-menu-item>
-                    <md-button ng-click="ctrl.sampleAction('New Drawing', $event)">Drawing
-                    </md-button>
-                  </md-menu-item>
-                </md-menu-content>
-              </md-menu>
-            </md-menu-item>
+            <md-divider></md-divider>
             <md-menu-item>
               <md-button>
-                Open...
-                <span class="md-alt-text"></span>
+                <p flex><b>Lindsey Lohan </b></p>
+                <small> New Invitation</small>
               </md-button>
             </md-menu-item>
-            <md-menu-item>
-              <md-button>
-                Rename
-              </md-button>
-            </md-menu-item>
-            <md-menu-divider></md-menu-divider>
-            <md-menu-item>
-              <md-button>
-                Print
-                <span class="md-alt-text"></span>
-              </md-button>
-            </md-menu-item>
-          </md-menu-content>
         </md-menu>
-      </md-menu-bar>
+      </div>
     </div>
-    <div class="md-toolbar-tools">
-      <span flex></span>
-
-      <p class="body">Ricardo Ibarra(10)</p>
+  </md-toolbar>
+  <md-content>
+    <section layout="row" class="toolbar-controls" layout-sm="column" layout-align="left" layout-wrap>
+      <md-button class="md-icon-button md-mini selected" aria-label="foreground Color picker">
+        <div class="colorPicker" tinycolorpicker color-selected="foreground">
+          <md-icon md-svg-icon="/assets/svg/color-picker.svg"></md-icon>
+        </div>
+        <md-tooltip>
+          Foreground color
+        </md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button md-mini selected" aria-label="Background Color">
+        <div class="colorPicker" tinycolorpicker color-selected="background">
+          <md-icon md-svg-icon="/assets/svg/bgcolor.svg"></md-icon>
+        </div>
+        <md-tooltip>
+          Background Color
+        </md-tooltip>
+      </md-button>
       <md-menu>
-        <md-button class="md-fab md-red-alert md-mini" aria-label="Alerts" ng-click="openNotifications($mdOpenMenu, ev)">
-          <md-icon md-svg-icon="/assets/svg/bell.svg"></md-icon>
+        <md-button aria-label="Open Pencil tools" class="md-icon-button"
+                   ng-click="openMenu($mdOpenMenu, $event, 'Pencil')">
+          <md-icon md-menu-origin md-svg-icon="/assets/svg/pencil.svg"></md-icon>
+          <md-tooltip>
+            Pencil tool
+          </md-tooltip>
         </md-button>
-        <md-menu-content width="6">
-        <md-menu-item>
-          <md-button>
-            <p flex><b>Ricardo Ibarra </b></p>
-           <small> New Message</small>
-          </md-button>
-        </md-menu-item>
-        <md-divider></md-divider>
-        <md-menu-item>
-          <md-button>
-            <p flex><b>Lindsey Lohan </b></p>
-            <small> New Invitation</small>
-          </md-button>
-        </md-menu-item>
+        <md-menu-content width="4">
+          <md-menu-item>
+            <div class="layout" style="overflow: hidden;">
+              <div flex="10" layout layout-align="center center">
+                <span class="md-body-10" ng-bind-html="pencil.size">0</span>
+              </div>
+              <md-slider flex min="0" max="255" ng-model="pencil.size" ng-change="changeBrushStroke(pencil.size)"
+                         aria-label="blue" class="md-primary">
+              </md-slider>
+            </div>
+          </md-menu-item>
+        </md-menu-content>
       </md-menu>
-    </div>
-  </div>
-</md-toolbar>
-<md-content >
-  <section layout="row" class="toolbar-controls" layout-sm="column" layout-align="left" layout-wrap>
-    <md-button class="md-icon-button md-mini selected" aria-label="foreground Color picker">
-      <div class="colorPicker" tinycolorpicker color-selected="foreground">
-        <md-icon md-svg-icon="/assets/svg/color-picker.svg"></md-icon>
-      </div>
-      <md-tooltip>
-        Foreground color
-      </md-tooltip>
-    </md-button>
-    <md-button class="md-icon-button md-mini selected" aria-label="Background Color">
-      <div class="colorPicker" tinycolorpicker color-selected="background">
-        <md-icon md-svg-icon="/assets/svg/bgcolor.svg"></md-icon>
-      </div>
-      <md-tooltip>
-        Background Color
-      </md-tooltip>
-    </md-button>
-    <md-menu>
-      <md-button aria-label="Open Pencil tools"  class="md-icon-button"
-                 ng-click="openMenu($mdOpenMenu, $event, 'Pencil')">
-        <md-icon md-menu-origin md-svg-icon="/assets/svg/pencil.svg"></md-icon>
-        <md-tooltip>
-          Pencil tool
-        </md-tooltip>
-      </md-button>
-      <md-menu-content width="4">
-        <md-menu-item>
-          <div class="layout" style="overflow: hidden;">
-            <div flex="10" layout layout-align="center center">
-              <span class="md-body-10" ng-bind-html="pencil.size">0</span>
+      <md-menu>
+        <md-button aria-label="Open Circle tools" class="md-icon-button"
+                   ng-click="openMenu($mdOpenMenu, $event, 'Circle')">
+          <md-icon md-menu-origin md-svg-icon="/assets/svg/circle.svg"></md-icon>
+          <md-tooltip>
+            Circle tool
+          </md-tooltip>
+        </md-button>
+        <md-menu-content width="4">
+          <md-menu-item>
+            <div class="layout" style="overflow: hidden;">
+              <div flex="10" layout layout-align="center center">
+                <span class="md-body-10" ng-bind-html="circle.size">0</span>
+              </div>
+              <md-slider flex min="0" max="255" ng-model="circle.size" ng-change="changeBrushStroke(circle.size)"
+                         aria-label="blue" class="md-primary">
+              </md-slider>
             </div>
-            <md-slider flex min="0" max="255" ng-model="pencil.size" ng-change="changeBrushStroke(pencil.size)" aria-label="blue"  class="md-primary">
-            </md-slider>
-          </div>
-        </md-menu-item>
-      </md-menu-content>
-    </md-menu>
-    <md-menu>
-      <md-button aria-label="Open Circle tools" class="md-icon-button"
-                 ng-click="openMenu($mdOpenMenu, $event, 'Circle')">
-        <md-icon md-menu-origin md-svg-icon="/assets/svg/circle.svg"></md-icon>
-        <md-tooltip>
-          Circle tool
-        </md-tooltip>
-      </md-button>
-      <md-menu-content width="4">
-        <md-menu-item>
-          <div class="layout" style="overflow: hidden;">
-            <div flex="10" layout layout-align="center center">
-              <span class="md-body-10" ng-bind-html="circle.size">0</span>
+          </md-menu-item>
+          <md-menu-item>
+            <md-switch class="md-primary" ng-change="onFillChange(circle.fill)" ng-model="circle.fill" md-no-ink
+                       aria-label="Enable/Disable Layers">
+              Fill Circle
+            </md-switch>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+      <md-menu>
+        <md-button aria-label="Open Erase actions" class="md-icon-button"
+                   ng-click="openMenu($mdOpenMenu, $event, 'Eraser')">
+          <md-icon md-menu-origin md-svg-icon="/assets/svg/eraser.svg"></md-icon>
+          <md-tooltip>
+            Eraser tool
+          </md-tooltip>
+        </md-button>
+        <md-menu-content width="4">
+          <md-menu-item>
+            <div class="layout" style="overflow: hidden;">
+              <div flex="10" layout layout-align="center center">
+                <span class="md-body-10" ng-bind-html="eraser.size">0</span>
+              </div>
+              <md-slider flex min="0" max="255" ng-model="eraser.size" ng-change="changeBrushStroke(eraser.size)"
+                         aria-label="blue" class="md-primary">
+              </md-slider>
             </div>
-            <md-slider flex min="0" max="255" ng-model="circle.size" ng-change="changeBrushStroke(circle.size)" aria-label="blue"  class="md-primary">
-            </md-slider>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+      <md-menu>
+        <md-button aria-label="Open layers interactions menu" class="md-icon-button"
+                   ng-click="openMenu($mdOpenMenu, $event)">
+          <md-icon md-menu-origin md-svg-icon="/assets/svg/layers.svg"></md-icon>
+          <md-tooltip>
+            Layers
+          </md-tooltip>
+        </md-button>
+        <md-menu-content width="3">
+          <div ng-repeat="layer in layers">
+            <md-menu-item>
+              <md-switch class="md-primary" ng-model="layer.visible" aria-label="Enable/Disable Layers">
+                <small><strong>On/Off</strong></small>
+                {{ layer.participant.name }}
+              </md-switch>
+            </md-menu-item>
+            <md-menu-divider></md-menu-divider>
           </div>
-        </md-menu-item>
-        <md-menu-item>
-          <md-switch class="md-primary" ng-change="onFillChange(circle.fill)" ng-model="circle.fill" md-no-ink aria-label="Enable/Disable Layers">
-            Fill Circle
-          </md-switch>
-        </md-menu-item>
-      </md-menu-content>
-    </md-menu>
-    <md-menu>
-      <md-button aria-label="Open Erase actions" class="md-icon-button"
-                 ng-click="openMenu($mdOpenMenu, $event, 'Eraser')">
-        <md-icon md-menu-origin md-svg-icon="/assets/svg/eraser.svg"></md-icon>
+        </md-menu-content>
+      </md-menu>
+      <span flex></span>
+      <md-button class="md-icon-button md-mini" aria-label="Friend List" ng-click="sideBar()">
+        <md-icon md-svg-icon="/assets/svg/plus.svg"></md-icon>
         <md-tooltip>
-          Eraser tool
+          Manage participants
         </md-tooltip>
       </md-button>
-      <md-menu-content width="4">
-        <md-menu-item>
-          <div class="layout" style="overflow: hidden;">
-            <div flex="10" layout layout-align="center center">
-              <span class="md-body-10" ng-bind-html="eraser.size">0</span>
-            </div>
-            <md-slider flex min="0" max="255" ng-model="eraser.size" ng-change="changeBrushStroke(eraser.size)" aria-label="blue"  class="md-primary">
-            </md-slider>
-          </div>
-        </md-menu-item>
-      </md-menu-content>
-    </md-menu>
-    <md-menu>
-      <md-button aria-label="Open layers interactions menu" class="md-icon-button"
-                 ng-click="openMenu($mdOpenMenu, $event)">
-        <md-icon md-menu-origin md-svg-icon="/assets/svg/layers.svg"></md-icon>
-        <md-tooltip>
-          Layers
-        </md-tooltip>
-      </md-button>
-      <md-menu-content width="2">
-        <md-menu-item>
-          <md-switch class="md-primary" md-no-ink aria-label="Enable/Disable Layers">
-            Enable/Layer (Ricardo Ibarra)
-          </md-switch>
-        </md-menu-item>
-        <md-menu-divider></md-menu-divider>
-        <md-menu-item>
-          <md-switch class="md-primary" md-no-ink aria-label="Enable/Disable Layers">
-            Enable/Layer (Ricardo Ibarra)
-          </md-switch>
-        </md-menu-item>
-        <md-menu-divider></md-menu-divider>
-        <md-menu-item>
-          <md-switch class="md-primary" md-no-ink aria-label="Enable/Disable Layers">
-            Enable/Layer (Ricardo Ibarra)
-          </md-switch>
-        </md-menu-item>
-        <md-menu-divider></md-menu-divider>
-        <md-menu-item>
-          <md-switch class="md-primary" md-no-ink aria-label="Enable/Disable Layers">
-            Enable/Layer (Ricardo Ibarra)
-          </md-switch>
-        </md-menu-item>
-        <md-menu-divider></md-menu-divider>
-        <md-menu-item>
-          <md-switch class="md-primary" md-no-ink aria-label="Enable/Disable Layers">
-            Enable/Layer (Ricardo Ibarra)
-          </md-switch>
-        </md-menu-item>
-      </md-menu-content>
-    </md-menu>
-    <span flex></span>
-    <md-button class="md-icon-button md-mini" aria-label="Friend List" ng-click="sideBar()">
-      <md-icon md-svg-icon="/assets/svg/plus.svg"></md-icon>
-      <md-tooltip>
-        Manage participants
-      </md-tooltip>
-    </md-button>
-  </section>
+    </section>
 
-</md-content>
+  </md-content>
 </div>

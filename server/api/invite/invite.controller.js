@@ -47,8 +47,21 @@ exports.maxInvitations = function (req, res, next) {
   });
 };
 
+exports.userLayers = function(req, res) {
+    Invite.find({ drawing:req.params.id })
+      .populate({ path:'participant', select:'_id name' })
+      .populate('drawing').exec(function(err, layers) {
+        if (err) {
+          return handleError(res, err);
+        }
+
+        return res.status(200).json(layers);
+      });
+};
+
 exports.invitations = function (req, res) {
-  //check this method is not retunrnign anything
+
+  //should change this method to use populate but many implementations will break
   var userList = [];
   Invite.find({drawing: req.params.id})
     .where('participant')

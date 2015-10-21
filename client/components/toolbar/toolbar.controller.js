@@ -1,7 +1,9 @@
-angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $scope, $mdSidenav) {
+angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $scope, $mdSidenav, Auth, inviteResource, $routeParams) {
 
-  //database methods
+  //<-----------------^database methods^
   $scope.doc = $scope.$parent.doc;
+  $scope.User = Auth.getCurrentUser();
+  var doc_id = $routeParams.id;
 
   $scope.saveTitle = function (evt) {
     SaveTypingblur(evt);
@@ -13,18 +15,27 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
     }
   };
 
+  $scope.layers = [];
+
+  //This method is repeated for fast prototyping but it should be use with the publish subscribe avoid query duplication
+  inviteResource.layers({additional: doc_id}).$promise.then(function (data) {
+    data.forEach(function (i) {
+      $scope.layers.push(i);
+    });
+  });
+
   function SaveTypingblur(evt) {
     if (evt.target.innerText != $scope.doc.document.name) {
       $scope.doc.document.name = evt.target.innerText;
       $scope.doc.$put({drawingId:$scope.doc._id });
     }
   }
-  
+
   $scope.openNotifications = function($mdOpenMenu, ev) {
     $mdOpenMenu(ev);
-  }
+  };
 
-  //<-----------------Ends database methods
+  //----------------------------Tool bar specifics
 
   var originatorEv,
     setUpTool = { //We create a default object to provide blueprint and avoid undefined errors when setting different props
@@ -135,7 +146,7 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
 
   /**
    * *************************************************************************************************************
-   *                                                Pencil
+   *                                                Drawing tools
    *
    * ************************************************************************************************************
    *

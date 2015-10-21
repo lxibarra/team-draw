@@ -4,9 +4,9 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var DrawingsSchema = new Schema({
-  name: String,
+  name: { type:String, default:'Untitled drawing' },
   info: String,
-  owner:Schema.Types.ObjectId,
+  owner:{ type:Schema.Types.ObjectId, ref:'User' },
   active: Boolean,
   isPrivate:Boolean,
   created:{ type:Date, default:Date.now }

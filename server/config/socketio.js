@@ -40,7 +40,18 @@ function onConnect(socket) {
   });
 
   socket.on('join', function(data) {
+    //Token must be validated
+    //check if user can join room
+    //subscribe user to room
+    //For testing reason any user can listen to changes on a canvas.
+
+    //leave all other rooms before joining? ofcourse except users private room
     socket.join(data.document);
+  });
+
+  socket.on('draw', function(data) {
+    //no need to check crendetials here because user already logged in.
+      socket.to(data.document).emit('draw', data);
   });
 
   socket.on('leave', function(data) {

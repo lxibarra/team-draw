@@ -12,6 +12,14 @@ angular.module('teamDrawApp').factory('inviteResource', function ($resource) {
         },
         isArray: true
       },
+      layers: {
+        method:'GET',
+        params: {
+          id: 'layers',
+          additional:'@additional'
+        },
+        isArray:true
+      },
       delete: {
         method:'DELETE',
         params: {

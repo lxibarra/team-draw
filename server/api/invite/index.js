@@ -11,6 +11,7 @@ var router = express.Router();
 
 router.get('/', controller.index);
 router.get('/:id', controller.show);
+router.get('/layers/:id', auth.isAuthenticated(), docOnwership.ownershipValidation(), controller.userLayers);
 router.get('/group/:id', auth.isAuthenticated(), docOnwership.ownershipValidation(), controller.invitations);
 router.post('/', auth.isAuthenticated(), controller.maxInvitations, docOnwership.ownershipValidation(), controller.create);
 router.put('/:id', controller.update);
