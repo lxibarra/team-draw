@@ -13,7 +13,9 @@ angular.module('slatePainting')
       },
       link: function (scope, element, attrs) {
         var canvasCollection = [],
-            Tool = undefined;
+            Tool = undefined,     //will hold Tool name
+            remoteSettings = undefined; //Wil hold settings for the tool
+
         scope.$watch('layers', function(userLayer) {
           if(userLayer.length > 0) {
             userLayer.forEach(function(layer) {
@@ -67,6 +69,8 @@ angular.module('slatePainting')
           if (newValue) {
 
             Tool = newValue.Tool;
+            remoteSettings = newValue.args;
+
             //the index of the canvasCollection must be looked up depending on the Session.User.id canvasCollection[userIndex][0]
             var layerIndex = -1;
             canvasCollection.forEach(function(_jQcanvas, index) {
@@ -75,6 +79,7 @@ angular.module('slatePainting')
                 }
             });
 
+            //this initializes the new tool
             slateCmd.exec(newValue.Tool, [], [canvasCollection[layerIndex][0], previewCanvas[0]].concat(newValue.args));
           }
         }, true);
@@ -85,43 +90,50 @@ angular.module('slatePainting')
          // socketCommunicate('draw', [Tool, ['mousemove'], [evt.offsetX, evt.offsetY]]);
           if (evt.buttons == 1) {
             slateCmd.exec(Tool, ['mousemove', 'mousedown'], [evt.offsetX, evt.offsetY]);
-            socketCommunicate('draw', [Tool, ['mousemove', 'mousedown'], [evt.offsetX, evt.offsetY]]);
+            socketCommunicate('draw', [Tool, ['remote mousemove', 'remote mousedown'], [scope.userId, evt.offsetX, evt.offsetY].concat(remoteSettings)]);
           }
         });
 
         element.on('click', function (evt) {
           slateCmd.exec(Tool, ['click'], [evt.offsetX, evt.offsetY]);
-          socketCommunicate('draw', [['click'], [evt.offsetX, evt.offsetY]]);
+          socketCommunicate('draw', [Tool, ['remote click'], [scope.userId, evt.offsetX, evt.offsetY].concat(remoteSettings)]);
         });
 
         element.on('mouseup', function (evt) {
           slateCmd.exec(Tool, ['mouseup'], [evt.offsetX, evt.offsetY]);
-          socketCommunicate('draw', [Tool, ['mouseup'], [evt.offsetX, evt.offsetY]]);
+          socketCommunicate('draw', [Tool, ['remote mouseup'], [scope.userId, evt.offsetX, evt.offsetY].concat(remoteSettings)]);
         });
 
         element.on('mousedown', function (evt) {
           slateCmd.exec(Tool, ['mousedown'], [evt.offsetX, evt.offsetY]);
-          socketCommunicate('draw', [Tool, ['mousedown'], [evt.offsetX, evt.offsetY]]);
+          socketCommunicate('draw', [Tool, ['remote mousedown'], [scope.userId, evt.offsetX, evt.offsetY].concat(remoteSettings)]);
         });
 
         /**
          * Socket communication
          * */
 
+        /**
+         * Receive data from remote users
+         */
         scope.socket.on('draw', function(data) {
-            console.log('Trying to call exec with ', data.data );
+            console.log('Trying to call exec with ', data.data);
             if(data.userId !== scope.userId) {
-              console.log('Called apply on slateCmd.exec');
               slateCmd.exec.apply(slateCmd, data.data);
             }
         });
 
+        /**
+         * Send data to remote users
+         * @param event we want to communicate, most likely draw
+         * @param data
+         */
         function socketCommunicate(event, data) {
           if(scope.socket) {
             scope.socket.emit(event, {
               document:scope.document,
-              userId:scope.userId,
-              data:data
+              userId:scope.userId, //This is also the canvas id
+              data:data //Array of parameters needed for
             });
           }
         }

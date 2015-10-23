@@ -34,21 +34,31 @@ angular.module('slatePainting')
       _color = '#000000',
       _strokeWidth = 1,
       sizeX = 0,
-      sizeY = 0;
+      sizeY = 0,
+      _remoteCanvas = {};
 
 
     function beforeDraw() {
-      if(!_canvas) {
+      if (!_canvas) {
         throw 'you forgot to initialize the canvas for the Pencil service. \r\n Try using Pencil.setUp(myCanvas, previewCanvas) before trying to draw';
       }
 
-      if(!_previewCanvas) {
+      if (!_previewCanvas) {
         throw 'you forgot to initialize the preview canvas for the Pencil service. \r\n Try using Pencil.setUp(myCanvas, previewCanvas) before trying to draw';
       }
     }
 
     function clearCanvas(target) {
-      target.clearRect(0, 0, sizeX||0, sizeY||0);
+      target.clearRect(0, 0, sizeX || 0, sizeY || 0);
+    }
+
+    function setRemoteCanvas(id) {
+      if(_remoteCanvas[id]) {
+        return _remoteCanvas[id];
+      }
+                          //Hate the selector here
+      _remoteCanvas[id] = angular.element('#' + id)[0].getContext("2d");
+      return _remoteCanvas[id];
     }
 
     return {
@@ -59,13 +69,13 @@ angular.module('slatePainting')
           sizeX = _canvas.canvas.width;
           sizeY = _canvas.canvas.height;
         }
-        catch(e){
+        catch (e) {
           console.error(e);
         }
         _color = color;
         _strokeWidth = strokeWidth;
       },
-      preview:function(x, y) {
+      preview: function (x, y) {
         beforeDraw();
         clearCanvas(_previewCanvas);
         _previewCanvas.beginPath();
@@ -74,23 +84,45 @@ angular.module('slatePainting')
         _previewCanvas.fill();
         _previewCanvas.stroke();
       },
-      draw:function(x, y){
+      draw: function (x, y) {
         beforeDraw();
-
         _canvas.lineTo(x, y);
         _canvas.lineWidth = _strokeWidth;
         _canvas.strokeStyle = _color;
         _canvas.stroke();
       },
-      startDraw:function(x, y) {
+      startDraw: function (x, y) {
         beforeDraw();
         _canvas.beginPath();
         _canvas.moveTo(x, y);
       },
-      setColor:function(color) {
+      startQuickDraw: function (canvasId, x, y) {
+        try {
+          var _ACanvas = setRemoteCanvas(canvasId);
+          _ACanvas.beginPath();
+          _ACanvas.moveTo(x, y);
+        } catch (ex) {
+          console.log(ex);
+          //Silently fail remote errors.
+        }
+      },
+      quickDraw: function (canvasId, x, y, strokeWidth, color) {
+        try {
+          var _ACanvas = setRemoteCanvas(canvasId);
+          _ACanvas.lineTo(x, y);
+          _ACanvas.lineWidth = strokeWidth;
+          _ACanvas.strokeStyle = color;
+          _ACanvas.stroke();
+        } catch (ex) {
+          console.log(ex);
+          //Silently fail remote errors.
+        }
+      },
+
+      setColor: function (color) {
         _color = color;
       },
-      setStrokeWidth:function(strokeWidth) {
+      setStrokeWidth: function (strokeWidth) {
         _strokeWidth = strokeWidth;
       }
     }

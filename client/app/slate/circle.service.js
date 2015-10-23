@@ -50,7 +50,17 @@ angular.module('slatePainting', [])
       sizeY,
       cp1x,
       cp1y,
-      radius = 0;
+      radius = 0,
+      _remoteCanvas = {};
+
+    function setRemoteCanvas(id) {
+      if(_remoteCanvas[id]) {
+        return _remoteCanvas[id];
+      }
+      //Hate the selector here
+      _remoteCanvas[id] = { canvas: angular.element('#' + id)[0].getContext("2d") };
+      return _remoteCanvas[id];
+    }
 
     function beforeDraw() {
       if (!_canvas) {
@@ -76,11 +86,20 @@ angular.module('slatePainting', [])
       target.clearRect(0, 0, sizeX, sizeY);
     }
 
+    function calculateRadius(cp1x, cp1y, x1, y1) {
+      var dx = cp1x > x1 ? (cp1x - x1) : (x1 - cp1x);
+      var dy = cp1y > y1 ? (cp1y - y1) : (y1 - cp1y);
+      var _radius = Math.sqrt((dx * dx) + (dy * dy));
+      _radius = Math.floor(_radius / 2);
+      return _radius;
+    }
+
     function setRadius (x1, y1) {
       var dx = cp1x > x1 ? (cp1x - x1) : (x1 - cp1x);
       var dy = cp1y > y1 ? (cp1y - y1) : (y1 - cp1y);
       radius = Math.sqrt((dx * dx) + (dy * dy));
       radius = Math.floor(radius / 2);
+     // radius = calculateRadius(cp1x, cp1y, x1, y1);
       if (_previewCanvas) {
         clearCanvas(_previewCanvas);
         makeCircle(_previewCanvas);
@@ -115,6 +134,46 @@ angular.module('slatePainting', [])
         radius = 0;
         cp1x = x;
         cp1y = y;
+      },
+      quickPreview: function(canvasId, x, y) {
+        try {
+          var _Acanvas = setRemoteCanvas(canvasId);
+          _Acanvas.radius = calculateRadius(_Acanvas.x, _Acanvas.y, x, y);
+        } catch(ex) {
+          console.log(ex);
+          //fail silently for remote errors.
+        }
+      },
+      startQuickDraw: function(canvasId, x, y) {
+        try {
+          var _Acanvas = setRemoteCanvas(canvasId);
+          _Acanvas.radius = 0;
+          _Acanvas.x = x;
+          _Acanvas.y = y;
+        } catch(ex) {
+          console.log(ex);
+          //fail silently for remote errors.
+        }
+      },
+      quickDraw: function(canvasId, x, y, strokeWidth, color, fillColor, fill) {
+        try {
+          var _Acanvas = setRemoteCanvas(canvasId);
+          _Acanvas.radius = calculateRadius(_Acanvas.x, _Acanvas.y, x, y);
+          _Acanvas.canvas.beginPath();
+          _Acanvas.canvas.lineWidth = strokeWidth;
+          _Acanvas.canvas.strokeStyle = color;
+          // target.fillStyle = _fillColor;
+          _Acanvas.canvas.arc(_Acanvas.x, _Acanvas.y, _Acanvas.radius, 0, 2 * Math.PI, true);
+          _Acanvas.canvas.stroke();
+          if (fill) {
+            _Acanvas.canvas.fillStyle = fillColor;
+            _Acanvas.canvas.fill();
+          }
+        } catch(ex) {
+          console.log(ex);
+          //fail silently for remote errors.
+        }
+
       },
       setBorderWidth: function (value) {
         if (value != Number.NaN && value >= 0) {

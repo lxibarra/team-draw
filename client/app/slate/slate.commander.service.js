@@ -30,21 +30,29 @@ angular.module('slatePainting').service('slateCmd',
       setUp: [],
       draw: ['mousemove', 'mousedown'],
       startDraw:['mousedown'],
-      preview: ['mousemove']
+      preview: ['mousemove'],
+      quickDraw:['remote mousemove', 'remote mousedown'],
+      startQuickDraw:['remote mousedown']
     };
 
     _service.Eraser.mappedActions = {
       setUp:[],
       clear:['mousemove', 'mousedown'],
       draw: ['mousedown'],
-      preview:['mousemove']
+      preview:['mousemove'],
+      quickClear:['remote mousemove', 'remote mousedown'],
+      quickDraw:['remote mousedown']
     };
 
     _service.Circle.mappedActions = {
         setUp:[],
         draw:['mouseup'],
         preview:['mousemove', 'mousedown'],
-        startDraw:['mousedown']
+        startDraw:['mousedown'],
+
+        quickDraw:['remote mouseup'],
+        //quickPreview:['remote mousemove', 'remote mousedown'],
+        startQuickDraw:['remote mousedown']
 
     };
 

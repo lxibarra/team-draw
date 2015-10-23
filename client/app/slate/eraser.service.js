@@ -37,7 +37,17 @@ angular.module('slatePainting').service('Eraser', function() {
     _previewCanvas = undefined,
     _blockSize = 0,
     sizeX,
-    sizeY;
+    sizeY,
+    _remoteCanvas = {};
+
+  function setRemoteCanvas(id) {
+    if(_remoteCanvas[id]) {
+      return _remoteCanvas[id];
+    }
+    //Hate the selector here
+    _remoteCanvas[id] = angular.element('#' + id)[0].getContext("2d");
+    return _remoteCanvas[id];
+  }
 
   function beforeDraw() {
     if (!_canvas) {
@@ -87,6 +97,22 @@ angular.module('slatePainting').service('Eraser', function() {
     clear:function(x, y) {
       beforeDraw();
       _canvas.clearRect(x, y , _blockSize, _blockSize);
+    },
+    quickClear:function(canvasId, x, y, _blockSize) {
+      var _ACanvas = setRemoteCanvas(canvasId);
+      _blockSize = _blockSize||0;
+      if(_blockSize > 0) {
+        _blockSize = Math.ceil(_blockSize / 2);
+      }
+      _ACanvas.clearRect(x , y, _blockSize, _blockSize)
+    },
+    quickDraw:function(canvasId, x, y, _blockSize) {
+      var _ACanvas = setRemoteCanvas(canvasId);
+      _blockSize = _blockSize||0;
+      if(_blockSize > 0) {
+        _blockSize = Math.ceil(_blockSize / 2);
+      }
+      _ACanvas.clearRect(x, y, _blockSize, _blockSize)
     }
   }
 
