@@ -8,7 +8,7 @@ var config = require('./environment');
 var Users = require('../../server/api/user/user.model');
 var Notifications = require('../../server/api/notification/notification.model');
 var Notifications_wrapper = require('../../server/api/notification/notification.wrapper');
-
+var History = require('../../server/api/history/history.model');
 
 
 // When the user disconnects.. perform this
@@ -51,6 +51,7 @@ function onConnect(socket) {
 
   socket.on('draw', function(data) {
     //no need to check crendetials here because user already logged in.
+
       socket.to(data.document).emit('draw', data);
   });
 
@@ -104,6 +105,7 @@ function onConnect(socket) {
 
   //Register socket for the drawing
   // Insert sockets below
+  require('../api/history/history.socket').register(socket);
   require('../api/notification/notification.socket').register(socket);
   require('../api/invite/invite.socket').register(socket);
   require('../api/drawings/drawings.socket').register(socket);

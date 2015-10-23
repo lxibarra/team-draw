@@ -102,6 +102,10 @@ angular.module('slatePainting')
         element.on('mouseup', function (evt) {
           slateCmd.exec(Tool, ['mouseup'], [evt.offsetX, evt.offsetY]);
           socketCommunicate('draw', [Tool, ['remote mouseup'], [scope.userId, evt.offsetX, evt.offsetY].concat(remoteSettings)]);
+//          console.log(angular.element('#' + scope.userId)[0].getContext("2d").getImageData(0,0, 30, 30));
+
+//          var x = angular.element('#' + scope.userId)[0].getContext("2d");
+
         });
 
         element.on('mousedown', function (evt) {
