@@ -55,6 +55,12 @@ function onConnect(socket) {
       socket.to(data.document).emit('draw', data);
   });
 
+  socket.on('change_drawing_history', function(data) {
+      History.create(data, function(err, drawstate) {
+
+      });
+  });
+
   socket.on('leave', function(data) {
     socket.leave(data.document);
   });

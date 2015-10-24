@@ -9,12 +9,15 @@ angular.module('slatePainting')
         setUpTool: '=setUpTool',
         userId:'=userId',
         socket:'=socket',
-        document:'=document'
+        document:'=document',
+        onmouseup:'=onmouseup',
+        onCanvasReady:'=oncanvasready'
       },
       link: function (scope, element, attrs) {
         var canvasCollection = [],
             Tool = undefined,     //will hold Tool name
             remoteSettings = undefined; //Wil hold settings for the tool
+           // firstLoad = true;
 
         scope.$watch('layers', function(userLayer) {
           if(userLayer.length > 0) {
@@ -38,6 +41,10 @@ angular.module('slatePainting')
                 element.append(canvas);
               }
             });
+            if(angular.isFunction(scope.onCanvasReady)) {
+              console.log('executed canvas ready');
+              scope.onCanvasReady(userLayer)
+            }
           }
         }, true);
 
@@ -102,8 +109,20 @@ angular.module('slatePainting')
         element.on('mouseup', function (evt) {
           slateCmd.exec(Tool, ['mouseup'], [evt.offsetX, evt.offsetY]);
           socketCommunicate('draw', [Tool, ['remote mouseup'], [scope.userId, evt.offsetX, evt.offsetY].concat(remoteSettings)]);
+          if(scope.onmouseup) {
+            scope.onmouseup();
+          }
 //          console.log(angular.element('#' + scope.userId)[0].getContext("2d").getImageData(0,0, 30, 30));
+           // var compressed = lzwCompress.pack(angular.element('#' + scope.userId)[0].getContext("2d").getImageData(0,0, 640, 480));
+         /*
+          var data = angular.element('#' + scope.userId)[0].toDataURL("image/png", 1.0);
+            console.log(data, data.length);
+          var compressed = lzwCompress.pack(data);
+          console.log(compressed, compressed.length);
 
+          var uncompressed = lzwCompress.unpack(compressed);
+          console.log(uncompressed);
+          */
 //          var x = angular.element('#' + scope.userId)[0].getContext("2d");
 
         });
@@ -121,7 +140,6 @@ angular.module('slatePainting')
          * Receive data from remote users
          */
         scope.socket.on('draw', function(data) {
-            console.log('Trying to call exec with ', data.data);
             if(data.userId !== scope.userId) {
               slateCmd.exec.apply(slateCmd, data.data);
             }
