@@ -5,13 +5,13 @@ angular.module('slatePainting')
     return {
       restrict: 'EA',
       scope: {
-        layers: '=layers',
-        setUpTool: '=setUpTool',
-        userId:'=userId',
-        socket:'=socket',
-        document:'=document',
-        onmouseup:'=onmouseup',
-        onCanvasReady:'=oncanvasready'
+        layers: '=layers',       //user layers
+        setUpTool: '=setUpTool', //Current tool of use
+        userId:'=userId',        //database user id
+        socket:'=socket',        //Instance of the socket to use
+        document:'=document',    //Database id of the document to use
+        onmouseup:'=onmouseup',  //Event to execute on mouseup (save a snapshot for example)
+        onCanvasReady:'=oncanvasready' //Event that executes when all the layers/canvas have been added to the DOM
       },
       link: function (scope, element, attrs) {
         var canvasCollection = [],
@@ -42,23 +42,10 @@ angular.module('slatePainting')
               }
             });
             if(angular.isFunction(scope.onCanvasReady)) {
-              console.log('executed canvas ready');
-              scope.onCanvasReady(userLayer)
+                 scope.onCanvasReady(userLayer)
             }
           }
         }, true);
-
-        /*scope.layers.forEach(function (layer) {
-          var canvas = angular.element('<canvas/>');
-          canvas.attr('width', attrs.width);
-          canvas.attr('draggable', 'false');
-          canvas.attr('height', attrs.height);
-          canvas.attr('id', layer._id);
-          canvas.css({'position': 'absolute'});
-          canvasCollection.push(canvas);
-          element.append(canvas);
-        });*/
-
 
 
         //we create a preview canvas
@@ -66,7 +53,7 @@ angular.module('slatePainting')
         previewCanvas.attr('width', attrs.width);
         previewCanvas.attr('draggable', 'false');
         previewCanvas.attr('height', attrs.height);
-        previewCanvas.css({'position': 'absolute'});
+        previewCanvas.css({'position': 'absolute', 'z-index':'100'});
         previewCanvas.attr('id', 'previewLayer');
         element.append(previewCanvas);
 
@@ -112,19 +99,6 @@ angular.module('slatePainting')
           if(scope.onmouseup) {
             scope.onmouseup();
           }
-//          console.log(angular.element('#' + scope.userId)[0].getContext("2d").getImageData(0,0, 30, 30));
-           // var compressed = lzwCompress.pack(angular.element('#' + scope.userId)[0].getContext("2d").getImageData(0,0, 640, 480));
-         /*
-          var data = angular.element('#' + scope.userId)[0].toDataURL("image/png", 1.0);
-            console.log(data, data.length);
-          var compressed = lzwCompress.pack(data);
-          console.log(compressed, compressed.length);
-
-          var uncompressed = lzwCompress.unpack(compressed);
-          console.log(uncompressed);
-          */
-//          var x = angular.element('#' + scope.userId)[0].getContext("2d");
-
         });
 
         element.on('mousedown', function (evt) {
