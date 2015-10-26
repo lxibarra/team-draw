@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 var HistorySchema = new Schema({
   userId: { type:Schema.Types.ObjectId, ref:'User' },
   document: { type:Schema.Types.ObjectId, ref:'User' },
-  created: { type:Date, default:Date.now() },
+  created: { type:Date },
   active: { type:Boolean, default:true },
   data: { }
 });

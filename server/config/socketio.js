@@ -51,13 +51,19 @@ function onConnect(socket) {
 
   socket.on('draw', function(data) {
     //no need to check crendetials here because user already logged in.
-
       socket.to(data.document).emit('draw', data);
   });
 
   socket.on('change_drawing_history', function(data) {
+      data.created = new Date();
       History.create(data, function(err, drawstate) {
-
+          if(err) {
+            socket.to(data.document).emit('save_point_error', 'save_point_error', {
+              userId:data.userId,
+              document:data.document,
+              error:err
+            });
+          }
       });
   });
 
