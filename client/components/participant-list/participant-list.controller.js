@@ -44,6 +44,21 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
       //i could have some logic here if needed;
     };
 
+    socket.socket.on('inviteSent', function(data) {
+      if(user._id !== data.userFrom.id) {
+        $mdToast.show(
+          $mdToast.simple()
+            .content('User ' + data.userFrom.name + ' invited ' + data.userTo.name + ' to join.')
+            .position('left')
+            .hideDelay(3000)
+        );
+      }
+    });
+
+    socket.socket.on('kicked', function(data) {
+        console.log('message from kiked method');
+    });
+
     $scope.selectedItemChange = function (item) {
       if (item) {
         var request = {
@@ -51,10 +66,10 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
           drawing: $routeParams.id,
           created:new Date()
         };
-         
+
         inviteResource.save(request).$promise.then(function(data){
           $scope.group.push(data);
-          //This object currently does not map object for 
+          //This object currently does not map object for
           //notifications
           socket.socket.emit('invite', {
             userFrom:user._id,
@@ -68,19 +83,6 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
             content:null,
             active:true
           });
-          /*
-          socket.socket.emit('invite', {
-              user:data.participant,
-              document:data.drawing,
-              userName:user.name,
-              userId:user._id,
-              date:data.created,
-              notificationType:{ 
-                message:'New Invitation',
-                type:'invite'
-              }  
-          });
-          */
           $scope.searchText = '';
         }).catch(function(response) {
 
@@ -112,7 +114,7 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
         .cancel('Forget it');
       $mdDialog.show(confirm).then(function() {
 
-        item.$remove({id:item._id, additional:$routeParams.id }).then(function() {
+        item.$remove({id:item._id, additional:$routeParams.id }).then(function(response) {
           var index = $scope.group.indexOf(item);
           if(index !== -1) {
             $scope.group.splice(index, 1);

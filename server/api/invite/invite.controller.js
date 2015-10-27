@@ -3,6 +3,11 @@
 var _ = require('lodash');
 var Invite = require('./invite.model');
 var User = require('../user/user.model');
+var socket;
+
+exports.register = function(socketio) {
+  socket = socketio;
+};
 
 // Get list of invites
 exports.index = function (req, res) {
@@ -102,6 +107,7 @@ exports.invitations = function (req, res) {
 // Creates a new invite in the DB.
 //Requires authentication and policy middleware
 exports.create = function (req, res) {
+  //If its owner is missing, currently anyone can invite another user to a document.
   if (req.body.active) {
     delete req.body.active;
   }
@@ -199,6 +205,7 @@ exports.destroy = function (req, res) {
         if (err) {
           return handleError(res, err);
         }
+        socket.to(invite.drawing).emit('kicked', { ok:true });
         return res.status(204).send('No Content');
       });
     });

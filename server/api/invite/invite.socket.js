@@ -20,5 +20,6 @@ function onSave(socket, doc, cb) {
 }
 
 function onRemove(socket, doc, cb) {
+  console.log('Removed', doc);
   socket.emit('invite:remove', doc);
 }

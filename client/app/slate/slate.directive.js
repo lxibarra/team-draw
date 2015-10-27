@@ -53,7 +53,7 @@ angular.module('slatePainting')
         previewCanvas.attr('width', attrs.width);
         previewCanvas.attr('draggable', 'false');
         previewCanvas.attr('height', attrs.height);
-        previewCanvas.css({'position': 'absolute', 'z-index':'100'});
+        previewCanvas.css({'position': 'absolute', 'z-index':'40'});
         previewCanvas.attr('id', 'previewLayer');
         element.append(previewCanvas);
 

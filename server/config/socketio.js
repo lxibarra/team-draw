@@ -35,6 +35,7 @@ function onConnect(socket) {
   socket.on('invite', function(data) {
    Notifications_wrapper.create(data, function(notification) {
       socket.to(data.userTo).emit('invite', notification);
+      socket.to(data.document).emit('inviteSent', notification);
    });
 
   });
@@ -99,27 +100,14 @@ function onConnect(socket) {
 
 
 
-  /*
-  setInterval(function() {
-    socket.emit('message', { ok:'This is for the entire world to see' });
-  }, 6000);
 
-  setInterval(function(){
-    //send message to twitter ricardo only
-   socket.to('561d370f36328a08104fc8d8').emit('message', {ok:'This is just for you'});
-  }, 3000);
-
-
-  setInterval(function() {
-    socket.to('funroom').emit('message', {ok:'This is from the fun room'});
-  }, 5000);
-  */
 
   //Register socket for the drawing
   // Insert sockets below
-  require('../api/history/history.socket').register(socket);
+ // require('../api/history/history.socket').register(socket);
+ // require('../api/history/history.controller').register(socket);
   require('../api/notification/notification.socket').register(socket);
-  require('../api/invite/invite.socket').register(socket);
+  require('../api/invite/invite.controller').register(socket);
   require('../api/drawings/drawings.socket').register(socket);
   require('../api/thing/thing.socket').register(socket);
 }
