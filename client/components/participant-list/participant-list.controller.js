@@ -1,6 +1,6 @@
 angular.module('teamDrawApp').value('searchSecondsWait', 1000)
   .controller('ParticipantListCtrl',
-  function ($scope, User, searchSecondsWait, $routeParams, inviteResource, $mdToast, $mdDialog, socket, Auth, $location) {
+  function ($scope, User, searchSecondsWait, $routeParams, inviteResource, $mdToast, $mdDialog, socket, Auth, $location, $rootScope) {
 
     var searchTm;
     var user = Auth.getCurrentUser();
@@ -45,7 +45,7 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
     };
 
     socket.socket.on('inviteSent', function(data) {
-      console.log(user, data.userTo);
+      $rootScope.$broadcast('invite/sent', data);
       if(user._id !== data.userFrom.id && user._id !== data.userTo._id) {
         $mdToast.show(
           $mdToast.simple()
@@ -64,7 +64,7 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
     });
 
     socket.socket.on('kickuser', function(data) {
-
+      $rootScope.$broadcast('invite/removed', data);
         if(data.kicker !== user._id) {
 
           $mdToast.show(
@@ -99,10 +99,11 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
         };
 
         inviteResource.save(request).$promise.then(function(data){
-          console.log('From source:', data);
           $scope.group.push(data);
-          //This object currently does not map object for
-          //notifications
+
+          //Communicate to my own app components
+          $rootScope.$broadcast('invite/sent', data);
+          //communicate to everyone logged in
           socket.socket.emit('invite', {
             userFrom:user._id,
             userTo:data.participant,
@@ -153,7 +154,11 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
             $scope.group.splice(index, 1);
           }
           response.kicker = user._id;
+          //Communicate to my app components
+          $rootScope.$broadcast('invite/removed', response);
+
           //For better security this emit should be started on the server
+          //Communicate to everyone else
           socket.socket.emit('kickuser', response);
 
         }).catch(function(err){

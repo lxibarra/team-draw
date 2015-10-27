@@ -1,4 +1,4 @@
-angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $scope, $mdSidenav, Auth, inviteResource, $routeParams) {
+angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $scope, $mdSidenav, Auth, inviteResource, $routeParams, socket) {
 
   //<-----------------^database methods^
   $scope.doc = $scope.$parent.doc;
@@ -34,6 +34,32 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
   $scope.openNotifications = function($mdOpenMenu, ev) {
     $mdOpenMenu(ev);
   };
+
+
+  /**
+   * User invitations/kickout
+   */
+
+  $scope.$on('invite/sent', function(event, data) {
+    $scope.layers.push(data);
+    console.log('New invitation:', data, $scope.layers);
+
+  });
+
+  $scope.$on('invite/removed', function(event, data) {
+    console.log('Removal request:', data, $scope.layers);
+
+  });
+
+  /*
+  socket.socket.on('inviteSent', function(data) {
+    console.log('Add layer');
+  });
+
+  socket.socket.on('kickuser', function(data) {
+    console.log('Remove layer ');
+  });
+*/
 
   //----------------------------Tool bar specifics
 

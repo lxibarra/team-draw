@@ -59,6 +59,10 @@ exports.userLayers = function(req, res) {
       });
 };
 
+//Aqui me quede cambiar esto por populate y estandarizar porque en algunos lados uso participantName y en otros partcipant.name
+//El correcto es el segundo pero debe hacerse en otro branch porque no sabemos que tanto se vaya a romper
+//Des[pues contnuar agregando layers en toolbar.controller
+
 exports.invitations = function (req, res) {
 
   //should change this method to use populate but many implementations will break
