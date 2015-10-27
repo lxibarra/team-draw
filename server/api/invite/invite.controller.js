@@ -3,11 +3,6 @@
 var _ = require('lodash');
 var Invite = require('./invite.model');
 var User = require('../user/user.model');
-var socket;
-
-exports.register = function(socketio) {
-  socket = socketio;
-};
 
 // Get list of invites
 exports.index = function (req, res) {
@@ -194,19 +189,20 @@ exports.update = function (req, res) {
 // Deletes a invite from the DB.
 exports.destroy = function (req, res) {
   if (req.policy.isOwner) {
-    Invite.findById(req.params.id, function (err, invite) {
+    Invite.findById(req.params.id).populate('participant', 'name').exec(function (err, invite) {
       if (err) {
         return handleError(res, err);
       }
       if (!invite) {
         return res.status(404).send('Not Found');
       }
+
       invite.remove(function (err) {
         if (err) {
           return handleError(res, err);
         }
-        socket.to(invite.drawing).emit('kicked', { ok:true });
-        return res.status(204).send('No Content');
+
+        return res.status(200).json(invite);
       });
     });
   } else {

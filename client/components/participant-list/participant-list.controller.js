@@ -1,6 +1,6 @@
 angular.module('teamDrawApp').value('searchSecondsWait', 1000)
   .controller('ParticipantListCtrl',
-  function ($scope, User, searchSecondsWait, $routeParams, inviteResource, $mdToast, $mdDialog, socket, Auth) {
+  function ($scope, User, searchSecondsWait, $routeParams, inviteResource, $mdToast, $mdDialog, socket, Auth, $location) {
 
     var searchTm;
     var user = Auth.getCurrentUser();
@@ -45,18 +45,49 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
     };
 
     socket.socket.on('inviteSent', function(data) {
-      if(user._id !== data.userFrom.id) {
+      console.log(user, data.userTo);
+      if(user._id !== data.userFrom.id && user._id !== data.userTo._id) {
         $mdToast.show(
           $mdToast.simple()
-            .content('User ' + data.userFrom.name + ' invited ' + data.userTo.name + ' to join.')
+            .content(data.userFrom.name + ' invited ' + data.userTo.name + ' to join.')
             .position('left')
             .hideDelay(3000)
         );
+
+        $scope.group.push({
+          participant:data.userTo._id,
+          participantName:data.userTo.name
+        });
+        //$scope.group.push(data.customPayload);
+        //also push to slate directive layers and document active/inactive layers
       }
     });
 
-    socket.socket.on('kicked', function(data) {
-        console.log('message from kiked method');
+    socket.socket.on('kickuser', function(data) {
+
+        if(data.kicker !== user._id) {
+
+          $mdToast.show(
+            $mdToast.simple()
+              .content('User ' + data.participant.name + ' has been kicked out.')
+              .position('left')
+              .hideDelay(3000)
+          );
+          var index = -1;
+          $scope.group.forEach(function(item, i) {
+            if(item.participant == data.participant._id) {
+              index = i;
+            }
+          });
+          if(index !== -1) {
+            $scope.group.splice(index, 1);
+          }
+          if(user._id == data.participant._id) {
+            $location.path('/hub');
+          }
+        }
+
+
     });
 
     $scope.selectedItemChange = function (item) {
@@ -68,6 +99,7 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
         };
 
         inviteResource.save(request).$promise.then(function(data){
+          console.log('From source:', data);
           $scope.group.push(data);
           //This object currently does not map object for
           //notifications
@@ -81,7 +113,8 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
               code:'invite'
             },
             content:null,
-            active:true
+            active:true,
+            customPayload:data
           });
           $scope.searchText = '';
         }).catch(function(response) {
@@ -119,6 +152,17 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
           if(index !== -1) {
             $scope.group.splice(index, 1);
           }
+          response.kicker = user._id;
+          //For better security this emit should be started on the server
+          socket.socket.emit('kickuser', response);
+
+        }).catch(function(err){
+          $mdToast.show(
+            $mdToast.simple()
+              .content('Unable to kick user')
+              .position('right')
+              .hideDelay(3000)
+          );
         });
       }, function() {
           //cancel removal

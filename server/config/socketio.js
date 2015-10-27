@@ -55,6 +55,10 @@ function onConnect(socket) {
       socket.to(data.document).emit('draw', data);
   });
 
+  socket.on('kickuser', function(data) {
+    socket.to(data.drawing).emit('kickuser', data);
+  });
+
   socket.on('change_drawing_history', function(data) {
       data.created = new Date();
       History.create(data, function(err, drawstate) {
@@ -105,9 +109,8 @@ function onConnect(socket) {
   //Register socket for the drawing
   // Insert sockets below
  // require('../api/history/history.socket').register(socket);
- // require('../api/history/history.controller').register(socket);
+
   require('../api/notification/notification.socket').register(socket);
-  require('../api/invite/invite.controller').register(socket);
   require('../api/drawings/drawings.socket').register(socket);
   require('../api/thing/thing.socket').register(socket);
 }

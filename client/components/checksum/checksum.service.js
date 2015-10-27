@@ -24,7 +24,6 @@ angular.module('teamDrawApp').service('checkSum', function () {
         try {
           var hash1 = createHash(value1);
           var hash2 = createHash(value2);
-          console.log(hash1, '===', hash2, '=', hash1 == hash2);
           return hash1 == hash2;
         } catch(ex) {
           return false;
