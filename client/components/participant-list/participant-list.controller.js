@@ -57,22 +57,20 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
 
     socket.socket.on('inviteSent', function(data) {
       $rootScope.$broadcast('invite/sent', data);
-      if(user._id !== data.userFrom.id && user._id !== data.userTo._id) {
+      if(user._id !== data.notification.userFrom.id && user._id !== data.notification.userTo._id) {
         $mdToast.show(
           $mdToast.simple()
-            .content(data.userFrom.name + ' invited ' + data.userTo.name + ' to join.')
+            .content(data.notification.userFrom.name + ' invited ' + data.notification.userTo.name + ' to join.')
             .position('left')
             .hideDelay(3000)
         );
 
         $scope.group.push({
           participant: {
-            _id:data.userTo._id,
-            name:data.userTo.name
+            _id:data.notification.userTo._id,
+            name:data.notification.userTo.name
           }
         });
-        //$scope.group.push(data.customPayload);
-        //also push to slate directive layers and document active/inactive layers
       }
     });
 
@@ -88,7 +86,7 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
           );
           var index = -1;
           $scope.group.forEach(function(item, i) {
-            if(item.participant == data.participant._id) {
+            if(item.participant._id == data.participant._id) {
               index = i;
             }
           });
@@ -128,7 +126,7 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
             },
             content:null,
             active:true,
-            customPayload:data
+            invitePayload:data
           });
           $scope.searchText = '';
         }).catch(function(response) {

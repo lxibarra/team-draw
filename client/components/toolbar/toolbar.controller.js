@@ -41,7 +41,8 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
    */
 
   $scope.$on('invite/sent', function(event, data) {
-    $scope.layers.push(data);
+    //currently taking a notification but  i need the invite object
+    $scope.layers.push(data.invitePayload);
     console.log('New invitation:', data, $scope.layers);
 
   });
@@ -51,15 +52,7 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
 
   });
 
-  /*
-  socket.socket.on('inviteSent', function(data) {
-    console.log('Add layer');
-  });
 
-  socket.socket.on('kickuser', function(data) {
-    console.log('Remove layer ');
-  });
-*/
 
   //----------------------------Tool bar specifics
 
