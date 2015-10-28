@@ -41,8 +41,21 @@ exports.show = function (req, res) {
   });
 };
 
+exports.ownership = function(req, res) {
+  Drawings.findById(req.params.id, function(err, drawing) {
+    if (err) {
+      return handleError(res, err);
+    }
+    if (!drawing) {
+      return res.status(404).send('Not Found');
+    }
+
+    return res.status(200).json(drawing);
+  });
+};
+
+
 exports.list = function(req, res) {
-  console.log('Fetched from collection controller');
   Drawings.find({ owner:req.user.id }, function(err, docs) {
       if(err) { return  handleError(req, res); }
       return res.status(200).json(docs);

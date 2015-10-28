@@ -1,6 +1,6 @@
 angular.module('teamDrawApp').value('searchSecondsWait', 1000)
   .controller('ParticipantListCtrl',
-  function ($scope, User, searchSecondsWait, $routeParams, inviteResource, $mdToast, $mdDialog, socket, Auth, $location, $rootScope) {
+  function ($scope, User, searchSecondsWait, $routeParams, inviteResource, $mdToast, $mdDialog, socket, Auth, $location, $rootScope, drawingResource) {
 
     var searchTm;
     var user = Auth.getCurrentUser();
@@ -9,6 +9,17 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
     $scope.searchText = '';
 
     $scope.group = [];
+
+    $scope.isOwner = false;
+
+    drawingResource.ownership({additional:$routeParams.id}).$promise.then(function(doc) {
+      $scope.isOwner = doc.owner == user._id;
+    }).catch(function(err){
+      $mdToast.simple()
+        .content('Unable validate document privileges, you can try realoding the page')
+        .position('left')
+        .hideDelay(3000);
+    });
 
     inviteResource.group({ additional:$routeParams.id }).$promise.then(function(data) {
       if(data.length > 0) {
@@ -55,8 +66,10 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
         );
 
         $scope.group.push({
-          participant:data.userTo._id,
-          participantName:data.userTo.name
+          participant: {
+            _id:data.userTo._id,
+            name:data.userTo.name
+          }
         });
         //$scope.group.push(data.customPayload);
         //also push to slate directive layers and document active/inactive layers
@@ -134,6 +147,13 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
                   .position('right')
                   .hideDelay(3000)
               );
+            } else if(response.status === 403) {
+              $mdToast.show(
+                $mdToast.simple()
+                  .content('Only document owners can invite users.')
+                  .position('right')
+                  .hideDelay(3000)
+              );
             }
         });
       }
@@ -141,34 +161,43 @@ angular.module('teamDrawApp').value('searchSecondsWait', 1000)
 
     $scope.kickUser = function(item) {
       var confirm = $mdDialog.confirm()
-        .title('Remove ' + item.participantName + '?')
+        .title('Remove ' + item.participant.name + '?')
         .content('User layer will be removed also. Are you sure you want to continue?')
         .ariaLabel('User removal')
         .ok('Remove')
         .cancel('Forget it');
       $mdDialog.show(confirm).then(function() {
 
-        item.$remove({id:item._id, additional:$routeParams.id }).then(function(response) {
-          var index = $scope.group.indexOf(item);
-          if(index !== -1) {
-            $scope.group.splice(index, 1);
-          }
-          response.kicker = user._id;
-          //Communicate to my app components
-          $rootScope.$broadcast('invite/removed', response);
+        if(item.$remove) {
+          item.$remove({id: item._id, additional: $routeParams.id}).then(function (response) {
+            var index = $scope.group.indexOf(item);
+            if (index !== -1) {
+              $scope.group.splice(index, 1);
+            }
+            response.kicker = user._id;
+            //Communicate to my app components
+            $rootScope.$broadcast('invite/removed', response);
 
-          //For better security this emit should be started on the server
-          //Communicate to everyone else
-          socket.socket.emit('kickuser', response);
+            //For better security this emit should be started on the server
+            //Communicate to everyone else
+            socket.socket.emit('kickuser', response);
 
-        }).catch(function(err){
+          }).catch(function (err) {
+            $mdToast.show(
+              $mdToast.simple()
+                .content('Unable to kick user')
+                .position('right')
+                .hideDelay(3000)
+            );
+          });
+        } else {
           $mdToast.show(
             $mdToast.simple()
               .content('Unable to kick user')
               .position('right')
               .hideDelay(3000)
           );
-        });
+        }
       }, function() {
           //cancel removal
       });

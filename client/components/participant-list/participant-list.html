@@ -3,8 +3,8 @@
     <md-toolbar class="md-theme-light">
       <h1 class="md-toolbar-tools">Participant List</h1>
     </md-toolbar>
-    <md-subheader class="md-no-sticky">Add friends</md-subheader>
-    <md-autocomplete
+    <md-subheader ng-show="isOwner" class="md-no-sticky">Add friends</md-subheader>
+    <md-autocomplete ng-show="isOwner"
       md-selected-item="selectedItem"
       md-search-text-change="searchTextChange(searchText)"
       md-search-text="searchText"
@@ -28,7 +28,7 @@
         <!--img alt="Avatar" ng-src="imageDisplay(item)" class="md-avatar"/-->
         <div class="{{ statusDisplay(friend) }}"></div>
 
-        <p>{{ friend.participantName }}</p>
+        <p>{{ friend.participant.name }}</p>
         <!--md-checkbox ng-model="item.done"></md-checkbox-->
         <md-fab-speed-dial md-direction="left">
           <md-fab-trigger>
@@ -51,7 +51,7 @@
                 Profile information
               </md-tooltip>
             </md-button>
-            <md-button aria-label="Remove user from drawing" class="md-fab md-raised md-mini" ng-click="kickUser(friend)">
+            <md-button aria-label="Remove user from drawing" class="md-fab md-raised md-mini" ng-show="isOwner" ng-click="kickUser(friend)">
               <md-icon md-svg-src="assets/svg/remove.svg" style="color: darkred;"
                        aria-label="Remove"></md-icon>
               <md-tooltip>

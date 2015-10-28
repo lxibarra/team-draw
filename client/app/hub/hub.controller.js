@@ -31,6 +31,7 @@ angular.module('teamDrawApp')
     });
 
     socket.socket.on('invite', function (invite) {
+      console.log(invite);
       soundBlaster.newInvitation();
       $mdToast.show(
         $mdToast.simple()

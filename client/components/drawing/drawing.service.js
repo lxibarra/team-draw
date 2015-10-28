@@ -11,6 +11,13 @@ angular.module('teamDrawApp').factory('drawingResource', function($resource) {
           additional:'@page'
         },
         isArray:true
+      },
+      ownership:{
+        method:'GET',
+        params:{
+          drawingId:'ownership',
+          additional:'@id'
+        }
       }
     }
   );

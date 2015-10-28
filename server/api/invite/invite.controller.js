@@ -62,11 +62,26 @@ exports.userLayers = function(req, res) {
 //Aqui me quede cambiar esto por populate y estandarizar porque en algunos lados uso participantName y en otros partcipant.name
 //El correcto es el segundo pero debe hacerse en otro branch porque no sabemos que tanto se vaya a romper
 //Des[pues contnuar agregando layers en toolbar.controller
+//swithc participantName for participant.name
 
 exports.invitations = function (req, res) {
 
   //should change this method to use populate but many implementations will break
-  var userList = [];
+
+  Invite.find({ drawing:req.params.id })
+    .where('participant')
+    .ne(req.user.id)
+    .populate({ path:'participant', select:'_id name' })
+    .populate('drawing')
+    .exec(function(err, layers) {
+      if (err) {
+        return handleError(res, err);
+      }
+
+      return res.status(200).json(layers);
+    });
+
+  /*var userList = [];
   Invite.find({drawing: req.params.id})
     .where('participant')
     .ne(req.user.id)
@@ -100,13 +115,17 @@ exports.invitations = function (req, res) {
       } else {
         return res.status(200).json([]);
       }
-    });
+    });*/
 };
 
 // Creates a new invite in the DB.
 //Requires authentication and policy middleware
 exports.create = function (req, res) {
-  //If its owner is missing, currently anyone can invite another user to a document.
+
+  if (!req.policy.isOwner) {
+    return res.status(403).send('Only document owners can invite users');
+  }
+
   if (req.body.active) {
     delete req.body.active;
   }
@@ -134,11 +153,17 @@ exports.create = function (req, res) {
           return handleError(res, err);
         }
 
-        User.findById(invite.participant, function (err, user) {
+        Invite.findOne({ _id:invite._id })
+          .populate({ path:'participant', select:'_id name' })
+          .populate('drawing')
+          .exec(function (err, user) {
+
           if (err) {
             return handleError(res, err);
           }
-          return res.status(201).json(_.assign({participantName: user.name || 'Unavailable'}, invite._doc));
+
+          return res.status(201).json(user);
+          //return res.status(201).json(_.assign({participantName: user.name || 'Unavailable'}, invite._doc));
         });
       });
     }
@@ -153,11 +178,17 @@ exports.create = function (req, res) {
           if (err) {
             return handleError(res, err);
           }
-          User.findById(invite.participant, function (err, user) {
+
+          Invite.findOne({_id:invite._id})
+            .populate({ path:'participant', select:'_id name' })
+            .populate('drawing')
+            .exec(function (err, user) {
             if (err) {
               return handleError(res, err);
             }
-            return res.status(201).json(_.assign({participantName: user.name || 'Unavailable'}, invite._doc));
+            return res.status(201).json(user);
+
+          //  return res.status(201).json(_.assign({participantName: user.name || 'Unavailable'}, invite._doc));
           });
         });
       } else {

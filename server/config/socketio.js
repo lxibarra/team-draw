@@ -34,8 +34,8 @@ function onConnect(socket) {
 
   socket.on('invite', function(data) {
    Notifications_wrapper.create(data, function(notification) {
-      socket.to(data.userTo).emit('invite', notification);
-      socket.to(data.document).emit('inviteSent', notification);
+      socket.to(data.userTo._id).emit('invite', notification);
+      socket.to(data.document._id).emit('inviteSent', notification);
    });
 
   });
