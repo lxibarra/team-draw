@@ -33,6 +33,39 @@ angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope, $r
     });
   });
 
+  //aki me quede falta poner las layers
+  $scope.$on('invite/sent', function(event, rdata) {
+
+    var data = rdata.invitePayload||rdata;
+
+    var index = -1;
+    $scope.layers.forEach(function(item, i){
+     // if(item.participant._id == data.invitePayload.participant._id) {
+      if(item.participant._id == data.participant._id) {
+        index = i;
+      }
+    });
+
+    if(index === -1) {
+      $scope.layers.push(data);
+    }
+  });
+
+
+  $scope.$on('invite/removed', function(event, data) {
+
+
+    var index = -1;
+    $scope.layers.forEach(function(item, i){
+      if(item.participant._id == data.participant._id) {
+        index = i;
+      }
+    });
+
+    if(index !== -1) {
+      $scope.layers.splice(index, 1);
+    }
+  });
   /**
    * This callback executes after all the layers have been created by the slate directive.
    * After they haven been created a reques is made to download the latest snapshot of the layer/image and paint it

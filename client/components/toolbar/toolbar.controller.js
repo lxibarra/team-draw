@@ -68,17 +68,21 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
    * User invitations/kickout
    */
 
-  $scope.$on('invite/sent', function(event, data) {
-
+  $scope.$on('invite/sent', function(event, rdata) {
+    //console.log(data);
+    var data = rdata.invitePayload||rdata;
     var index = -1;
     $scope.layers.forEach(function(item, i){
-        if(item.participant._id == data.invitePayload.participant._id) {
+        //if(item.participant._id == data.invitePayload.participant._id) {
+        if(item.participant._id == data.participant._id) {
+
           index = i;
         }
     });
 
     if(index === -1) {
-      $scope.layers.push(data.invitePayload);
+     // $scope.layers.push(data.invitePayload);
+      $scope.layers.push(data);
     }
 
   });

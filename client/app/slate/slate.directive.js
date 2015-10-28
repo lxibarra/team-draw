@@ -29,17 +29,23 @@ angular.module('slatePainting')
               canvas.attr('height', attrs.height);
               canvas.attr('id', user.participant._id);
               canvas.css({'position': 'absolute'});
-              var repeated;
-              canvasCollection.forEach(function(item) {
-                if(item[0].id == user._id) {
-                  repeated = item;
+              var repeated = -1, cnv;
+              canvasCollection.forEach(function(item, i) {
+                if(item[0].id == user.participant._id) {
+                  cnv = item;
+                  repeated = i;
                 }
               });
 
-              if(typeof repeated === 'undefined') {
+              if(repeated == -1) {
                 canvasCollection.push(canvas);
                 element.append(canvas);
+              } else {
+                //canvasCollection.splice(repeated, 1);
+                //element.remove(cnv);
+                //angular.element('#' + cnv[0].id).remove();
               }
+
             });
             if(angular.isFunction(scope.onCanvasReady)) {
                  scope.onCanvasReady(userLayer)
