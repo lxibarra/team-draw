@@ -2,7 +2,9 @@
   <md-toolbar class="md-menu-toolbar">
     <div layout="row">
       <md-toolbar-filler layout layout-align="center center">
-        <md-icon md-svg-icon="/assets/svg/menu.svg"></md-icon>
+        <md-button class="md-icon-button" aria-label="Settings" ng-click="goTohub()">
+          <md-icon md-svg-icon="/assets/svg/menu.svg"></md-icon>
+        </md-button>
       </md-toolbar-filler>
       <div>
         <h2 md-flex class="md-toolbar-tools" ng-blur="saveTitle($event)" ng-keydown="writtingTitle($event)"
@@ -15,54 +17,24 @@
             </button>
             <md-menu-content>
               <md-menu-item>
-                <md-button>
-                  Share...
+                <md-button ng-click="downloadCopy()">
+                  Save to local drive
                 </md-button>
               </md-menu-item>
               <md-menu-divider></md-menu-divider>
               <md-menu-item>
-                <md-menu>
-                  <md-button ng-click="$mdOpenMenu()">New</md-button>
-                  <md-menu-content>
-                    <md-menu-item>
-                      <md-button ng-click="ctrl.sampleAction('New Document', $event)">Document
-                      </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                      <md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet
-                      </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                      <md-button ng-click="ctrl.sampleAction('New Presentation', $event)">
-                        Presentation
-                      </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                      <md-button ng-click="ctrl.sampleAction('New Form', $event)">Form</md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                      <md-button ng-click="ctrl.sampleAction('New Drawing', $event)">Drawing
-                      </md-button>
-                    </md-menu-item>
-                  </md-menu-content>
-                </md-menu>
-              </md-menu-item>
-              <md-menu-item>
                 <md-button>
-                  Open...
-                  <span class="md-alt-text"></span>
+                  Publish to URL
                 </md-button>
               </md-menu-item>
               <md-menu-item>
                 <md-button>
-                  Rename
+                  Save to local storage
                 </md-button>
               </md-menu-item>
-              <md-menu-divider></md-menu-divider>
               <md-menu-item>
                 <md-button>
                   Print
-                  <span class="md-alt-text"></span>
                 </md-button>
               </md-menu-item>
             </md-menu-content>
@@ -194,7 +166,8 @@
         <md-menu-content width="3">
           <div ng-repeat="layer in layers">
             <md-menu-item>
-              <md-switch class="md-primary" ng-model="layer.visible" aria-label="Enable/Disable Layers">
+              <md-switch class="md-primary" ng-model="layer.visible" ng-change="showHideLayer(layer)"
+                         aria-label="Enable/Disable Layers">
                 <small><strong>On/Off</strong></small>
                 {{ layer.participant.name }}
               </md-switch>

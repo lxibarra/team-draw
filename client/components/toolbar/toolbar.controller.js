@@ -1,4 +1,4 @@
-angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $scope, $mdSidenav, Auth, inviteResource, $routeParams, socket) {
+angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $scope, $mdSidenav, Auth, inviteResource, $routeParams, $location) {
 
   //<-----------------^database methods^
   $scope.doc = $scope.$parent.doc;
@@ -12,6 +12,34 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
   $scope.writtingTitle = function (evt) {
     if (evt.keyCode == 13) {
       SaveTypingblur(evt);
+    }
+  };
+
+  $scope.goTohub = function() {
+    $location.path('/hub');
+  };
+
+  $scope.downloadCopy = function() {
+    //Hardcoded values
+
+    var name = prompt('Enter file name', $scope.doc.document.name.trim());
+    if(name !== null) {
+      var canvas = angular.element('<canvas width="640" height="480"/>')[0];
+
+      $scope.layers.forEach(function (layer) {
+        if (layer.visible) {
+          var _canvas = angular.element('#' + layer.participant._id)[0];
+          var img = new Image();
+          img.src = _canvas.toDataURL("image/png", 1.0);
+          canvas.getContext("2d").drawImage(img, 0, 0);
+
+        }
+      });
+
+      var anchor = angular.element('<a/>');
+      anchor.attr('href', canvas.toDataURL("application/octet-stream", 1.0));
+      anchor.attr('download', name || 'teamdrawimage');
+      anchor[0].click();
     }
   };
 
@@ -41,18 +69,53 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
    */
 
   $scope.$on('invite/sent', function(event, data) {
-    //currently taking a notification but  i need the invite object
-    $scope.layers.push(data.invitePayload);
-    console.log('New invitation:', data, $scope.layers);
+
+    var index = -1;
+    $scope.layers.forEach(function(item, i){
+        if(item.participant._id == data.invitePayload.participant._id) {
+          index = i;
+        }
+    });
+
+    if(index === -1) {
+      $scope.layers.push(data.invitePayload);
+    }
 
   });
 
   $scope.$on('invite/removed', function(event, data) {
-    console.log('Removal request:', data, $scope.layers);
+
+    var index = -1;
+    $scope.layers.forEach(function(item, i){
+      if(item.participant._id == data.participant._id) {
+        index = i;
+      }
+    });
+
+    if(index !== -1) {
+      $scope.layers.splice(index, 1);
+    }
 
   });
 
 
+  /**
+   * Show hide layers
+   */
+
+  $scope.showHideLayer = function(layer) {
+
+      var canvas = angular.element('#' + layer.participant._id);
+
+      if(canvas) {
+        console.log(layer.visible);
+        if (layer.visible) {
+          canvas.fadeIn(200);
+        } else {
+          canvas.fadeOut(200);
+        }
+      }
+  };
 
   //----------------------------Tool bar specifics
 
