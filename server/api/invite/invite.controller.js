@@ -14,7 +14,7 @@ exports.index = function (req, res) {
   });
 };
 
-exports.setDocument = function(req, res, next) {
+exports.setDocument = function (req, res, next) {
   req.body.drawing = req.params.drawing;
   next();
 
@@ -47,33 +47,53 @@ exports.maxInvitations = function (req, res, next) {
   });
 };
 
-exports.userLayers = function(req, res) {
-    Invite.find({ drawing:req.params.id })
-      .populate({ path:'participant', select:'_id name' })
-      .populate('drawing').exec(function(err, layers) {
-        if (err) {
-          return handleError(res, err);
-        }
+exports.userLayers = function (req, res) {
+  Invite.find({drawing: req.params.id})
+    .populate({path: 'participant', select: '_id name'})
+    .populate('drawing').exec(function (err, layers) {
+      if (err) {
+        return handleError(res, err);
+      }
 
-        return res.status(200).json(layers);
-      });
+      return res.status(200).json(layers);
+    });
 };
 
-//Aqui me quede cambiar esto por populate y estandarizar porque en algunos lados uso participantName y en otros partcipant.name
-//El correcto es el segundo pero debe hacerse en otro branch porque no sabemos que tanto se vaya a romper
-//Des[pues contnuar agregando layers en toolbar.controller
-//swithc participantName for participant.name
+exports.sharedDocuments = function (req, res) {
+  console.log('Reached server');
+  Invite.find({participant: req.user.id})
+    .populate('drawing')
+    .limit(20) //hard coded until pagination is implemented
+    .sort({ created:-1 })
+    .exec(function (err, results) {
+      if (err) {
+        console.log(err);
+        handleError(res, err)
+      }
+
+      var arr = [];
+
+      if(results) {
+          results.forEach(function(invite) {
+              arr.push(invite.drawing);
+          });
+      }
+
+      return res.status(200).json(arr);
+
+    });
+};
 
 exports.invitations = function (req, res) {
 
   //should change this method to use populate but many implementations will break
 
-  Invite.find({ drawing:req.params.id })
+  Invite.find({drawing: req.params.id})
     .where('participant')
     .ne(req.user.id)
-    .populate({ path:'participant', select:'_id name' })
+    .populate({path: 'participant', select: '_id name'})
     .populate('drawing')
-    .exec(function(err, layers) {
+    .exec(function (err, layers) {
       if (err) {
         return handleError(res, err);
       }
@@ -82,40 +102,40 @@ exports.invitations = function (req, res) {
     });
 
   /*var userList = [];
-  Invite.find({drawing: req.params.id})
-    .where('participant')
-    .ne(req.user.id)
-    .exec(function (err, invites) {
+   Invite.find({drawing: req.params.id})
+   .where('participant')
+   .ne(req.user.id)
+   .exec(function (err, invites) {
 
-      if (err) {
-        return handleError(res, err);
-      }
-      if (invites) {
+   if (err) {
+   return handleError(res, err);
+   }
+   if (invites) {
 
-        var pCollection = [];
-        invites.forEach(function (invite) {
+   var pCollection = [];
+   invites.forEach(function (invite) {
 
-          var p1 = new Promise(function (resolve, reject) {
-            User.findById(invite.participant, function (err, user) {
-              if (err) {
-                reject(err);
-              }
-              resolve(_.assign({participantName: user.name || 'Unavailable'}, invite._doc));
-            });
-          });
+   var p1 = new Promise(function (resolve, reject) {
+   User.findById(invite.participant, function (err, user) {
+   if (err) {
+   reject(err);
+   }
+   resolve(_.assign({participantName: user.name || 'Unavailable'}, invite._doc));
+   });
+   });
 
-          pCollection.push(p1);
-        });
+   pCollection.push(p1);
+   });
 
-        Promise.all(pCollection).then(function (values) {
-          return res.status(200).json(values);
-        });
+   Promise.all(pCollection).then(function (values) {
+   return res.status(200).json(values);
+   });
 
 
-      } else {
-        return res.status(200).json([]);
-      }
-    });*/
+   } else {
+   return res.status(200).json([]);
+   }
+   });*/
 };
 
 // Creates a new invite in the DB.
@@ -153,18 +173,18 @@ exports.create = function (req, res) {
           return handleError(res, err);
         }
 
-        Invite.findOne({ _id:invite._id })
-          .populate({ path:'participant', select:'_id name' })
+        Invite.findOne({_id: invite._id})
+          .populate({path: 'participant', select: '_id name'})
           .populate('drawing')
           .exec(function (err, user) {
 
-          if (err) {
-            return handleError(res, err);
-          }
+            if (err) {
+              return handleError(res, err);
+            }
 
-          return res.status(201).json(user);
-          //return res.status(201).json(_.assign({participantName: user.name || 'Unavailable'}, invite._doc));
-        });
+            return res.status(201).json(user);
+            //return res.status(201).json(_.assign({participantName: user.name || 'Unavailable'}, invite._doc));
+          });
       });
     }
   } else {
@@ -179,17 +199,17 @@ exports.create = function (req, res) {
             return handleError(res, err);
           }
 
-          Invite.findOne({_id:invite._id})
-            .populate({ path:'participant', select:'_id name' })
+          Invite.findOne({_id: invite._id})
+            .populate({path: 'participant', select: '_id name'})
             .populate('drawing')
             .exec(function (err, user) {
-            if (err) {
-              return handleError(res, err);
-            }
-            return res.status(201).json(user);
+              if (err) {
+                return handleError(res, err);
+              }
+              return res.status(201).json(user);
 
-          //  return res.status(201).json(_.assign({participantName: user.name || 'Unavailable'}, invite._doc));
-          });
+              //  return res.status(201).json(_.assign({participantName: user.name || 'Unavailable'}, invite._doc));
+            });
         });
       } else {
         return res.status(304).send('Invitation already sent');

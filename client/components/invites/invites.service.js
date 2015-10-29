@@ -20,6 +20,13 @@ angular.module('teamDrawApp').factory('inviteResource', function ($resource) {
         },
         isArray:true
       },
+      shared: {
+          method:'GET',
+        params: {
+          id:'shared'
+        },
+        isArray:true
+      },
       delete: {
         method:'DELETE',
         params: {

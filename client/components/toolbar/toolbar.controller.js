@@ -22,7 +22,7 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
   $scope.downloadCopy = function() {
     //Hardcoded values
 
-    var name = prompt('Enter file name', $scope.doc.document.name.trim());
+    var name = prompt('Enter file name', $scope.doc.document.name||$scope.doc.document.name.trim());
     if(name !== null) {
       var canvas = angular.element('<canvas width="640" height="480"/>')[0];
 

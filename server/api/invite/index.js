@@ -10,7 +10,9 @@ var router = express.Router();
 //Remove unneeded routes
 
 router.get('/', controller.index);
-router.get('/:id', controller.show);
+router.get('/shared', auth.isAuthenticated(), controller.sharedDocuments);
+//router.get('/:id', controller.show);
+
 router.get('/layers/:id', auth.isAuthenticated(), docOnwership.ownershipValidation(), controller.userLayers);
 router.get('/group/:id', auth.isAuthenticated(), docOnwership.ownershipValidation(), controller.invitations);
 router.post('/', auth.isAuthenticated(), controller.maxInvitations, docOnwership.ownershipValidation(), controller.create);

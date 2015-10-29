@@ -1,13 +1,23 @@
 'use strict';
 
 angular.module('teamDrawApp')
-  .controller('HubCtrl', function ($scope, drawingResource, $location, $mdDialog, Auth, socket, $mdToast, notificationResource, soundBlaster) {
+  .controller('HubCtrl', function ($scope,
+                                   drawingResource,
+                                   $location,
+                                   $mdDialog,
+                                   Auth,
+                                   socket,
+                                   $mdToast,
+                                   notificationResource,
+                                   soundBlaster,
+                                   inviteResource) {
 
+    var currentDocs = false;
     $scope.User = Auth.getCurrentUser();
     $scope.newNotifications = false;
     $scope.notifications = [];
 
-    $scope.logout = function() {
+    $scope.logout = function () {
       Auth.logout();
       $location.path('/login');
     };
@@ -31,7 +41,7 @@ angular.module('teamDrawApp')
     });
 
     socket.socket.on('invite', function (invite) {
-      console.log(invite);
+
       soundBlaster.newInvitation();
       $mdToast.show(
         $mdToast.simple()
@@ -49,7 +59,7 @@ angular.module('teamDrawApp')
       //currently we can have repeated invites on the gui
 
       $scope.notifications.unshift(data);
-      if($scope.notifications.length > 10) {
+      if ($scope.notifications.length > 10) {
         $scope.notifications.pop();
       }
     }
@@ -73,14 +83,46 @@ angular.module('teamDrawApp')
       }
     };
 
-    //demo data               //means page number
-    drawingResource.collection({additional:1}).$promise.then(function(data) {
-      $scope.documentList = data;
-    });
+    function fetOwnDocs() {
+      EnableDisableButtons('disable');
+      drawingResource.collection({additional: 1}).$promise.then(function (data) {
+        EnableDisableButtons('enable');
+        $scope.documentList = data;
+      }).catch(function (err) {
+        EnableDisableButtons('enable');
+        currentDocs = false;
+      });
+    }
 
+    $scope.getMine = function (e) {
 
-    $scope.goToDocument = function(item) {
-      $location.path('/documents/drawing/' + item._id);
+      fetOwnDocs();
+    };
+
+    fetOwnDocs();
+
+    function EnableDisableButtons(event) {
+      if(event === 'enable') {
+        angular.element('#btnAction button').removeAttr('disabled');
+      } else {
+        angular.element('#btnAction button').attr('disabled', 'disabled');
+      }
+
+    }
+
+    $scope.getShared = function (id) {
+      EnableDisableButtons('disable');
+      //angular.element(id).attr('disabled', 'disabled');
+      inviteResource.shared({}).$promise.then(function (data) {
+        $scope.documentList = data;
+        EnableDisableButtons('enable');
+      }).catch(function (err) {
+        EnableDisableButtons('enable');
+      })
+    };
+
+    $scope.goToDocument = function (item) {
+      $location.path('/documents/drawing/' + item._id).replace().reload(false);
     };
 
     $scope.createDrawing = function () {

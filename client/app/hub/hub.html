@@ -40,9 +40,9 @@
             New
           </md-button>
         </div>
-        <div layout="column">
-          <md-button flex="100" class="md-raised md-primary">Owned by me</md-button>
-          <md-button flex="100" class="md-raised md-primary">Shared with me</md-button>
+        <div layout="column" id="btnAction">
+          <md-button flex="100" id="btnMine"  ng-click="getMine()"  class="md-raised md-primary">Owned by me</md-button>
+          <md-button flex="100" id="btnshared"  ng-click="getShared()" class="md-raised md-primary">Shared with me</md-button>
         </div>
       </md-content>
     </md-sidenav>
