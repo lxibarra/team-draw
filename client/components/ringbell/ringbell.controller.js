@@ -60,8 +60,7 @@ angular.module('teamDrawApp').controller('RingBellCtrl', function ($scope,
         //will accept invitation and show a popup if you wish to go there
         window.location = '/documents/drawing/' + item.document;
       }, function () {
-        //cancel removal
-        alert('You have rejected the invite');
+        //do something for ignore
       });
     }
   };

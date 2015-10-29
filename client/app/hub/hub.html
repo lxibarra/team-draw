@@ -7,22 +7,7 @@
     <span flex></span>
     <div class="md-toolbar-tools autoWidth">
       <p class="body" hide-sm ng-bind="User.name"></p>
-      <md-menu>
-        <md-button ng-class="{ 'md-fab md-red-alert md-mini' : newNotifications, 'md-fab md-primary md-mini' : !newNotifications }" aria-label="Alerts" ng-click="openNotifications($mdOpenMenu, ev)">
-          <md-icon md-svg-icon="/assets/svg/bell.svg"></md-icon>
-        </md-button>
-        <md-menu-content width="6">
-        <div ng-repeat="item in notifications">
-          <md-menu-item>
-            <md-button ng-click="notificationClick(item)">
-              <p flex><b>{{ item.userFrom.name }} </b></p>
-            <small>{{ item.notificationType.message }},  <span class="relative-time" am-time-ago="item.created"></span></small>
-            </md-button>
-          </md-menu-item>
-          <md-divider></md-divider>
-        </div>
-        </md-menu-content>
-      </md-menu>
+      <div ng-include="'components/ringbell/ringbell.html'"></div>
     </div>
     <md-button class="md-primary md-mini" ng-click="logout()"  hide-sm hide-md>Sign out</md-button>
     <md-button class="md-fab md-mini md-primary" ng-click="logout()" hide-lg hide-gt-lg>
