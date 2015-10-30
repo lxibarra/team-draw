@@ -1,7 +1,8 @@
 <div ng-include="'components/title-bar/title-bar.html'"></div>
+
 <header class="hero-unit" id="banner">
   <div class="container">
-    <h1>Team Draw</h1>
+    <h1> Team Draw</h1>
 
     <h3 class="lead">Draw with your friends & have fun.</h3>
 
@@ -17,19 +18,43 @@
   </div>
 </header>
 
-<div layout="row" layout-align="center center">
+<div layout="row" layout-md="column" layout-sm="column" layout-align="center center">
   <div flex="25" class="intros">
     <h2 class="md-display-3">About</h2>
-    <p>This project is a simple MVP Drawing tool that allows real time collaboration between 2 or more people</p>
+
+    <p>This project is a simple MVP Drawing tool that allows real time collaboration between 2 or more persons</p>
   </div>
   <div flex="25" class="intros">
     <h2 class="md-display-3">How</h2>
-    <p>It uses socket.io to manage communication between users.</p>
+
+    <p>It uses socket.io to manage communication between users and saves user images as layers in Mongodb</p>
   </div>
   <div flex="25" class="intros">
-    <h2 class="md-display-3">Storage</h2>
-    <p>Saves user images as layers in Mongodb</p>
+    <h2 class="md-display-3">GitHub</h2>
+
+    <p>Want to checkout the code or contribute to the project. Checkout the
+        <a href="https://github.com/lxibarra/team-draw" target="_blank">Github Repo</a>
+    </p>
   </div>
 </div>
+<div layout="row" layout-align="center center">
+  <div flex="75">
+    <hr/>
+    <div layout-align="end center">
+      <p>
+        by Ricardo Ibarra, find me on <md-button class="md-fab" aria-label="Find me on Github" ng-href="https://github.com/lxibarra" style="background-color: #3c3c3c">
+        <md-icon md-svg-src="/assets/svg/github.svg" ></md-icon>
+        <md-tooltip>Github - lxibarra</md-tooltip>
+      </md-button>
+
+        <md-button class="md-fab md-info" aria-label="Find me on Twitter" ng-href="https://twitter.com/ricardoibarrai">
+          <md-icon md-svg-src="/assets/svg/twitter.svg"></md-icon>
+          <md-tooltip>Twitter @ricardoibarrai</md-tooltip>
+        </md-button>
+      </p>
+    </div>
+  </div>
+</div>
+
 
 

@@ -2,11 +2,13 @@
   <md-toolbar class="md-primary">
     <div class="md-toolbar-tools">
 
-      <h1 class="md-flex">Team Draw</h1>
+      <h1 class="md-flex"><a ng-href="/hub">Team Draw</a></h1>
 
       <span flex></span>
       <div ng-show="isLoggedIn()" class="md-toolbar-tools autoWidth">
-        <p class="body" hide-sm ng-bind="getCurrentUser().name"></p>
+        <p class="body" hide-sm>
+          <a ng-href="/hub" ng-bind="getCurrentUser().name"></a>
+        </p>
       </div>
       <div ng-show="isLoggedIn()">
         <md-button class="md-primary md-mini" ng-click="logout()" hide-sm hide-md>Sign out</md-button>
