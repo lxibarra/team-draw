@@ -33,3 +33,13 @@
     margin-left: 15px;
 }
 
+.intros {
+  min-height:300px;
+  padding:25px;
+  text-align: justify;
+}
+
+.intros h2{
+  text-align: center;
+
+}

@@ -1,38 +1,35 @@
-<div ng-include="'components/navbar/navbar.html'"></div>
-
+<div ng-include="'components/title-bar/title-bar.html'"></div>
 <header class="hero-unit" id="banner">
   <div class="container">
-    <h1>'Allo, 'Allo!</h1>
-    <p class="lead">Kick-start your next web app with Angular Fullstack</p>
+    <h1>Team Draw</h1>
+
+    <h3 class="lead">Draw with your friends & have fun.</h3>
+
+    <p>This project was done with the following technologies & more</p>
     <img src="assets/images/yeoman.png" alt="I'm Yeoman">
+    <img src="assets/images/grunt.png" alt="I'm Grunt">
+    <img src="assets/images/bower.png" alt="I'm Bower">
+    <img src="assets/images/npm.png" alt="I'm NPM">
+    <img src="assets/images/mongo.png" alt="I'm MongoDB">
+    <img src="assets/images/express.png" alt="I'm express">
+    <img src="assets/images/angularjs.png" alt="I'm Angular">
+    <img src="assets/images/nodejs.png" alt="I'm Nodejs">
   </div>
 </header>
 
-<div class="container">
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
-        <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}<button type="button" class="close" ng-click="deleteThing(thing)">&times;</button></a></li>
-      </ul>
-    </div>
+<div layout="row" layout-align="center center">
+  <div flex="25" class="intros">
+    <h2 class="md-display-3">About</h2>
+    <p>This project is a simple MVP Drawing tool that allows real time collaboration between 2 or more people</p>
   </div>
-
-  <form class="thing-form">
-    <label>Syncs in realtime across clients</label>
-    <p class="input-group">
-      <input type="text" class="form-control" placeholder="Add a new thing here." ng-model="newThing">
-      <span class="input-group-btn">
-        <button type="submit" class="btn btn-primary" ng-click="addThing()">Add New</button>
-      </span>
-    </p>
-  </form>
+  <div flex="25" class="intros">
+    <h2 class="md-display-3">How</h2>
+    <p>It uses socket.io to manage communication between users.</p>
+  </div>
+  <div flex="25" class="intros">
+    <h2 class="md-display-3">Storage</h2>
+    <p>Saves user images as layers in Mongodb</p>
+  </div>
 </div>
 
-<footer class="footer">
-  <div class="container">
-      <p>Angular Fullstack v2.1.1 |
-        <a href="https://twitter.com/tyhenkel">@tyhenkel</a> |
-         <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a></p>
-  </div>
-</footer>
+

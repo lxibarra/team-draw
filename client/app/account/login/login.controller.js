@@ -22,6 +22,10 @@ angular.module('teamDrawApp')
       }
     };
 
+    $scope.register = function() {
+      $location.path('/signup');
+    };
+
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
     };

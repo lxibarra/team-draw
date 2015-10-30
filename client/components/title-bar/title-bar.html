@@ -1,0 +1,31 @@
+<div ng-controller="TitleBarCtrl">
+  <md-toolbar class="md-primary">
+    <div class="md-toolbar-tools">
+
+      <h1 class="md-flex">Team Draw</h1>
+
+      <span flex></span>
+      <div ng-show="isLoggedIn()" class="md-toolbar-tools autoWidth">
+        <p class="body" hide-sm ng-bind="getCurrentUser().name"></p>
+      </div>
+      <div ng-show="isLoggedIn()">
+        <md-button class="md-primary md-mini" ng-click="logout()" hide-sm hide-md>Sign out</md-button>
+        <md-button class="md-fab md-mini md-primary" ng-click="logout()" hide-lg hide-gt-lg>
+          <md-icon md-svg-src="assets/svg/exit.svg" aria-label="Sign out"></md-icon>
+        </md-button>
+      </div>
+      <div ng-hide="isLoggedIn()">
+        <md-button class="md-primary md-mini" ng-click="signIn()" hide-sm hide-md>Sign In</md-button>
+        <md-button class="md-fab md-mini md-primary" ng-click="signIn()" hide-lg hide-gt-lg>
+          <md-icon md-svg-src="assets/svg/user.svg" aria-label="Sign In"></md-icon>
+          <md-tooltip>Sign In</md-tooltip>
+        </md-button>
+        <md-button class="md-primary md-mini" ng-click="register()" hide-sm hide-md>Register</md-button>
+        <md-button class="md-fab md-mini md-primary" ng-click="register()" hide-lg hide-gt-lg>
+          <md-icon md-svg-src="assets/svg/new.svg" aria-label="Register"></md-icon>
+          <md-tooltip>Register</md-tooltip>
+        </md-button>
+      </div>
+    </div>
+  </md-toolbar>
+</div>
