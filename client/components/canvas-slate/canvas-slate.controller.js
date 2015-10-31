@@ -1,14 +1,22 @@
 'use strict';
-angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope, $routeParams, inviteResource, Auth, socket, lzw, historyResource, checkSum) {
+angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope,
+                                                                      $routeParams,
+                                                                      inviteResource,
+                                                                      Auth,
+                                                                      socket,
+                                                                      lzw,
+                                                                      historyResource,
+                                                                      checkSum,
+                                                                      imageHistory) {
 
   var doc_id = $routeParams.id,
-      imageData = 'empty',
-      drawActions = []; //for undo/redo if implemene
+      imageData = 'empty';
 
 
   $scope.document = doc_id;
   /**
    * Joins user socket to current document.
+   * Should all be done on the server must switch
    */
   socket.socket.emit('join', {document: doc_id});
 
@@ -87,6 +95,39 @@ angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope, $r
     });
   };
 
+  /**
+   * Lsitener for remote events
+   */
+  socket.socket.on('remote:undo', function(data) {
+    //This will not trigger if the same socket was the one sending the message.
+    console.log('An undo was created', data);
+  });
+
+  socket.socket.on('remote:redo', function(data) {
+    //This will not trigger if the same socket was the one sending the message.
+    console.log('An undo was created', data);
+  });
+
+  /**
+   * Listeners for local events
+   */
+  $scope.$on('toolBar/undo', function() {
+    var state = imageHistory.undo();
+    console.log(state);
+    if(state) {
+      //not sure if i should stick this in here
+      var draw = lzw.unzip(state.data);
+      var img = new Image();
+      img.src = draw;
+      var dom = angular.element('#' + data.userId)[0];
+      dom.getContext("2d").clearRect(0, 0, 640, 480);
+      dom.drawImage(img, 0, 0);
+    }
+  });
+
+  $scope.$on('toolBar/redo', function() {
+
+  });
 
   /**
    * Check for changes in the canvas,
@@ -98,11 +139,16 @@ angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope, $r
     if(!checkSum.areEqual.fromString(imageData, _image_data)) {
       imageData = _image_data;
       var packed = lzw.zip(_image_data);
-      socket.socket.emit('change_drawing_history', {
+      var dataToStore = {
         userId: $scope.userId,
         document: doc_id,
         data: packed
-      });
+      };
+
+      //to add undo/redo
+      imageHistory.add(dataToStore);
+      socket.socket.emit('change_drawing_history', dataToStore);
+
     }
 
   };

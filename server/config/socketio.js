@@ -66,7 +66,7 @@ function onConnect(socket) {
       data.created = new Date();
       History.create(data, function(err, drawstate) {
           if(err) {
-            socket.to(data.document).emit('save_point_error', 'save_point_error', {
+            socket.to(data.document).emit('save_point_error', {
               userId:data.userId,
               document:data.document,
               error:err
@@ -74,6 +74,16 @@ function onConnect(socket) {
           }
       });
   });
+
+  //Its unsafe for this to be here any logged in user can emit to anyone the data
+  /*
+  socket.on('undo', function(data) {
+    data.created = new Date();
+    History.create(data, function(err, drawstate) {
+      socket.to(data.document).emit('remote:undo', data);
+    });
+  });
+  */
 
   socket.on('leave', function(data) {
     socket.leave(data.document);
@@ -111,8 +121,8 @@ function onConnect(socket) {
 
   //Register socket for the drawing
   // Insert sockets below
- // require('../api/history/history.socket').register(socket);
-
+ //
+  require('../api/history/history.socket').register(socket);
   require('../api/notification/notification.socket').register(socket);
   require('../api/drawings/drawings.socket').register(socket);
   require('../api/thing/thing.socket').register(socket);

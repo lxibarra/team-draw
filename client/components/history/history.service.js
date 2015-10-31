@@ -11,6 +11,13 @@ angular.module('teamDrawApp').factory('historyResource', function ($resource) {
           id: '@id'
         },
         isArray: true
+      },
+      undo: {
+        method: 'POST',
+        params: {
+          id: 'document',
+          controller: 'undo'
+        }
       }
     }
   );

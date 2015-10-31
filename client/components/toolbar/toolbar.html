@@ -156,6 +156,14 @@
           </div>
         </md-menu-content>
       </md-menu>
+        <md-button aria-label="Undo" class="md-icon-button" ng-click="undo()">
+          <md-icon md-menu-origin md-svg-icon="/assets/svg/undo.svg"></md-icon>
+          <md-tooltip>Undo</md-tooltip>
+        </md-button>
+      <md-button aria-label="Redo" class="md-icon-button" ng-click="redo()">
+        <md-icon md-menu-origin md-svg-icon="/assets/svg/redo.svg"></md-icon>
+        <md-tooltip>Redo</md-tooltip>
+      </md-button>
       <span flex></span>
       <md-button class="md-icon-button md-mini" aria-label="Friend List" ng-click="sideBar()">
         <md-icon md-svg-icon="/assets/svg/plus.svg"></md-icon>

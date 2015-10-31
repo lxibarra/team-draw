@@ -37,6 +37,22 @@ exports.index = function(req, res) {
   });
 };
 
+exports.undo = function(req, res) {
+  req.body.data.created = new Date();
+  History.create(req.body, function(err, drawstate) {
+    if(err) {
+      handleError(err, res);
+    }
+
+    //communicate the undo with the socket
+    console.log(req.body.document)
+    History.socket.to(req.body.document).emit('remote:undo', req.body);
+
+
+    return res.status(200).json(drawstate);
+
+  });
+};
 
 /*
 // Get a single history

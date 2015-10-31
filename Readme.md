@@ -3,6 +3,7 @@ This Doc is not final
 
 ## Shape Services
 If you want to add more shape options you have to create services with the following guidelines (Recommended only)
+
 1. Create a new service using the slatePainting module name.
 1. Use Capital first letter for service name e.g 'Square'
 1. Provide default standard methods such as setUp, preview, draw, startDraw

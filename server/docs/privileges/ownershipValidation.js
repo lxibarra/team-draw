@@ -45,7 +45,7 @@ function getDocPrivileges() {
     .use(function (req, res, next) {
 
       //var documentId = req.params.id||req.body.documentId||req.body.drawing;
-      var documentId = req.body.documentId || req.body.drawing || req.params.id;
+      var documentId = req.body.documentId || req.body.drawing || req.params.id || req.body.document;
 
       Drawings.findById(documentId, function (err, document) {
         if (err) return next(err);

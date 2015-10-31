@@ -112,13 +112,24 @@ angular.module('teamDrawApp').controller('toolbarCtrl', function ($rootScope, $s
       var canvas = angular.element('#' + layer.participant._id);
 
       if(canvas) {
-        console.log(layer.visible);
         if (layer.visible) {
           canvas.fadeIn(200);
         } else {
           canvas.fadeOut(200);
         }
       }
+  };
+
+  /**
+   * Communicate Undo/Redo
+   */
+
+  $scope.undo = function() {
+    $rootScope.$broadcast('toolBar/undo', { action:true });
+  };
+
+  $scope.redo = function() {
+    $rootScope.$broadcast('toolBar/redo', { action:true });
   };
 
   //----------------------------Tool bar specifics

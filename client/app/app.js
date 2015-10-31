@@ -58,6 +58,7 @@ angular.module('teamDrawApp', [
       });
     });
   })
-  .value('newInvite', '/assets/sounds/01.mp3');
+  .value('newInvite', '/assets/sounds/01.mp3')
+  .constant('maxHistory', 25);
 
 
