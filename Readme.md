@@ -1,4 +1,5 @@
 # Team Draw
+[![Build Status](https://travis-ci.org/lxibarra/team-draw.svg?branch=angularMaterial)](https://travis-ci.org/lxibarra/team-draw)
 This Doc is not final
 More tests are needed
 
