@@ -1,5 +1,6 @@
 # Team Draw
 This Doc is not final
+More tests are needed
 
 ## Shape Services
 If you want to add more shape options you have to create services with the following guidelines (Recommended only)
