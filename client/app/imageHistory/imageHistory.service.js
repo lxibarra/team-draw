@@ -23,7 +23,8 @@ angular.module('teamDrawApp')
         var action = actions.pop();
         storeUndo(action);
         tmp.push(action);
-        return action;
+
+        return actions[actions.length-1];
       },
       redo:function() {
         return tmp.shift();
