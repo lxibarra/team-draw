@@ -141,11 +141,13 @@ angular.module('slatePainting')
         /**
          * Receive data from remote users
          */
-        scope.socket.on('draw', function (data) {
-          if (data.userId !== scope.userId) {
-            slateCmd.exec.apply(slateCmd, data.data);
-          }
-        });
+        if(scope.socket) {
+          scope.socket.on('draw', function (data) {
+            if (data.userId !== scope.userId) {
+              slateCmd.exec.apply(slateCmd, data.data);
+            }
+          });
+        }
 
         /**
          * Send data to remote users

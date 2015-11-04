@@ -4,6 +4,7 @@ describe('Controller: MaterialsCtrl', function () {
 
   // load the controller's module
   beforeEach(module('teamDrawApp'));
+  beforeEach(module('socketMock'));
 
   var MaterialsCtrl, scope;
 

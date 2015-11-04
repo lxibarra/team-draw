@@ -12,9 +12,9 @@ describe('Directive: tinycolorpicker', function () {
     scope = $rootScope.$new();
   }));
 
-  it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<tinycolorpicker></tinycolorpicker>');
+  it('color picker created successfully', inject(function ($compile) {
+    element = angular.element('<div tinycolorpicker></div>');
     element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the tinycolorpicker directive');
+    expect(angular.element(element['0']).html()).toMatch(/canvas/);
   }));
 });

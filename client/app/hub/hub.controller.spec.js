@@ -4,6 +4,7 @@ describe('Controller: HubCtrl', function () {
 
   // load the controller's module
   beforeEach(module('teamDrawApp'));
+  beforeEach(module('socketMock'));
 
   var HubCtrl, scope;
 

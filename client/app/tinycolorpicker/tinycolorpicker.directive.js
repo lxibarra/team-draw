@@ -16,10 +16,10 @@ angular.module('teamDrawApp')
                '<input ng-model="color" type="hidden" class="colorInput"/>',
       transclude:true,
       link: function (scope, element, attrs) {
-        $(element).tinycolorpicker();
+        angular.element(element).tinycolorpicker();
 
         scope.$watch(function() {
-          return $('input', element).val();
+          return angular.element('input', element).val();
         }, function(newValue, oldValue) {
           //you can set an object on a parent element to listen for changes on colorSelected.color
           scope.colorSelected.color = newValue;
