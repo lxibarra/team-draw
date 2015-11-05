@@ -7,11 +7,11 @@ describe('Controller: MainCtrl', function () {
   beforeEach(module('socketMock'));
 
   var MainCtrl,
-      scope,
-      $httpBackend;
+    scope,
+    $httpBackend;
 
   // Initialize the controller and a mock scope
- /* beforeEach(inject(function (_$httpBackend_, $controller, $rootScope) {
+  /*beforeEach(inject(function (_$httpBackend_, $controller, $rootScope) {
     $httpBackend = _$httpBackend_;
     $httpBackend.expectGET('/api/things')
       .respond(['HTML5 Boilerplate', 'AngularJS', 'Karma', 'Express']);

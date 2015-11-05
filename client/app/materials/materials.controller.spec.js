@@ -6,17 +6,21 @@ describe('Controller: MaterialsCtrl', function () {
   beforeEach(module('teamDrawApp'));
   beforeEach(module('socketMock'));
 
-  var MaterialsCtrl, scope;
+  var MaterialsCtrl, scope, $HttpBackend;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, _$httpBackend_) {
     scope = $rootScope.$new();
+    $HttpBackend = _$httpBackend_;
+
     MaterialsCtrl = $controller('MaterialsCtrl', {
       $scope: scope
     });
   }));
 
-  it('should ...', function () {
-    expect(1).toEqual(1);
+  it('should get document properties', function () {
+    $HttpBackend.expectGET('/api/drawingss').respond({ok:true});
+    $HttpBackend.flush();
+    expect(angular.isObject(scope.doc)).toBe(true);
   });
 });

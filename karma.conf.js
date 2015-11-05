@@ -13,6 +13,7 @@ module.exports = function(config) {
     files: [
       'client/bower_components/jquery/dist/jquery.js',
       'client/bower_components/tinycolorpicker/lib/jquery.tinycolorpicker.min.js',
+      'client/bower_components/lzwCompress.js/lzwCompress.js',
       'client/bower_components/angular/angular.js',
       'client/bower_components/angular-socket-io/socket.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
