@@ -2,7 +2,7 @@
 
 angular.module('teamDrawApp').service('checkSum', function () {
 
-  //should implement memoization for the last 40 or 50 values only to avoid re calculation
+  //should..? implement memoization for the last 40 or 50 values only to avoid re calculation
 
   function createHash(value) {
     var hash = 0, i, chr, len;
