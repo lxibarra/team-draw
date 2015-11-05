@@ -1,5 +1,6 @@
 # Team Draw
 [![Build Status](https://travis-ci.org/lxibarra/team-draw.svg?branch=angularMaterial)](https://travis-ci.org/lxibarra/team-draw)
+
 This Doc is not final
 More tests are needed
 
@@ -9,7 +10,7 @@ If you want to add more shape options you have to create services with the follo
 1. Use Capital first letter for service name e.g 'Square'
 1. Provide default standard methods such as setUp, preview, draw, startDraw
  you can also create getters and setters for your shape properties as you wish.
-1. The ``` setUp ``` method must hava the follwiing mandatory arguments even if you are not using them: 
+1. The ``` setUp ``` method must have the following mandatory arguments even if you are not using them: 
 ``` javascript 
     setUp(canvas, previewCanvas, strokeWidth, color, fillColor) {
         //you custom implementation here
@@ -18,7 +19,7 @@ If you want to add more shape options you have to create services with the follo
     //See the provided services for examples under client/app/slate
 ```
 1. Make sure to map the desire mouse events on the slate.commander.service slateCmd service.
-If you dont do this, the slate directive will not know how to work with your shape.
+If you don't do this, the slate directive will not know how to work with your shape.
 
 ## Slate Directive Usage
 You should set the ``` slate ``` directive on the div you wish to interact with.                    
