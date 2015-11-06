@@ -116,15 +116,15 @@ angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope,
     console.log(state);
     if(state) {
       //not sure if i should stick this in here
-      var draw = lzw.unzip(state.data);
-      console.log(draw);
-      var img = new Image();
-      img.src = draw;
+      var _draw = lzw.unzip(state.data);
+      console.log(_draw);
+      var img1 = new Image();
+      img1.src = _draw;
       var dom = angular.element('#' + state.userId)[0];
       var _cnv = dom.getContext("2d");
       _cnv.clearRect(0, 0, 640, 480);
-      //for some reason this is not working
-      _cnv.drawImage(img, 0, 0);
+      _cnv = dom.getContext("2d");
+      _cnv.drawImage(img1, 0, 0);
     }
   });
 

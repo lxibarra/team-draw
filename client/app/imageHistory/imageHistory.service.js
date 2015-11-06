@@ -5,28 +5,38 @@ angular.module('teamDrawApp')
     var actions = [], cursor = -1, tmp = [];
 
     function storeUndo(action) {
-      historyResource.undo(action);
+      if (action) {
+        //historyResource.undo(action);
+      }
     }
 
     return {
-      add:function(payLoad) {
+      add: function (payLoad) {
         tmp = [];
-        if(actions.length < maxHistory) {
+        if (actions.length < maxHistory) {
           actions.push(payLoad);
         } else {
           actions.push(payLoad);
           actions.shift();
         }
       },
-      undo:function() {
+      undo: function () {
         console.log(actions);
-        var action = actions.pop();
-        storeUndo(action);
-        tmp.push(action);
-
+        actions.pop();
+        console.log(actions);
         return actions[actions.length-1];
+        /*if (actions.length > 0) {
+          actions.pop();
+          var action = actions.pop();
+          actions.pop();
+          //storeUndo(action);
+          tmp.push(action);
+          return action;
+        } else {
+          return undefined;
+        }*/
       },
-      redo:function() {
+      redo: function () {
         return tmp.shift();
       }
     }
