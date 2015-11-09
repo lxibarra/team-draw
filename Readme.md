@@ -3,6 +3,7 @@
 
 This Doc is not final
 More tests are needed
+Undo/Redo feature is a must and its not finished
 
 ## Shape Services
 If you want to add more shape options you have to create services with the following guidelines (Recommended only)
