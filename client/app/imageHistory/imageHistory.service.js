@@ -7,34 +7,22 @@ angular.module('teamDrawApp')
     function storeUndo(action) {
       if (action) {
         //historyResource.undo(action);
+        //must permanently make changes
       }
     }
 
     return {
       add: function (payLoad) {
         tmp = [];
-        if (actions.length < maxHistory) {
-          actions.push(payLoad);
-        } else {
-          actions.push(payLoad);
+        actions.push(payLoad);
+        if (actions.length >= maxHistory) {
           actions.shift();
         }
       },
       undo: function () {
-        console.log(actions);
+        //tmp.push(actions.pop());
         actions.pop();
-        console.log(actions);
-        return actions[actions.length-1];
-        /*if (actions.length > 0) {
-          actions.pop();
-          var action = actions.pop();
-          actions.pop();
-          //storeUndo(action);
-          tmp.push(action);
-          return action;
-        } else {
-          return undefined;
-        }*/
+        return actions[actions.length - 1];
       },
       redo: function () {
         return tmp.shift();

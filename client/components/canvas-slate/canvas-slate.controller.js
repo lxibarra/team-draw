@@ -76,7 +76,7 @@ angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope,
   });
   /**
    * This callback executes after all the layers have been created by the slate directive.
-   * After they haven been created a reques is made to download the latest snapshot of the layer/image and paint it
+   * After they haven been created a request is made to download the latest snapshot of the layer/image and paint it
    * on the canvas.
    * @param layers injects an array of canvas objects currently on the canvas.
    */
@@ -88,6 +88,9 @@ angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope,
         var img = new Image();
         img.src = draw;
         angular.element('#' + item['0'].userId)[0].getContext("2d").drawImage(img, 0, 0);
+        if(item['0'].userId == $scope.userId) {
+          imageHistory.add(item['0']);
+        }
       });
 
     }).catch(function (err) {
@@ -116,8 +119,27 @@ angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope,
     console.log(state);
     if(state) {
       //not sure if i should stick this in here
+      console.log(state);
       var _draw = lzw.unzip(state.data);
-      console.log(_draw);
+      var img1 = new Image();
+      img1.src = _draw;
+      var dom = angular.element('#' + state.userId)[0];
+      var _cnv = dom.getContext("2d");
+      _cnv.clearRect(0, 0, 800, 600);
+      _cnv = dom.getContext("2d");
+      _cnv.drawImage(img1, 0, 0);
+    }
+  });
+
+  $scope.$on('toolBar/redo', function() {
+    console.log('Clicked redo');
+    //var state = imageHistory.redo();
+    //drawState(state);
+  });
+
+  function drawState(state) {
+    if(state) {
+      var _draw = lzw.unzip(state.data);
       var img1 = new Image();
       img1.src = _draw;
       var dom = angular.element('#' + state.userId)[0];
@@ -126,11 +148,7 @@ angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope,
       _cnv = dom.getContext("2d");
       _cnv.drawImage(img1, 0, 0);
     }
-  });
-
-  $scope.$on('toolBar/redo', function() {
-
-  });
+  }
 
   /**
    * Check for changes in the canvas,
@@ -148,9 +166,11 @@ angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope,
         data: packed
       };
 
-      //to add undo/redo
-      imageHistory.add(dataToStore);
       socket.socket.emit('change_drawing_history', dataToStore);
+      //to add undo/redo
+      console.log('added to history', dataToStore);
+      imageHistory.add(dataToStore);
+
 
     }
 
