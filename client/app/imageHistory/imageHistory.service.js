@@ -18,14 +18,18 @@ angular.module('teamDrawApp')
         if (actions.length >= maxHistory) {
           actions.shift();
         }
+        console.log(actions);
       },
       undo: function () {
         //tmp.push(actions.pop());
-        actions.pop();
-        return actions[actions.length - 1];
+        var poped = actions.pop();
+        tmp.push(poped);
+        return actions[actions.length - 1]||poped;
       },
       redo: function () {
-        return tmp.shift();
+       // var poped = tmp.pop();
+       // actions.push(poped);
+       // return poped;
       }
     }
   });

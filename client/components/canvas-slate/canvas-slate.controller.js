@@ -89,7 +89,11 @@ angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope,
         img.src = draw;
         angular.element('#' + item['0'].userId)[0].getContext("2d").drawImage(img, 0, 0);
         if(item['0'].userId == $scope.userId) {
-          imageHistory.add(item['0']);
+          imageHistory.add({
+            data:item['0'].data,
+            document:item['0'].document,
+            userId:item['0'].userId
+          });
         }
       });
 
@@ -116,10 +120,10 @@ angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope,
    */
   $scope.$on('toolBar/undo', function() {
     var state = imageHistory.undo();
-    console.log(state);
+   // console.log(state);
     if(state) {
       //not sure if i should stick this in here
-      console.log(state);
+    //  console.log(state);
       var _draw = lzw.unzip(state.data);
       var img1 = new Image();
       img1.src = _draw;
@@ -133,8 +137,8 @@ angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope,
 
   $scope.$on('toolBar/redo', function() {
     console.log('Clicked redo');
-    //var state = imageHistory.redo();
-    //drawState(state);
+    var state = imageHistory.redo();
+    drawState(state);
   });
 
   function drawState(state) {
@@ -144,7 +148,7 @@ angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope,
       img1.src = _draw;
       var dom = angular.element('#' + state.userId)[0];
       var _cnv = dom.getContext("2d");
-      _cnv.clearRect(0, 0, 640, 480);
+      _cnv.clearRect(0, 0, 800, 600);
       _cnv = dom.getContext("2d");
       _cnv.drawImage(img1, 0, 0);
     }
@@ -165,11 +169,12 @@ angular.module('teamDrawApp').controller('CanvasSlateCtrl', function ($scope,
         document: doc_id,
         data: packed
       };
-
-      socket.socket.emit('change_drawing_history', dataToStore);
-      //to add undo/redo
       console.log('added to history', dataToStore);
       imageHistory.add(dataToStore);
+      socket.socket.emit('change_drawing_history', dataToStore);
+      //to add undo/redo
+
+
 
 
     }
