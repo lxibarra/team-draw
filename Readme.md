@@ -1,5 +1,6 @@
 # Team Draw
 [![Build Status](https://travis-ci.org/lxibarra/team-draw.svg?branch=angularMaterial)](https://travis-ci.org/lxibarra/team-draw)
+[![Build Status](https://codeship.com/projects/5bde20a0-8a39-0133-d25d-126e2cc43b40/status?branch=angularMaterial)](https://codeship.com)
 
 This Doc is not final
 More tests are needed
